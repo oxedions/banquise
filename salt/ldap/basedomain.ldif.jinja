@@ -1,0 +1,20 @@
+dn: {% set count = 1 %}{% for dc in pillar['ldap_public']['dc'] %}{% if count == 1%}dc={{dc}}{% set count = 2 %}{% else %},dc={{dc}}{% endif %}{% endfor %}
+objectClass: top
+objectClass: dcObject
+objectclass: organization
+o: {% for dc in pillar['ldap_public']['dc'] %}{{dc}} {% endfor %}
+dc: {% set count = 1 %}{% for dc in pillar['ldap_public']['dc'] %}{% if count == 1%}{{dc}}{% set count = 2 %}{% else %}{% endif %}{% endfor %}
+
+dn: cn=Manager{% for dc in pillar['ldap_public']['dc'] %},dc={{dc}}{% endfor %}
+objectClass: organizationalRole
+cn: Manager
+description: Directory Manager
+
+dn: ou=People{% for dc in pillar['ldap_public']['dc'] %},dc={{dc}}{% endfor %}
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Group{% for dc in pillar['ldap_public']['dc'] %},dc={{dc}}{% endfor %}
+objectClass: organizationalUnit
+ou: Group
+

@@ -1,0 +1,23 @@
+$TTL 86400
+@   IN  SOA     {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}. root.{{salt['pillar.get']('engine:network:domaine_name')}}. (
+        2011071001  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        86400       ;Minimum TTL
+)
+@       IN  NS          {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+@       IN  PTR         {{salt['pillar.get']('engine:network:domaine_name')}}.
+
+{% if salt['pillar.get']('engine:network:reverse') == 1 %}
+{% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% elif salt['pillar.get']('engine:network:reverse') == 2 %}
+{% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% elif salt['pillar.get']('engine:network:reverse') == 3 %}
+{% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}.{{ list1[2] }}.{{ list1[1] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% endif %}
+
+{% for host, args in salt['pillar.get']('computes', {}).items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% endfor %}
+
+

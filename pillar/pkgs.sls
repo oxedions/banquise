@@ -1,0 +1,24 @@
+pkgs:
+  apache: httpd
+  vim: vim
+  dns: bind
+  dhcp: dhcp
+  sftp: vsftpd
+  tftp: tftp
+  tftpserver: tftp-server
+  xinetd: xinetd
+  syslinux: syslinux
+  wget: wget
+  ntp: ntp
+  ldap_server: openldap-servers
+  ldap_client: openldap-clients
+  munge: munge
+  slurm: slurm
+  slurm_munge: slurm-munge
+  webserver: httpd
+  salt_minion: salt-minion
+  firewall: firewalld
+  networkmanager: NetworkManager
+  nfs_utils: nfs-utils
+  nsspamldap: nss-pam-ldapd
+  sssd: sssd

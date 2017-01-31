@@ -1,0 +1,3 @@
+search {{salt['pillar.get']('engine:network:domaine_name')}}
+nameserver {{salt['pillar.get']('engine:master:masterip')}}
+{% if salt['pillar.get']('core:ha') == true %}nameserver {{salt['pillar.get']('engine:master:slaveip')}}{% endif %}

@@ -1,0 +1,20 @@
+services:
+  apache: httpd
+  dns: named
+  dhcp: dhcpd
+  sftp: vsftpd
+  firewalld: firewalld
+  xinetd: xinetd
+  ntp: ntpd
+  ldapserver: slapd
+  webserver: httpd
+  salt_minion: salt-minion
+  tftpserver: tftp
+  munge: munge
+  slurmserver: slurmctld
+  slurmclient: slurmd
+  rpcbind: rpcbind
+  nfs_server: nfs-server
+  sssd: sssd
+  nscd: nscd
+  networkmanager: NetworkManager

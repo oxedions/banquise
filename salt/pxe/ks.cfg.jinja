@@ -1,0 +1,56 @@
+#version=RHEL7
+# System authorization information
+auth --enableshadow --passalgo=sha512
+
+# Do not use graphical install
+text
+
+# Run the Setup Agent on first boot
+firstboot --enable
+
+repo --name=salt.local.repo --baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt.local.repo
+
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+network --onboot yes --bootproto dhcp
+network  --hostname=localhost.localdomain
+
+# Root password
+rootpw --iscrypted {{salt['pillar.get']('passwords_public:root_password_hash')}}
+
+# System timezone
+timezone America/New_York --isUtc
+
+# System bootloader configuration
+bootloader --append=" crashkernel=auto" --location=mbr
+
+# Partition clearing information
+clearpart --all --initlabel
+part /boot --fstype=ext4 --size=2048
+part / --fstype=ext4 --size=1 --grow
+
+# Reboot after installation
+reboot
+
+# Install minimal system and salt-minion
+%packages
+@core
+salt-minion
+%end
+
+# Add root public key in authorized_keys on minion, don't forget to restorecon
+%post --log=/root/ks-post.log
+mkdir /root/.ssh
+cat  << xxEOFxx >> /root/.ssh/authorized_keys
+{{salt['pillar.get']('ssh_public:ssh_master_public_key')}}
+{{salt['pillar.get']('ssh_public:ssh_salt_public_key')}}
+xxEOFxx
+restorecon -r /root/.ssh
+echo "{{salt['pillar.get']('core:salt_master_ip')}}	salt	salt-master" >> /etc/hosts
+systemctl enable salt-minion
+%end
+

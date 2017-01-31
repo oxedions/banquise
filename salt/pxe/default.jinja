@@ -1,0 +1,17 @@
+default menu.c32
+prompt 0
+timeout 30
+MENU TITLE Banquise PXE Menu
+
+ default centos7_x64
+# default localdisk
+
+ LABEL centos7_x64
+ MENU LABEL CentOS 7 X64
+ KERNEL /netboot/vmlinuz
+ APPEND  initrd=/netboot/initrd.img  inst.repo=http://{{salt['pillar.get']('engine:master:masterip')}}/os_dvd.local.repo  ks=http://{{salt['pillar.get']('engine:master:masterip')}}/ks.cfg
+
+ LABEL localdisk
+ KERNEL chain.c32 
+ APPEND hd0
+

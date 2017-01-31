@@ -1,0 +1,13 @@
+[os_dvd.local]
+name=OS base repository
+baseurl=http://{{salt['pillar.get']('engine:master:masterip')}}/os_dvd.local.repo
+{% if salt['pillar.get']('core:ha') == "true" %}http://{{salt['pillar.get']('engine:master:slaveip')}}/os_dvd.local.repo{% endif %}
+gpgcheck=0
+enabled=1
+
+[os.update.local]
+name=OS base repository update
+baseurl=http://{{salt['pillar.get']('engine:master:masterip')}}/os.update.local.repo
+{% if salt['pillar.get']('core:ha') == "true" %}http://{{salt['pillar.get']('engine:master:slaveip')}}/os.update.local.repo{% endif %}
+gpgcheck=0
+enabled=0

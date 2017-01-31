@@ -1,0 +1,6 @@
+[salt]
+name=local salt repository
+baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt.local.repo/
+gpgcheck=0
+enabled=1
+

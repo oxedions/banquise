@@ -1,0 +1,32 @@
+#
+# DHCP Server Configuration file.
+#   see /usr/share/doc/dhcp*/dhcpd.conf.example
+#   see dhcpd.conf(5) man page
+#
+
+ authoritative;
+
+ subnet {{salt['pillar.get']('engine:network:subnet')}} netmask {{salt['pillar.get']('engine:network:netmask')}} {
+ range {{salt['pillar.get']('engine:network:dhcp_unknown_range')}};
+ option domain-name "{{salt['pillar.get']('engine:network:domaine_name')}}";
+ option domain-name-servers {{salt['pillar.get']('engine:master:masterip')}};
+ option routers {{salt['pillar.get']('engine:master:masterip')}};
+ option broadcast-address {{salt['pillar.get']('engine:network:broadcast_address')}};
+
+ default-lease-time 600;
+ max-lease-time 7200;
+
+ next-server {{salt['pillar.get']('engine:master:masterip')}};
+ filename "pxelinux.0";
+
+ {% for host, args in salt['pillar.get']('computes', {}).items() %}
+ host {{ host }} {
+ hardware ethernet {{ args.hwaddr }};
+ fixed-address {{ args.ip }};
+ }
+
+ {% endfor %}
+
+
+ }
+

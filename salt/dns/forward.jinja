@@ -1,0 +1,14 @@
+$TTL 86400
+@   IN  SOA     {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}. root.{{salt['pillar.get']('engine:network:domaine_name')}}. (
+        2011071001  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        86400       ;Minimum TTL
+)
+@       IN  NS          {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+@       IN  A           {{salt['pillar.get']('engine:master:masterip')}}
+
+{{salt['pillar.get']('engine:master:masterid')}}          IN  A   {{salt['pillar.get']('engine:master:masterip')}}
+{% for host, args in salt['pillar.get']('computes', {}).items() %}{{host}}          IN  A   {{ args.ip }}
+{% endfor %}

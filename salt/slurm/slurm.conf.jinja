@@ -1,0 +1,38 @@
+ClusterName={{salt['pillar.get']('core:cluster_name')}}
+ControlMachine={{salt['pillar.get']('engine:master:masterid')}}
+ 
+SlurmUser=slurm
+SlurmctldPort=6817
+SlurmdPort=6818
+AuthType=auth/munge
+CryptoType=crypto/munge
+StateSaveLocation=/etc/slurm/savestate
+SlurmdSpoolDir=/var/log/slurm/spool_slurmd
+SlurmctldPidFile=/var/run/slurmctld.pid
+SlurmdPidFile=/var/run/slurmd.pid
+CacheGroups=0
+ReturnToService=0
+SlurmctldTimeout=400
+SlurmdTimeout=400
+InactiveLimit=0
+MinJobAge=400
+KillWait=30
+Waittime=0
+MpiDefault=pmi2
+
+SchedulerType=sched/backfill
+SelectType=select/cons_res
+SelectTypeParameters= CR_Core_Memory,CR_CORE_DEFAULT_DIST_BLOCK
+FastSchedule=1
+ 
+SlurmctldDebug=5
+SlurmctldLogFile=/var/log/slurm/slurmctld.log
+SlurmdDebug=5
+SlurmdLogFile=/var/log/slurm/slurmd.log.%h
+JobCompType=jobcomp/none
+
+{% for host, args in salt['pillar.get']('computes', {}).items() %}NodeName={{ host }} Procs={{ args.procs }} State=UNKNOWN
+{% endfor %}
+
+PartitionName=computenodes Nodes={% set count = 1 %}{% for host, args in salt['pillar.get']('computes', {}).items() %}{% if count == 1%}{{ host }}{% set count = 2 %}{% else %},{{ host }}{% endif %}{% endfor %} Default=YES MaxTime=INFINITE State=UP
+

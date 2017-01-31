@@ -1,0 +1,4 @@
+{% for nfsservid, args in salt['pillar.get']('nfs', {}).items() %}
+{% if salt['grains.get']('host') == nfsservid %}
+{% for mount, argus in args.items() %}{{argus.servermountpoint}} {{salt['pillar.get']('engine:network:subnet')}}/16({{argus.rights}},no_root_squash,sync)
+{% endfor %}{% endif %}{% endfor %}
