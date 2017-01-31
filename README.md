@@ -2,7 +2,7 @@
           ██   ██ ██   ██ ████   ██ ██    ██ ██    ██ ██ ██      ██
           ██████  ███████ ██ ██  ██ ██    ██ ██    ██ ██ ███████ █████
           ██   ██ ██   ██ ██  ██ ██ ██ ▄▄ ██ ██    ██ ██      ██ ██
-          ██████  ██   ██ ██   ████  ██████   ██████  ██ ███████ ███████  
+          ██████  ██   ██ ██   ████  ██████   ██████  ██ ███████ ███████ 
                                         ▀▀
 
                                        It's time to dive in !
@@ -10,7 +10,7 @@
                                    ('<    ?
                                    (v\  >o
                                   <(_)  (")
-                                    ~~  ^^ 
+                                    ~~  ^^
 
 Current release : beta 1
 
@@ -20,20 +20,20 @@ Mail : oxedions@gmail.com
 
 ʕʘ̅͜ʘ̅ʔ What does not work today:
 
-- I don't have any IB network at home, and cannot do it at work if I want to keep Banquise opensource. IB states need to be tested.
-- There could be an issue with network.static if ip has patern somewhere else in it (10.0 -> 10.1.10.0 = issue ?). Need to rewrite this (regex ^ ?).
+- I don't have any IB network at home, and cannot do it at work if I want to keep Banquise opensource. There are no IB states in current version.
+- There could be an issue with network.static if ip has pattern somewhere else in it (10.0 -> 10.0.10.0 = issue ?). Need to rewrite this (regex ^).
 - Cannot change some ldap parameters on the fly once data base created.
 
 ʕʘ̅͜ʘ̅ʔ Other notes:
 
-- Slurm does not restart automatically after slurm.conf update. This was done on purpose, has it would be too risky. Administrator must use scontrol reconfigure once all nodes slurm.conf files are synchronised.
+- Slurm does not restart automatically after slurm.conf update. This was done on purpose, has it would be too risky. Administrator must use scontrol reconfigure once all nodes slurm.conf files are synchronized.
 - Missing a lot of rpm for /hpc_softwares (gcc, openmpi/mvapich2, boost, etc and their module files), waiting for beta 1 to be ended to provide them.
 - Ldap user interface (based on dialog) still not released.
 - PXE user interface (based on dialog) still not released.
 - Current version does not support iptables.
 - Current version does not support SSL for ldap.
 
-Admin sys begginner notes: if you feel lost, keep in mind that Banquise is just automatically reproducing what was done manually here: https://www.sphenisc.com/doku.php/system/linux_cluster
+Admin sys beginner notes: if you feel lost, keep in mind that Banquise is just automatically reproducing what was done manually here: https://www.sphenisc.com/doku.php/system/linux_cluster
 
 ## Introduction
 
@@ -74,7 +74,7 @@ Note: saltmaster can directly be installed on master node. However, this should 
 
 It is assume here that user is using Centos, but RHEL instructions are the same.
 
-Note: saltmaster ip will be 10.1.0.77, and master ip 10.1.0.1. Netmask used will be 255.255.0.0 .
+Note: saltmaster ip will be 10.1.0.77, and master ip 10.1.0.1. Netmask used will be 255.255.0.0 (Banquise allows /8, /16 and /24).
 
 ### saltmaster
 
@@ -137,7 +137,7 @@ Then keep these files into /root:
     mv repository/banquise/el/7/x86_64/* /root/banquise/
     rm -Rf repository
 
-Finaly mount Centos everything DVD and copy all content localy (will be used on master for repository and pxe process):
+Finally mount Centos everything DVD and copy all content localy (will be used on master for repository and pxe process):
 
     mount CentOS-7-x86_64-Everything-1511.iso /mnt
     mkdir -p /root/os_dvd/
@@ -171,9 +171,11 @@ And set hostname with domain name:
 
     hostnamectl set-hostname saltmaster.sphen.local
 
-Generate an ssh key without passphrase:
+Generate an ssh key without pass-phrase:
 
     ssh-keygen
+
+Also generate an ssh key for future master, and keep it somewhere (private and public key).
 
 Download Banquise:
 
@@ -193,7 +195,7 @@ For the time being, disable firewalld (or any firewall, i.e. iptables):
 
 There is no need for an internet connection from now.
 
-### Configure banquise
+### Configure Banquise
 
 All files are in /srv.
 
@@ -208,7 +210,7 @@ In /srv/pillar:
 - computes.sls that contains all compute nodes information (hostname, ip, mac, etc)
 - nfs.sls that contains nfs related informations
 - ldap_private.sls and ldap_public.sls that contains data for ldap (private is protected in top.sls of pillar)
-- ssh_private.sls and ssh_public.sls (private is protected in top.sls of pillar)
+- ssh_private.sls and ssh_public.sls (private is protected in top.sls of pillar) Put here the ssh key you made for future master.
 
 **Important: ensure that time zone in /srv/salt/pxe/ks.cfg.jinja is the same as the one you used to deploy saltmaster and master. If not, slurm (munge) will not be able to authenticate.** Default is America/New_York.
 
@@ -218,7 +220,7 @@ If you are using servers with BMC, edit default.jinja2 in /srv/salt/pxe and add 
 
 If you are using slurm, **you need to generate a munge key**. Use:
 
-    dd if=/dev/urandom bs=1 count=1024 > /srv/salt/slurm/munge.key 
+    dd if=/dev/urandom bs=1 count=1024 > /srv/salt/slurm/munge.key
 
 You shouldn't need to edit other files in /srv/salt, except for debugging purposes.
 
@@ -231,12 +233,12 @@ You shouldn't need to edit other files in /srv/salt, except for debugging purpos
                  +-----+------+
                        |
               +--------+--------···
-              |           
-         +----+---+      
-         |        |       
-         | master |    
+              |          
+         +----+---+     
          |        |      
-         +--------+   
+         | master |   
+         |        |     
+         +--------+  
 
 Install also a minimal system on master node, and configure static ip on it to be reachable by salt master. We will assume here that interface is enp0s8. Edit /etc/sysconfig/network-scripts/ifcfg-enp0s8 as following:
 
@@ -266,12 +268,12 @@ This is done to ensure no one is editing network configuration files.
                  +-----▼------+
                        |
               +----◀---+--------···
-              |           
-         +----▼---+      
-         |        |       
-         | master |    
+              |          
+         +----▼---+     
          |        |      
-         +--------+   
+         | master |   
+         |        |     
+         +--------+  
 
 Deploy your ssh key on master:
 
@@ -310,17 +312,17 @@ Before last step, **ensure the directories to be exported by your nfs configurat
                                    ('<    !
                                    (v\  >o
                                   <(_)  (")
-                                    ~~  ^^ 
+                                    ~~  ^^
 
 --- START ---
 
-Finaly, you can deploy master. In normal time, you will use from saltmaster 'salt "master" state.highstate' to apply configuration or changes on the master. However, because this is the first install you should ssh on master and use salt-call to display all informations on what is going on, and to prevent time out of salt-minion.
+Finally, you can deploy master. In normal time, you will use from saltmaster 'salt "master" state.highstate' to apply configuration or changes on the master. However, because this is the first install you should ssh on master and use salt-call to display all informations on what is going on, and to prevent time out of salt-minion.
 
 ssh on master (ssh 10.1.0.1) and use:
 
     salt-call state.highstate -l debug
 
-If it start, you can go take a cofee. This step is not that long, but depending of your hardware, it could take around 1 to 20 minutes.
+If it start, you can go take a coffee. This step is not that long, but depending of your hardware, it could take around 1 to 20 minutes.
 
 Once finished, exit master and from saltmaster ensure all is ok:
 
@@ -351,9 +353,9 @@ In the current state (beta 1), Banquise does not incorporate a way to help admin
 
 To deploy a compute, simply ask the node to boot on PXE, and once OS is installed, set node to boot on local disk (or you can play with file /var/lib/tftpboot/pxelinux.cfg/default on master, by switching default action).
 
-Once the node has booted, it should automatically try to register on salt-master. From saltmaster, use salt-key to display informations, and salt-key -a to accepte a new key or salt-key -d to delete one (if you want to update a key, delete it, then ssh on the node and restart salt-minion, the new key should be on saltmaster now).
+Once the node has booted, it should automatically try to register on salt-master. From saltmaster, use salt-key to display informations, and salt-key -a to accept a new key or salt-key -d to delete one (if you want to update a key, delete it, then ssh on the node and restart salt-minion, the new key should be on saltmaster now).
 
-Computes do not need to be bootstraped as salt-minion is automatically deploy and enabled during kikstart process. Master public key is also installed.
+Computes do not need to be bootstraped as salt-minion is automatically deploy and enabled during kickstart process. Master public key is also installed.
 
                  +------------+
                  |            |
@@ -378,7 +380,7 @@ Then simply apply configuration on computes. Ssh on node (through master because
 
     salt-call state.highstate -l debug
 
-Note: in the current version you may need to execute this command twice as NetworkManager may interfer with our dns client. (should be fixed by now).
+Note: in the current version you may need to execute this command twice as NetworkManager may interfere with our dns client. (should be fixed by now).
 
 Then, to keep node up to date, simple use from saltmaster (you can use regex for names in salt, here *):
 
@@ -410,3 +412,4 @@ Ensure that nfs.server is set for nfs servers (even for master if it should expo
 To add a user into ldap database, refer to: https://www.sphenisc.com/doku.php/system/linux_cluster/managing_cluster#managing_users
 
 Banquise is still young. Please report any bugs, any features you would like, or simply tell me you are using Banquise and it worked, I will be really pleased to hear that!!
+
