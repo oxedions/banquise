@@ -560,19 +560,17 @@ Do not forget to create the home directory of the user on a login node or a comp
     mkdir /home/oxedion
     chown -R oxedion:oxedion /home/oxedion
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/banquise.png)](https://raw.githubusercontent.com/oxedions/banquise/master/banquise.png)
-
 ### 2.5.3 Monitoring with shinken
 
 Still in firefox, go to http://localhost:7767 (it may take some minutes to be up after shinken start/restart). This is shinken webui2 interface.
 
 Login using nagiosadmin/nagiosadmin.
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/shinken_bb2_1.png)](https://raw.githubusercontent.com/oxedions/banquise/master/shinken_bb2_1.png)
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/Shinken_bb2_1.png)](https://raw.githubusercontent.com/oxedions/banquise/master/Shinken_bb2_1.png)
 
 You can visualize cluster status here. For the time being, Banquise do not deploy any probes, only basic ping.
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/shinken_bb2_2.png)](https://raw.githubusercontent.com/oxedions/banquise/master/shinken_bb2_2.png)
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/Shinken_bb2_2.png)](https://raw.githubusercontent.com/oxedions/banquise/master/Shinken_bb2_2.png)
 
 ## 2.6 Update cluster
 
@@ -586,15 +584,15 @@ And wait. This command ask Salt to update all nodes, including master. You can r
 
 **Thank you for reading this documentation and using Banquise**. Feel free to contact me for any questions/queries.
 
-                                            Any questions?
-                                                             Me. Can we have a nyancat at user logins on login nodes?
-                                                             It would be very cool!!
-                                            ... -_-' simply uncomment nyancat line inside pillar/logins_states.sls...
-                                           /                /  
-                                       ('<       <`)      A 
-                                       /V\       (V)     <`)
-                                      <(_)     ]/__)>    ( ) 
-                                        ~~             ]/__)>
+                              Any questions?
+                                               Me. Can we have a nyancat at user logins on login nodes?
+                                               It would be very cool!!
+                              ... -_-' simply uncomment nyancat line inside pillar/logins_states.sls...
+                             /                /  
+                         ('<       <`)      A 
+                         /V\       (V)     <`)
+                        <(_)     ]/__)>    ( ) 
+                          ~~             ]/__)>
 
 
 # To be done
