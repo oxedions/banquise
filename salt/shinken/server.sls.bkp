@@ -1,0 +1,79 @@
+shinken_pkg:
+  pkg.installed:
+    - name: {{ pillar['pkgs']['shinken'] }}
+    - require:
+      - sls: repository.client
+
+/etc/shinken/hostgroups/cluster-groups.cfg:
+  file:                                    
+    - managed                               
+    - source: salt://shinken/cluster-groups.cfg.jinja 
+    - template: jinja
+    - require:
+      - pkg: {{ pillar['pkgs']['shinken_global'] }}
+
+/etc/shinken/hosts/computes.cfg:
+  file:                                    
+    - managed                               
+    - source: salt://shinken/computes.cfg.jinja 
+    - template: jinja
+    - require:
+      - pkg: {{ pillar['pkgs']['shinken_global'] }}
+
+/etc/shinken/servicegroups/servicegroup.cfg:
+  file:                                    
+    - managed                               
+    - source: salt://shinken/servicegroup.cfg.jinja 
+    - template: jinja
+    - require:
+      - pkg: {{ pillar['pkgs']['shinken_global'] }}
+
+/etc/shinken/services/services.cfg:
+  file:                                    
+    - managed                               
+    - source: salt://shinken/services.cfg.jinja 
+    - template: jinja
+    - require:
+      - pkg: {{ pillar['pkgs']['shinken_global'] }}
+
+/etc/shinken/commands/check_ping.cfg:
+  file:                                    
+    - managed                               
+    - source: salt://shinken/check_ping.cfg.jinja 
+    - template: jinja
+    - require:
+      - pkg: {{ pillar['pkgs']['shinken_global'] }}
+
+/etc/shinken/resource.d/paths.cfg:
+  file.line:                                    
+    - mode: replace                               
+    - match: ^\$NAGIOSPLUGINSDIR\$
+    - content: '$NAGIOSPLUGINSDIR$=/usr/lib64/nagios/plugins/'
+    - require:
+      - pkg: {{ pillar['pkgs']['shinken_global'] }}
+
+shinken_webui2:
+  pkg.installed:
+    - name: {{ pillar['pkgs']['shinken_webui2'] }}
+    - require:
+      - sls: repository.client
+
+/etc/dhcp/dhcpd.conf:
+  file:                                    
+    - managed                               
+    - source: salt://dhcp/dhcpd.conf.jinja 
+    - template: jinja
+    - require:
+      - pkg: {{ pillar['pkgs']['dhcp'] }}
+
+shinken_all_services:
+  service:
+    - name: {{ pillar['services']['shinken_all'] }}
+    - running
+    - enable: True
+    - watch:
+      - file: /etc/dhcp/dhcpd.conf
+    - require:
+      - pkg: {{ pillar['pkgs']['shinken'] }}
+      - file: /etc/dhcp/dhcpd.conf
+

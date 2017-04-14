@@ -10,12 +10,18 @@ base:
     - nfs
     - network
     - masters
+    - logins
+    - ios
     - engine
     - core
     - ssh_public
     - passwords_public
     - ldap_public
-# Allowed to masters only
+    - masters_states
+    - computes_states
+    - logins_states
+    - ios_states
+# Allowed to masters only, secure passwords and ssh private key
 {% for master in mas.masters %}
   '{{master}}.{{net.network.domaine_name}}':
     - ssh_private

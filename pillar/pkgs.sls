@@ -1,3 +1,5 @@
+# This file regroups packages names. It's purpose is to help allowing multiple Linux distros in the future (like debian, etc)
+{% if grains.os_family == 'RedHat' %}
 pkgs:
   apache: httpd
   vim: vim
@@ -22,3 +24,15 @@ pkgs:
   nfs_utils: nfs-utils
   nsspamldap: nss-pam-ldapd
   sssd: sssd
+  phpldapadmin: phpldapadmin
+  shinken: shinken
+  shinken_arbiter: shinken-arbiter
+  shinken_broker: shinken-broker
+  shinken_poller: shinken-poller
+  shinken_reactionner: shinken-reactionner
+  shinken_receiver: shinken-receiver
+  shinken_scheduler: shinken-scheduler
+  shinken_webui2: shinken-webui2
+{% elif grains.os_family == 'Debian' %}
+
+{% endif %}

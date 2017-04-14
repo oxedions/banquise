@@ -11,4 +11,10 @@ $TTL 86400
 
 {{salt['pillar.get']('engine:master:masterid')}}          IN  A   {{salt['pillar.get']('engine:master:masterip')}}
 {% for host, args in salt['pillar.get']('computes', {}).items() %}{{host}}          IN  A   {{ args.ip }}
+{% if args.bmc is defined %}{{args.bmc.name}}          IN  A   {{args.bmc.ip}}{% endif %}
 {% endfor %}
+
+{% for host, args in salt['pillar.get']('logins', {}).items() %}{{host}}          IN  A   {{ args.ip }}{% endfor %}
+
+{% for host, args in salt['pillar.get']('ios', {}).items() %}{{host}}          IN  A   {{ args.ip }}{% endfor %}
+

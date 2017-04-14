@@ -1,6 +1,5 @@
 [banquise.local]
 name=banquise repository
-baseurl=http://{{salt['pillar.get']('engine:master:masterip')}}/banquise.local.repo
-{% if salt['pillar.get']('core:ha') == "true" %}http://{{salt['pillar.get']('engine:master:slaveip')}}/banquise.local.repo{% endif %}
+baseurl=http://{{salt['pillar.get']('engine:servers:repository_server_ip')}}/banquise.local.repo
 gpgcheck=0
 enabled=1

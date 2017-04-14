@@ -1,29 +1,35 @@
 base:
 
 # masters
-  master.sphen.local:
-    - repository.client
-    - repository.server
-    - dhcp.server 
-    - dns.server
-    - dns.client
-    - network.firewall
-    - network.nmanager
-    - ntp.server
-    - slurm.server
-    - ldap.server
-    - pxe.server
-    - nfs.server
-    - ssh.master
+{% for master, sta in salt['pillar.get']('masters_states').items() %}
+  '{{master}}.{{salt['pillar.get']('network:domaine_name')}}':
+  {% for st in sta %}
+    - {{ st }}
+  {% endfor %}
+{% endfor %}
+
 # compute nodes
-  compute*:
-    - repository.client
-    - dns.client
-    - ntp.client
-    - network.static
-    - network.firewall
-    - network.nmanager
-    - slurm.client
-    - nfs.client
-    - ldap.client
-    - ssh.client
+{% for compute, sta in salt['pillar.get']('computes_states').items() %}
+  '{{compute}}.{{salt['pillar.get']('network:domaine_name')}}':
+  {% for st in sta %}
+    - {{ st }}
+  {% endfor %}
+{% endfor %}
+
+# login nodes
+{% for login, sta in salt['pillar.get']('logins_states').items() %}
+  '{{login}}.{{salt['pillar.get']('network:domaine_name')}}':
+  {% for st in sta %}
+    - {{ st }}
+  {% endfor %}
+{% endfor %}
+
+# ios nodes
+{% for io, sta in salt['pillar.get']('ios_states').items() %}
+  '{{io}}.{{salt['pillar.get']('network:domaine_name')}}':
+  {% for st in sta %}
+    - {{ st }}
+  {% endfor %}
+{% endfor %}
+
+

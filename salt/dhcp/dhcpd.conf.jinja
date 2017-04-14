@@ -9,14 +9,14 @@
  subnet {{salt['pillar.get']('engine:network:subnet')}} netmask {{salt['pillar.get']('engine:network:netmask')}} {
  range {{salt['pillar.get']('engine:network:dhcp_unknown_range')}};
  option domain-name "{{salt['pillar.get']('engine:network:domaine_name')}}";
- option domain-name-servers {{salt['pillar.get']('engine:master:masterip')}};
- option routers {{salt['pillar.get']('engine:master:masterip')}};
+ option domain-name-servers {{salt['pillar.get']('engine:servers:dns_server_ip')}};
+ option routers {{salt['pillar.get']('engine:master:masterip')}}; # to be corrected
  option broadcast-address {{salt['pillar.get']('engine:network:broadcast_address')}};
 
  default-lease-time 600;
  max-lease-time 7200;
 
- next-server {{salt['pillar.get']('engine:master:masterip')}};
+ next-server {{salt['pillar.get']('engine:servers:pxe_server_ip')}};
  filename "pxelinux.0";
 
  {% for host, args in salt['pillar.get']('computes', {}).items() %}
@@ -24,9 +24,28 @@
  hardware ethernet {{ args.hwaddr }};
  fixed-address {{ args.ip }};
  }
+ {% if args.bmc is defined %}
+ host {{ args.bmc.name }} {
+ hardware ethernet {{ args.bmc.hwaddr }};
+ fixed-address {{ args.bmc.ip }};
+ }
+ {% endif %}
 
  {% endfor %}
 
+ {% for host, args in salt['pillar.get']('logins', {}).items() %}
+ host {{ host }} {
+ hardware ethernet {{ args.hwaddr }};
+ fixed-address {{ args.ip }};
+ }
+ {% endfor %}
+
+ {% for host, args in salt['pillar.get']('ios', {}).items() %}
+ host {{ host }} {
+ hardware ethernet {{ args.hwaddr }};
+ fixed-address {{ args.ip }};
+ }
+ {% endfor %}
 
  }
 

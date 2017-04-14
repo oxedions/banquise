@@ -93,7 +93,7 @@ slurmservice:
   service:
     - name: {{ pillar['services']['slurmclient'] }}
     - dead
-    - disabled: True
+    - enable: False
     - require:
       - pkg: {{ pillar['pkgs']['slurm'] }}
       - pkg: {{ pillar['pkgs']['slurm_munge'] }}
@@ -103,3 +103,4 @@ slurmservice:
       - file: /var/spool/slurmd
       - file: /etc/slurm/slurm.conf
       - sls: dns.client
+      - sls: network.static 

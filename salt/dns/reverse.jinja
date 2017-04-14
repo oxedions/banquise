@@ -18,6 +18,9 @@ $TTL 86400
 {% endif %}
 
 {% for host, args in salt['pillar.get']('computes', {}).items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% if args.bmc is defined %}{% set list1 = args.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{args.bmc.name}}.{{salt['pillar.get']('engine:network:domaine_name')}}.{% endif %}
 {% endfor %}
 
+{% for host, args in salt['pillar.get']('logins', {}).items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.{% endfor %}
 
+{% for host, args in salt['pillar.get']('ios', {}).items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.{% endfor %}

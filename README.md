@@ -1,6 +1,6 @@
 
 
-
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/banquise.png)](https://raw.githubusercontent.com/oxedions/banquise/master/banquise.png)
 
 
           ██████   █████  ███    ██  ██████  ██    ██ ██ ███████ ███████
@@ -17,21 +17,21 @@
                                       <(_)     ]/__)>    (V) 
                                         ~~             ]/__)>
 
-Current release : beta 2
+Current release: Alpha 2
 
-Mail : benoit.leveugle@sphenisc.com
+Mail: oxedions@gmail.com
 
-  1. Introduction
-   - 1.1 What is Banquise
-   - 1.2 What is Banquise currently capable of
-   - 1.3 Known issues
-  2. Using Banquise
-   - 2.1 Install saltmaster
-   - 2.2 Configure Banquise
-   - 2.3 Deploy master
-   - 2.4 Deploy cluster
-   - 2.5 Manage cluster
-   - 2.6 Update cluster
+  - 1. Introduction
+    - 1.1 What is Banquise
+    - 1.2 What is Banquise currently capable of
+    - 1.3 Known issues
+  - 2. Using Banquise
+    - 2.1 Install saltmaster
+    - 2.2 Configure Banquise
+    - 2.3 Deploy master
+    - 2.4 Deploy cluster
+    - 2.5 Manage cluster
+    - 2.6 Update cluster
 
 # 1. Introduction
 
@@ -41,7 +41,7 @@ Banquise is an HPC stack based on Salt.
 
 The aim of Banquise is to be simple, modular, and to use less scripts as possible.
 
-Banquise is able to deploy a full basic HPC cluster, including: master node, login nodes, compute nodes, and io nodes (or simply a master and it's compute nodes).
+Banquise is able to deploy a full basic HPC cluster, including: master node, login nodes, compute nodes, and io nodes (or simply a master and its compute nodes).
 
             +------------+
             |            |
@@ -60,17 +60,11 @@ Banquise is able to deploy a full basic HPC cluster, including: master node, log
 
 Banquise will setup all needed tools, including a job scheduler (slurm).
 
-Cluster maintenance is easy: all configuration files (server/client) are dynamic and are automatically generated/regenerated on the fly if configuration has changed, and impacted services are automatically restarted. It is also possible to check cluster consistency using the same method.
-
-Banquise is using as less as possible packages to reduce attack surface. SELinux is kept activated and enforced on all hosts.
-
-All needed softwares/tools are provided from Banquise repository.
-
 Banquise can be installed on all type of hardware, including VM for experimenting.
 
 ## 1.2 What is Banquise capable of
 
-Banquise can deploy a full cluster, based on Rhel/CentOS linux distribution. Futur Banquise versions should be also compatible with Debian and Sles based linux.
+Banquise can deploy a full cluster, based on Rhel/CentOS linux distribution. Future Banquise versions should be also compatible with Debian and Sles based linux.
 
 Banquise is based on Salt Stack, a deployment tool, like Ansible or Puppet.
 
@@ -88,24 +82,22 @@ Banquise deploy the following elements:
 
 Once cluster is deployed, it is ready to be used.
 
-Banquise also allows to add/remove/update some parameters (for example adding a compute node, updating mac address of another, etc), and will automaticaly propagate the modification on the cluster.
+Banquise also allows to add/remove/update some parameters (for example adding a compute node, updating mac address of another, etc), and will automatically propagate the modification on the cluster. Cluster maintenance is easy: all configuration files (server/client) are dynamic and are automatically generated/regenerated on the fly if configuration has changed, and impacted services are automatically restarted. It is also possible to check cluster consistency using the same method.
+
+Banquise is using as less as possible packages to reduce attack surface. SELinux is kept activated and enforced on all hosts.
+
+All needed softwares/tools are provided from Banquise repository.
 
 The structure of Banquise should facilitate creation of new elements in the futur.
 
 ## 1.3 Known issues
 
-Beta 2:
+Alpha 2:
 
-  - Interconnect missing
-  - Possible issue with network.static if patern twice in ip (10.0.10.0 for example)
+  - Possible issue with network.static if pattern twice in ip (10.0.10.0 for example)
   - Only netmask 255.255.0.0 (/16) working
   - Once created, cannot update ldap database main parameters (like dn/cn)
-
-other:
-
-  - Slurm does not restart when configuration file is modified. Done on purpose
-  - Missing SSL for ldap
-  - Missing iptables
+  - BMC of login and io nodes are not taken into account
 
 # 2. Using Banquise
 
@@ -123,7 +115,7 @@ Admin sys beginner notes: if you feel lost, keep in mind that Banquise is just a
 Note: saltmaster can directly be installed on master node. However, this should be avoided as having saltmaster hosted somewhere else allows to reinstall quickly master in case of hardware failure.
 Other note: saltmaster refer to the Salt Stack server. saltminion or minions refer to the nodes where Salt Stack client side is installed and enabled. In Banquise, master, compute, login and io nodes are minion of the saltmaster.
 
-It is assume here that user is using Centos, but RHEL instructions are the same.
+It is assumed here that user is using Centos, but RHEL instructions are the same.
 
 Note: saltmaster ip will be 10.1.0.77, and master ip 10.1.0.1. Netmask used will be 255.255.0.0.
 
@@ -141,7 +133,7 @@ Install CentOS 7.2 (or >) with minimal packages (if you need ISO, link can be: h
 
 First step is to setup a local repository for Salt and CentOS rpm. This repository will be used to bootstrap salt-client on minions.
 
-Mount Centos everything DVD (server dvd for RHEL) and copy all content localy (will be also used later to be uploaded on master for repository and pxe process):
+Mount Centos everything DVD (server dvd for RHEL) and copy all content locally (will be also used later to be uploaded on master for repository and pxe process):
 
     mount CentOS-7-x86_64-Everything-1511.iso /mnt
     mkdir -p /var/www/html/os_dvd.local.repo/
@@ -320,7 +312,7 @@ That's all for data files.
 Now regarding logical files, few things need to be checked in the current version.
 
   - **Ensure that time zone in /srv/salt/pxe/ks.cfg.jinja is the same as the one you used to deploy saltmaster and master. If not, slurm (munge) will not be able to authenticate.** Default is America/New_York.
-  - If you are using servers with BMC, edit default.jinja2 in /srv/salt/pxe and add console=tty0 console=ttyS1,115200 at the end of line with APPEND. This should allow ipmi console (you may need to change ttyS1 to ttyS0 or ttyS2 depending of your hardware).
+  - If you are using servers with BMC, edit default.jinja2 in /srv/salt/pxe and add console=tty0 console=ttyS1,115200 at the end of line with APPEND. This should allow ipmi console (you may need to change ttyS1 to ttyS0 or ttyS2 depending on your hardware).
 
 Finaly, generate a munge key using:
 
@@ -383,7 +375,7 @@ On saltmaster, deploy local ssh key on master:
 
     ssh-copy-id 10.1.0.1
 
-We now need to copy huge files on master. This means os_dvd and banquise repository. Choice was to not do this step using Salt Stack as it is not made to copy such amount of large files (this would needs a LOT of RAM).
+We now need to copy huge files on master. This means os_dvd and banquise repository. Choice was to not do this step using Salt Stack as it is not made to copy such number of large files (this would needs a LOT of RAM).
 
 From saltmaster:
 
@@ -392,7 +384,7 @@ From saltmaster:
     scp -r /var/www/html/os_dvd.local.repo 10.1.0.1:/var/www/html/os_dvd.local.repo
     ssh 10.1.0.1 restorecon -r /var/www/html/
 
-Depending of your hardware, it could take a while...
+Depending on your hardware, it could take a while...
 
 Now, from saltmaster, boostrap the master, using (root password of master will be asked, and accept deploying the key):
 
@@ -424,13 +416,13 @@ Before last step, **ensure the directories to be exported by your nfs configurat
 
 --- START ---
 
-Finally, you can deploy master. In normal time, you will use from saltmaster 'salt "master*" state.highstate' to apply configuration or changes on the master. However, because this is the first install you should ssh on master and use salt-call to display all informations on what is going on, and to prevent time out of salt-minion.
+Finally, you can deploy master. In normal time, you will use from saltmaster 'salt "master*" state.highstate' to apply configuration or changes on the master. However, because this is the first install you should ssh on master and use salt-call to display all information on what is going on, and to prevent time out of salt-minion.
 
 ssh on master (ssh 10.1.0.1) and use when logged on master:
 
     salt-call state.highstate -l debug
 
-If it start, you can go take a coffee. This step is not that long, but depending of your hardware, it could take around 1 to 20 minutes.
+If it starts, you can go take a coffee. This step is not that long, but depending of your hardware, it could take around 1 to 20 minutes.
 
 Once finished, exit master and from saltmaster ensure all is ok:
 
@@ -439,6 +431,14 @@ Once finished, exit master and from saltmaster ensure all is ok:
 If all is green, you are OK, and your master is ready. If not, do not hesitate to ask for help (see mail at top).
 
 --- END ---
+
+**BUG FIX**: please ssh on master, and restart shinken to enable Webui2 interface: systemctl restart shinken*
+
+Install firefox and xauth on master to reach phpldapadmin and shinken web interface later.
+
+    yum install firefox xauth
+
+You are done with the master.
 
                                            Time to go take a cofee... 
                                           /                 
@@ -465,17 +465,19 @@ If all is green, you are OK, and your master is ready. If not, do not hesitate t
          +--------+      | node |     | node |     | node |
                          +------+     +------+     +------+
 
-Nodes will have to be deployed this way: io nodes (if exist), then login nodes (if exist), then compute nodes. For each, **first step** is to have the node to boot on PXE and install the basic OS and salt-minion. **Second step** is to register the new node on saltmaster. **Last step** is to ask Salt from saltmaster to deploy the node.
+Nodes will have to be deployed this way: io nodes (if exist), **then** login nodes (if exist), **then** compute nodes. For each, **first step** is to have the node to boot on PXE and install the basic OS and salt-minion. **Second step** is to register the new node on saltmaster. **Last step** is to ask Salt from saltmaster to deploy the node.
 
-In the current state (beta 2), Banquise does not incorporate a way to help administrator to manage computes nodes PXE. All nodes that boot on PXE will reinstall their OS. This limitation will be removed in final release.
+In the current state (Alpha 2), Banquise does not incorporate a way to help administrator to manage computes nodes PXE. All nodes that boot on PXE will reinstall their OS. This limitation will be removed in next release.
 
 To deploy a node in the current version, simply ask the node to boot on PXE, and once OS is installed, set node to boot on local disk (or you can play with file /var/lib/tftpboot/pxelinux.cfg/default on master, by switching manually the default action).
 
-Once the node has booted, it should automatically try to register on salt-master. From saltmaster, use salt-key to display informations, and salt-key -a to accept a new key or salt-key -d to delete one (if you want to update a key, delete it, then ssh on the node and restart salt-minion, the new key should be on saltmaster now).
+Once the node has booted, it should automatically try to register on salt-master. From saltmaster, use "salt-key" to display information, and "salt-key -a node.sphen.local" to accept a new key or "salt-key -d node.sphen.local" to delete one (if you want to update a key, delete it, then ssh on the node and restart salt-minion, the new key should be on saltmaster now).
 
 Io, Login and Computes nodes do not need to be bootstraped like master, as salt-minion is automatically deploy and enabled during kickstart process. Master public key is also installed.
 
-Note: for io nodes, before deploying configuration, ensure that directories/mounting points to be exported by nfs exist.
+**Note**: for io nodes, before deploying configuration, ensure that directories/mounting points to be exported by nfs exist.
+
+Example for compute1, once OS is installed through PXE.
 
                  +------------+
                  |            |
@@ -498,7 +500,7 @@ Accept key for new node:
 
 Then simply apply configuration on node. From saltmaster use (you can use regex for names in salt, here *):
 
-    salt "compute*" state.highstate -v
+    salt "compute1.sphen.local" state.highstate -v
 
 You can deploy all nodes this way. If something fail, try launching deploy again. If not resolved, ssh on node and use salt-call like for master deploy step to get more information. If still not resolved, please contact me.
 
@@ -512,6 +514,8 @@ Once finished, cluster is ready.
                                         ~~             ]/__)>
 
 ## 2.5 Manage cluster
+
+### 2.5.1 Slurm
 
 Once installed, you can ssh on master and enable node(s) into slurm. Check nodes state using:
 
@@ -527,15 +531,78 @@ And try to launch a job on it:
 
 If the job is executed, you have installed the cluster correctly.
 
-We can now create users. Install firefox and xauth on master to reach phpldapadmin web interface.
+### 2.5.2 Users
 
-    yum install firefox xauth
+We can now create users. 
 
-Log out, and login again with -X (assuming you used -X also to reach saltmaster):
+Log out, and login again with -X (assuming you used -X also to reach saltmaster, it's like a chain, you have to be -X from your system to master):
 
     ssh 10.1.0.1 -X
 
-And on master, launch firefox. Then, in firefox, go to http://localhost/phpldapadmin . In this interface, login using cn=Manager,dc=sphen,dc=local as login, and the password you generated before. To create a user, create first a group for the user, then create the user. Do not forget to create the home directory of the user on a login node or a compute node, and to set the good rights.
+And on master, launch firefox (command: firefox). Then, in firefox, go to http://localhost/phpldapadmin .In this interface, login using cn=Manager,dc=sphen,dc=local as login, and the password you generated before for ldap (default is "toto" if you did not changed it).
 
-Then, still in firefox, go to http://localhost:7767 . This is shinken interface.
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_1.png)](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_1.png)
+
+
+To create a user, create first a group for the user.
+
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_2.png)](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_2.png)
+
+Choose Generic Posix Group, then set user name as group name: oxedion, then click Create Object, then Commit.
+
+Then create the user (like for group, on the left part, select ou=People, and Create a Child Entry, then choose generic User account. Fill form, and ensure User id is the user name, then set password, then choose gid number, the group created before, then set home directory, /home/oxedion, then for login shell select bash, and click Create object and then commit).
+
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_3.png)](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_3.png)
+
+Do not forget to create the home directory of the user on a login node or a compute node, and to set the good rights:
+
+    ssh 10.1.0.1
+    mkdir /home/oxedion
+    chown -R oxedion:oxedion /home/oxedion
+
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/banquise.png)](https://raw.githubusercontent.com/oxedions/banquise/master/banquise.png)
+
+### 2.5.3 Monitoring with shinken
+
+Still in firefox, go to http://localhost:7767 (it may take some minutes to be up after shinken start/restart). This is shinken webui2 interface.
+
+Login using nagiosadmin/nagiosadmin.
+
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/shinken_bb2_1.png)](https://raw.githubusercontent.com/oxedions/banquise/master/shinken_bb2_1.png)
+
+You can visualize cluster status here. For the time being, Banquise do not deploy any probes, only basic ping.
+
+[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/shinken_bb2_2.png)](https://raw.githubusercontent.com/oxedions/banquise/master/shinken_bb2_2.png)
+
+## 2.6 Update cluster
+
+To update cluster, simple edit the files on saltmaster in /srv/pillar. Once done, from saltmaster, simply run:
+
+    salt "*" state.highstate -v
+
+And wait. This command ask Salt to update all nodes, including master. You can replay this command as many time as you need.
+
+
+
+**Thank you for reading this documentation and using Banquise**. Feel free to contact me for any questions/queries.
+
+                                            Any questions?
+                                                             Me. Can we have a nyancat at user logins on login nodes?
+                                                             It would be very cool!!
+                                            ... -_-' simply uncomment nyancat line inside pillar/logins_states.sls...
+                                           /                /  
+                                       ('<       <`)      A 
+                                       /V\       (V)     <`)
+                                      <(_)     ]/__)>    ( ) 
+                                        ~~             ]/__)>
+
+
+# To be done
+
+  - Missing SSL for ldap
+  - Missing iptables
+  - Missing interconnect (need hardware)
+  - Missing PXE and Basic configuration files generator scrip (dialog based)
+  - Missing basic probes for Shinken
+  - Debian and SLES integration (pkgs only today, and nothing inside)
 

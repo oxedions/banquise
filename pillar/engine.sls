@@ -5,6 +5,7 @@
 
 {% import_yaml 'network.sls' as net %}
 {% import_yaml 'masters.sls' as mas %}
+{% import_yaml 'core.sls' as cor %}
 
 engine:
 
@@ -36,9 +37,29 @@ engine:
     {% endif %}
 
   master:
-    # render master master ip and id, and master slave id and ip
-    {% for ma, args in mas.masters.items() %}{% if args.rank == "master" %}    masterip: {{args.ip}}{% endif %}{% endfor %}
-    {% for ma, args in mas.masters.items() %}{% if args.rank == "master" %}    masterid: {{ma}}{% endif %}{% endfor %}
-    {% for ma, args in mas.masters.items() %}{% if args.rank == "slave" %}    slaveip: {{args.ip}}{% endif %}{% endfor %}
-    {% for ma, args in mas.masters.items() %}{% if args.rank == "slave" %}    slaveid: {{ma}}{% endif %}{% endfor %}
+    # render master master ip and id
+    {% set count = 1 %}{% if cor.core.master_mode == "standalone" %}
+    {% for ma, args in mas.masters.items() %}
+    {% if count == 1%}
+    masterip: {{args.ip}}
+    masterid: {{ma}}
+    {% endif %}
+    {% endfor %}
+    {% set count = 2 %}{% endif %}
+
+  servers:
+    {% set count = 1 %}{% if cor.core.master_mode == "standalone" %}
+    {% for ma, args in mas.masters.items() %}
+    {% if count == 1%}
+    dhcp_server_ip: {{args.ip}}
+    dns_server_ip: {{args.ip}}
+    pxe_server_ip: {{args.ip}}
+    repository_server_ip: {{args.ip}}
+    ntp_server_ip: {{args.ip}}
+    ldap_server_ip: {{args.ip}}
+    slurm_server_ip: {{args.ip}}
+    {% endif %}
+    {% endfor %}
+    {% set count = 2 %}{% endif %}
+      
 
