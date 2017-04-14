@@ -288,7 +288,14 @@ Put here the hash of the root password that will be set during installation on c
 
     python -c "import crypt,random,string; print crypt.crypt(raw_input('clear-text password: '), '\$6\$' + ''.join([random.choice(string.ascii_letters + string.digits) for _ in range(16)]))"
 
-**LDAP ???**
+**ldap_private.sls**:
+
+Put here the initial ldap password (in clear text, don't worry, access to this file is limited to the master node). Onde cluster is deployed, you can edit this file and set somehting else if you wish.
+
+**ldap_private.sls**:
+
+Put here the initial ldap password hash (use slappasswd command with the password you put in ldap_private).
+Also put here the domain name, by cutting each part separated by a dot in normal domain name, like in the default file.
 
 **computes.sls**:
 
