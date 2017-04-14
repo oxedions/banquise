@@ -357,20 +357,6 @@ Then stop and disable network manager and firewall:
     systemctl stop firewalld
     systemctl disable firewalld
 
-                 +------------+
-                 |            |
-                 | saltmaster |
-                 |            |
-                 +-----▼------+
-                       |
-              +----◀---+--------···
-              |          
-         +----▼---+     
-         |        |      
-         | master |   
-         |        |     
-         +--------+  
-
 On saltmaster, deploy local ssh key on master:
 
     ssh-copy-id 10.1.0.1
@@ -385,6 +371,20 @@ From saltmaster:
     ssh 10.1.0.1 restorecon -r /var/www/html/
 
 Depending on your hardware, it could take a while...
+
+                 +------------+
+                 |            |
+                 | saltmaster |
+                 |            |
+                 +-----▼------+
+                       |
+              +----◀---+--------···
+              |          
+         +----▼---+     
+         |        |      
+         | master |   
+         |        |     
+         +--------+  
 
 Now, from saltmaster, boostrap the master, using (root password of master will be asked, and accept deploying the key):
 
