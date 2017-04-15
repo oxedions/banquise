@@ -15,5 +15,5 @@ logins_states:
     - nfs.client
     - ldap.client
     - ssh.client
-    - nyancat
+#    - nyancat
   {% endfor %}
