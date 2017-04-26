@@ -19,7 +19,31 @@
  next-server {{salt['pillar.get']('engine:servers:pxe_server_ip')}};
  filename "pxelinux.0";
 
- {% for host, args in salt['pillar.get']('computes', {}).items() %}
+ #############################################
+ ########## COMPUTES
+ ###
+ {% for group, argu in salt['pillar.get']('computes', {}).items() %}
+ ##########
+ # {{group}}
+ {% for host, args in argu.items() %}
+ host {{ host }} {
+ hardware ethernet {{ args.hwaddr }};
+ fixed-address {{ args.ip }};
+ }
+ {% if args.bmc is defined %}
+   host {{ args.bmc.name }} {
+   hardware ethernet {{ args.bmc.hwaddr }};
+   fixed-address {{ args.bmc.ip }};
+   }
+ {% endif %}{% endfor %}{% endfor %}
+
+ #############################################
+ ########## LOGIN
+ ###
+ {% for group, argu in salt['pillar.get']('logins', {}).items() %}
+ ##########
+ # {{group}}
+ {% for host, args in argu.items() %}
  host {{ host }} {
  hardware ethernet {{ args.hwaddr }};
  fixed-address {{ args.ip }};
@@ -29,23 +53,28 @@
  hardware ethernet {{ args.bmc.hwaddr }};
  fixed-address {{ args.bmc.ip }};
  }
- {% endif %}
+ {% endif %}{% endfor %}{% endfor %}
 
- {% endfor %}
-
- {% for host, args in salt['pillar.get']('logins', {}).items() %}
+ #############################################
+ ########## IO
+ ###
+ {% for group, argu in salt['pillar.get']('ios', {}).items() %}
+ ##########
+ # {{group}}
+ {% for host, args in argu.items() %}
  host {{ host }} {
  hardware ethernet {{ args.hwaddr }};
  fixed-address {{ args.ip }};
  }
- {% endfor %}
-
- {% for host, args in salt['pillar.get']('ios', {}).items() %}
- host {{ host }} {
- hardware ethernet {{ args.hwaddr }};
- fixed-address {{ args.ip }};
+ {% if args.bmc is defined %}
+ host {{ args.bmc.name }} {
+ hardware ethernet {{ args.bmc.hwaddr }};
+ fixed-address {{ args.bmc.ip }};
  }
- {% endfor %}
+ {% endif %}{% endfor %}{% endfor %}
+
+
+
 
  }
 

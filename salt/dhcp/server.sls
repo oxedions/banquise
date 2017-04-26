@@ -1,8 +1,8 @@
 dhcp:
   pkg.installed:
     - name: {{ pillar['pkgs']['dhcp'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
         
 /etc/dhcp/dhcpd.conf:
   file:                                    

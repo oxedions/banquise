@@ -1,5 +1,5 @@
 {% import_yaml 'core.sls' as cor %}
-{% import_yaml 'engine.sls' as eng %}
+{% import_yaml 'engine/engine.sls' as eng %}
 
 masters_states:
 
