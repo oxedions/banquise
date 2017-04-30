@@ -1,10 +1,26 @@
-define service {
-    use                     generic-service
-    notifications_enabled   0
-    service_description     check_ping
-    display_name            ping
-    hostgroup_name          type-compute
-    check_command           check_ping
-    servicegroups           cluster-services
+#############################################
+########## COMPUTES
+###
+{% for group, argu in salt['pillar.get']('engine_monitoring:computes', {}).items() %}
+##########
+# {{group}}
+{% for state, args in argu.items() %}{% if args is not none %}{% for element, argo in args.items() %}
+
+{% if element == "service" %}
+define service{
+   use generic-service
+   hostgroup_name compute_{{group}}
+   service_description {{argo.service_description}}_{{group}}
+   check_command {{argo.check_command}}
+   display_name {{argo.display_name}}
 }
+{% endif %}
+
+
+
+{% endfor %}{% endif %}{% endfor %}
+{% endfor %}
+
+
+
 

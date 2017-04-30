@@ -25,6 +25,8 @@ base:
     - authentication/passwords_public
     - authentication/ldap_public
     - engine/engine_monitoring
+    - engine/engine_reverse
+    - monitoring
 # Allowed to masters only, secure passwords and ssh private key
 {% for master in mas.masters %}
   '{{master}}.{{net.network.domaine_name}}':

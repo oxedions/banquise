@@ -11,35 +11,35 @@ $TTL 86400
 
 {{salt['pillar.get']('engine:master:masterid')}}          IN  A   {{salt['pillar.get']('engine:master:masterip')}}
 
-#############################################
-########## COMPUTES
-###
+;#############################################
+;########## COMPUTES
+;###
 {% for group, argu in salt['pillar.get']('computes', {}).items() %}
-##########
-# {{group}}
+;##########
+;# {{group}}
 
 {% for host, args in argu.items() %}{{host}}          IN  A   {{ args.ip }}
-{% if args.bmc is defined %}  {{args.bmc.name}}          IN  A   {{args.bmc.ip}}{% endif %}
+{% if args.bmc is defined %}{{args.bmc.name}}          IN  A   {{args.bmc.ip}}{% endif %}
 {% endfor %}{% endfor %}
-#############################################
-########## LOGINS
-###
+;#############################################
+;########## LOGINS
+;###
 {% for group, argu in salt['pillar.get']('logins', {}).items() %}
-##########
-# {{group}}
+;##########
+;# {{group}}
 
 {% for host, args in argu.items() %}{{host}}          IN  A   {{ args.ip }}
-{% if args.bmc is defined %}  {{args.bmc.name}}          IN  A   {{args.bmc.ip}}{% endif %}
+{% if args.bmc is defined %}{{args.bmc.name}}          IN  A   {{args.bmc.ip}}{% endif %}
 {% endfor %}{% endfor %}
-#############################################
-########## IO
-###
+;#############################################
+;########## IO
+;###
 {% for group, argu in salt['pillar.get']('ios', {}).items() %}
-##########
-# {{group}}
+;##########
+;# {{group}}
 
 {% for host, args in argu.items() %}{{host}}          IN  A   {{ args.ip }}
-{% if args.bmc is defined %}  {{args.bmc.name}}          IN  A   {{args.bmc.ip}}{% endif %}
+{% if args.bmc is defined %}{{args.bmc.name}}          IN  A   {{args.bmc.ip}}{% endif %}
 {% endfor %}{% endfor %}
 
 

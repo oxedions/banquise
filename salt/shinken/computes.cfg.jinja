@@ -1,12 +1,13 @@
-{% for host, args in salt['pillar.get']('computes', {}).items() %}
+{% for group, argu in salt['pillar.get']('computes', {}).items() %}
+{% for host, args in argu.items() %}
 define host{
         use                     generic-host
         contact_groups          admins
         host_name               {{ host }}
         address                 {{ args.ip }}
-        hostgroups              type-compute
+        hostgroups              compute_{{group}}
         }
-{% endfor %}
+{% endfor %}{% endfor %}
 
 
 

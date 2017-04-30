@@ -1,3 +1,15 @@
+nrpe_pkg:
+  pkg.installed:
+    - name: {{ pillar['pkgs']['nrpe'] }}
+
+monitoring_proc_pkg:
+  pkg.installed:
+    - name: {{ pillar['pkgs']['monitoring_proc'] }}
+
+monitoring_disk_pkg:
+  pkg.installed:
+    - name: {{ pillar['pkgs']['monitoring_disk'] }}
+
 {% for node, argu in salt['pillar.get']('engine_reverse', {}).items() %}{# Node check which type and which group it belongs #}
 {% if node~"."~salt['pillar.get']('network:domaine_name') == salt['grains.get']('id') %}{# Node found herself #}
 
@@ -27,4 +39,5 @@
 
 {% endif %}
 {% endfor %}
+ 
 

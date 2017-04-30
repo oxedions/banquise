@@ -31,8 +31,13 @@ SlurmdDebug=5
 SlurmdLogFile=/var/log/slurm/slurmd.log.%h
 JobCompType=jobcomp/none
 
-{% for host, args in salt['pillar.get']('computes', {}).items() %}NodeName={{ host }} Procs={{ args.procs }} State=UNKNOWN
-{% endfor %}
+{% for group, argu in salt['pillar.get']('computes', {}).items() %}
+{% for host, args in argu.items() %}NodeName={{ host }} Procs={{ args.procs }} State=UNKNOWN
+{% endfor %}{% endfor %}
 
-PartitionName=computenodes Nodes={% set count = 1 %}{% for host, args in salt['pillar.get']('computes', {}).items() %}{% if count == 1%}{{ host }}{% set count = 2 %}{% else %},{{ host }}{% endif %}{% endfor %} Default=YES MaxTime=INFINITE State=UP
+PartitionName=all Nodes={% for group, argu in salt['pillar.get']('computes', {}).items() %}{% for host, args in argu.items() %},{{ host }}{% endfor %}{% endfor %} Default=YES MaxTime=INFINITE State=UP
+
+{% for group, argu in salt['pillar.get']('computes', {}).items() %}
+PartitionName={{group}} Nodes={% set count = 1 %}{% for host, args in argu.items() %}{% if count == 1%}{{ host }}{% set count = 2 %}{% else %},{{ host }}{% endif %}{% endfor %} MaxTime=INFINITE State=UP
+{% endfor %} 
 

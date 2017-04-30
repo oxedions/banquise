@@ -10,7 +10,7 @@
 {% import_yaml 'nodes/ios_states.sls' as ios %}
 
 
-monitoring:
+engine_monitoring:
 
  masters:
 {% for master, sta in mas.masters_states.items() %}

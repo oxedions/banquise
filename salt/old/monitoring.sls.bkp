@@ -1,7 +1,0 @@
-
-{% for master, sta in salt['pillar.get']('masters_states').items() %}
-{% for st in sta %}
-{% include (st|replace(".","/"))~"_monitoring.sls" ignore missing %}
-{% endfor %}
-{% endfor %}
-

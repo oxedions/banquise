@@ -17,10 +17,36 @@ $TTL 86400
 {% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}.{{ list1[2] }}.{{ list1[1] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
 {% endif %}
 
-{% for host, args in salt['pillar.get']('computes', {}).items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+;#############################################
+;########## COMPUTES
+;###
+{% for group, argu in salt['pillar.get']('computes', {}).items() %}
+;##########
+;# {{group}}
+
+{% for host, args in argu.items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
 {% if args.bmc is defined %}{% set list1 = args.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{args.bmc.name}}.{{salt['pillar.get']('engine:network:domaine_name')}}.{% endif %}
-{% endfor %}
+{% endfor %}{% endfor %}
 
-{% for host, args in salt['pillar.get']('logins', {}).items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.{% endfor %}
+;#############################################
+;########## LOGINS
+;###
+{% for group, argu in salt['pillar.get']('logins', {}).items() %}
+;##########
+;# {{group}}
 
-{% for host, args in salt['pillar.get']('ios', {}).items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.{% endfor %}
+{% for host, args in argu.items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% if args.bmc is defined %}{% set list1 = args.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{args.bmc.name}}.{{salt['pillar.get']('engine:network:domaine_name')}}.{% endif %}
+{% endfor %}{% endfor %}
+
+;#############################################
+;########## IO
+;###
+{% for group, argu in salt['pillar.get']('ios', {}).items() %}
+;##########
+;# {{group}}
+
+{% for host, args in argu.items() %}{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% if args.bmc is defined %}{% set list1 = args.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{args.bmc.name}}.{{salt['pillar.get']('engine:network:domaine_name')}}.{% endif %}
+{% endfor %}{% endfor %}
+
