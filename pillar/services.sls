@@ -26,3 +26,4 @@ services:
   shinken_receiver: shinken-receiver
   shinken_scheduler: shinken-scheduler
   mongodb_server: mongod
+  nrpe: nrpe

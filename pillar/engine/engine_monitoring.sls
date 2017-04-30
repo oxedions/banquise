@@ -13,9 +13,10 @@
 engine_monitoring:
 
  masters:
+  masters:
 {% for master, sta in mas.masters_states.items() %}
 {% for st in sta %}
-  {{"master."~st}}:
+   {{st}}:
 {% include cor.core.states_path~"/"~(st|replace(".","/"))~"_monitoring.sls" ignore missing %}
 {% endfor %}
 {% endfor %}

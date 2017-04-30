@@ -1,0 +1,10 @@
+define service {
+    use                     generic-service
+    notifications_enabled   0
+    service_description     check_ping
+    display_name            ping
+    hostgroup_name          type-compute
+    check_command           check_ping
+    servicegroups           cluster-services
+}
+

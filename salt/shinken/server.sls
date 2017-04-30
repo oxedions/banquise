@@ -60,6 +60,20 @@ plugin_nrpe_pkg:
        - pkg: shinken_receiver_pkg
        - pkg: shinken_scheduler_pkg
 
+/etc/shinken/hosts/masters.cfg:
+  file:
+    - managed
+    - source: salt://shinken/masters.cfg.jinja
+    - template: jinja
+    - requires:
+       - pkg: shinken_pkg
+       - pkg: shinken_arbiter_pkg
+       - pkg: shinken_broker_pkg
+       - pkg: shinken_poller_pkg
+       - pkg: shinken_reactionner_pkg
+       - pkg: shinken_receiver_pkg
+       - pkg: shinken_scheduler_pkg
+
 /etc/shinken/hosts/computes.cfg:
   file:                                    
     - managed                               

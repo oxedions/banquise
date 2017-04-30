@@ -20,4 +20,5 @@ masters_states:
     - nfs.server
     - ssh.master
     - shinken.server
+    - shinken.client
   {% endif %}

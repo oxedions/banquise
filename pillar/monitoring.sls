@@ -8,17 +8,17 @@ monitoring:
 
     masters:
       disk: true
-      zombies: false
+      zombie: false
       
     computes:
       disk: true
-      zombies: true
+      zombie: true
 
     logins:
       disk: true
-      zombies: true
+      zombie: true
 
     ios:
       disk: true
-      zombies: false
+      zombie: false
 

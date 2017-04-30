@@ -35,8 +35,8 @@ pkgs:
   shinken_webui2: shinken-webui2
   nrpe: nrpe
   plugin_nrpe: nagios-plugins-nrpe
-  monitoring_proc: nagios-plugin-procs
-  monitoring_disk: nagios-plugin-disk
+  monitoring_proc: nagios-plugins-procs
+  monitoring_disk: nagios-plugins-disk
 {% elif grains.os_family == 'Debian' %}
 
 

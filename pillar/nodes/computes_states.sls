@@ -11,6 +11,7 @@ computes_states:
     - nfs.client
     - ldap.client
     - ssh.client
+    - shinken.client
 
   gpu:
     - repository.client

@@ -1,0 +1,9 @@
+{% for host, args in salt['pillar.get']('masters',{}).items() %}
+define host{
+        use                     generic-host
+        contact_groups          admins
+        host_name               {{ host }}
+        address                 {{ args.ip }}
+        hostgroups              master
+        }
+{% endfor %}
