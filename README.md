@@ -1,6 +1,6 @@
 
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/banquise.png)](https://raw.githubusercontent.com/oxedions/banquise/master/banquise.png)
+[![Banquise](https://cloud.githubusercontent.com/assets/929620/25702680/710bfdee-30d2-11e7-9cf0-5288e83c7259.png)](https://cloud.githubusercontent.com/assets/929620/25702680/710bfdee-30d2-11e7-9cf0-5288e83c7259.png)
 
 
           ██████   █████  ███    ██  ██████  ██    ██ ██ ███████ ███████
@@ -101,7 +101,7 @@ Alpha 2:
 
 # 2. Using Banquise
 
-Admin sys beginner notes: if you feel lost, keep in mind that Banquise is just automatically reproducing some part of what was done manually here: https://www.sphenisc.com/doku.php/system/linux_cluster
+Admin sys beginner notes: if you feel lost, keep in mind that Banquise is just automatically reproducing some part of what was done manually [here](https://www.sphenisc.com/doku.php/system/linux_cluster)
 
                                             OK, time to dive in. Please follow each step. 
                                            /
@@ -129,7 +129,7 @@ Note: saltmaster ip will be 10.1.0.77, and master ip 10.1.0.1. Netmask used will
 
 It is assumed that during it's first installation, saltmaster system can reach the web to download some files.
 
-Install CentOS 7.2 (or >) with minimal packages (if you need ISO, link can be: http://distrib-coffee.ipsl.jussieu.fr/pub/linux/centos/7/isos/x86_64/CentOS-7-x86_64-Everything-1511.iso).
+Install CentOS 7.2 (or >) with minimal packages (if you need ISO, it can be found [here](http://distrib-coffee.ipsl.jussieu.fr/pub/linux/centos/7/isos/x86_64/). Download CentOS-7-x86_64-Everything-\*.iso).
 
 First step is to setup a local repository for Salt and CentOS rpm. This repository will be used to bootstrap salt-client on minions.
 
@@ -144,7 +144,7 @@ Then create the local repository so OS can install some very basic packages. Rem
 
     rm -f /etc/yum.repos.d/*
 
-And create the file /etc/yum.repos.d/os_dvd.local.repo with the following content:
+And create the file `/etc/yum.repos.d/os_dvd.local.repo` with the following content:
 
     [os_dvd]
     name=os_dvd
@@ -280,7 +280,7 @@ Put here the private key of the master created before (this is the content of fi
 
 **ssh_public.sls**:
 
-Put here public key of master and saltmaster (this is the content of files /root/masterkey.pub for ssh_master_public_key and /root/.ssh/id_rsa.pub for ssh_salt_public_key), to replace the ones provided as examples.
+Put here public key of master and saltmaster (this is the content of files /root/masterkey.pub for ssh\_master\_public\_key and `/root/.ssh/id_rsa.pub` for ssh\_salt\_public\_key), to replace the ones provided as examples.
 
 **passwords_public.sls**:
 
@@ -294,7 +294,7 @@ Put here the initial ldap password (in clear text, don't worry, access to this f
 
 **ldap_private.sls**:
 
-Put here the initial ldap password hash (use slappasswd command with the password you put in ldap_private).
+Put here the initial ldap password hash (use slappasswd command with the password you put in ldap\_private).
 Also put here the domain name, by cutting each part separated by a dot in normal domain name, like in the default file.
 
 **computes.sls**:
@@ -318,7 +318,7 @@ That's all for data files.
 
 Now regarding logical files, few things need to be checked in the current version.
 
-  - **Ensure that time zone in /srv/salt/pxe/ks.cfg.jinja is the same as the one you used to deploy saltmaster and master. If not, slurm (munge) will not be able to authenticate.** Default is America/New_York.
+  - **Ensure that time zone in /srv/salt/pxe/ks.cfg.jinja is the same as the one you used to deploy saltmaster and master. If not, slurm (munge) will not be able to authenticate.** Default is America/New\_York.
   - If you are using servers with BMC, edit default.jinja2 in /srv/salt/pxe and add console=tty0 console=ttyS1,115200 at the end of line with APPEND. This should allow ipmi console (you may need to change ttyS1 to ttyS0 or ttyS2 depending on your hardware).
 
 Finaly, generate a munge key using:
@@ -368,7 +368,7 @@ On saltmaster, deploy local ssh key on master:
 
     ssh-copy-id 10.1.0.1
 
-We now need to copy huge files on master. This means os_dvd and banquise repository. Choice was to not do this step using Salt Stack as it is not made to copy such number of large files (this would needs a LOT of RAM).
+We now need to copy huge files on master. This means os\_dvd and banquise repository. Choice was to not do this step using Salt Stack as it is not made to copy such number of large files (this would needs a LOT of RAM).
 
 From saltmaster:
 
@@ -548,18 +548,18 @@ Log out, and login again with -X (assuming you used -X also to reach saltmaster,
 
 And on master, launch firefox (command: firefox). Then, in firefox, go to http://localhost/phpldapadmin .In this interface, login using cn=Manager,dc=sphen,dc=local as login, and the password you generated before for ldap (default is "toto" if you did not changed it).
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_1.png)](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_1.png)
+[![Banquise](https://cloud.githubusercontent.com/assets/929620/25702685/71103e9a-30d2-11e7-8b42-41c5b31ee96d.png)](https://cloud.githubusercontent.com/assets/929620/25702685/71103e9a-30d2-11e7-8b42-41c5b31ee96d.png)
 
 
 To create a user, create first a group for the user.
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_2.png)](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_2.png)
+[![Banquise](https://cloud.githubusercontent.com/assets/929620/25702681/710cfb68-30d2-11e7-87e8-9a3358e692c3.png)](https://cloud.githubusercontent.com/assets/929620/25702681/710cfb68-30d2-11e7-87e8-9a3358e692c3.png)
 
 Choose Generic Posix Group, then set user name as group name: oxedion, then click Create Object, then Commit.
 
 Then create the user (like for group, on the left part, select ou=People, and Create a Child Entry, then choose generic User account. Fill form, and ensure User id is the user name, then set password, then choose gid number, the group created before, then set home directory, /home/oxedion, then for login shell select bash, and click Create object and then commit).
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_3.png)](https://raw.githubusercontent.com/oxedions/banquise/master/phpldapadmin_bb2_3.png)
+[![Banquise](https://cloud.githubusercontent.com/assets/929620/25702682/710d7bb0-30d2-11e7-9ebb-d9b969d6ba57.png)](https://cloud.githubusercontent.com/assets/929620/25702682/710d7bb0-30d2-11e7-9ebb-d9b969d6ba57.png)
 
 Do not forget to create the home directory of the user on a login node or a compute node, and to set the good rights:
 
@@ -573,11 +573,11 @@ Still in firefox, go to http://localhost:7767 (it may take some minutes to be up
 
 Login using nagiosadmin/nagiosadmin.
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/Shinken_bb2_1.png)](https://raw.githubusercontent.com/oxedions/banquise/master/Shinken_bb2_1.png)
+[![Banquise](https://cloud.githubusercontent.com/assets/929620/25702683/710dd9b6-30d2-11e7-83f2-5e1db7e918d2.png)](https://cloud.githubusercontent.com/assets/929620/25702683/710dd9b6-30d2-11e7-83f2-5e1db7e918d2.png)
 
 You can visualize cluster status here. For the time being, Banquise do not deploy any probes, only basic ping.
 
-[![Banquise](https://raw.githubusercontent.com/oxedions/banquise/master/Shinken_bb2_2.png)](https://raw.githubusercontent.com/oxedions/banquise/master/Shinken_bb2_2.png)
+[![Banquise](https://cloud.githubusercontent.com/assets/929620/25702684/710f4e5e-30d2-11e7-87d0-9d35c285cf6b.png)](https://cloud.githubusercontent.com/assets/929620/25702684/710f4e5e-30d2-11e7-87d0-9d35c285cf6b.png)
 
 ## 2.6 Update cluster
 
