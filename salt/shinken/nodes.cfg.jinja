@@ -1,0 +1,16 @@
+{%- for type in salt['pillar.get']('core:types') %}
+{%- for group, argu in salt['pillar.get'](type, {}).items() %}
+{%- for host, args in argu.items() %}
+define host{
+        use                     generic-host
+        contact_groups          admins
+        host_name               {{ host }}
+        address                 {{ args.network.net0.ip }}
+        hostgroups              {{type}}_{{group}}
+        }
+
+{%- endfor %}
+{%- endfor %}
+{%- endfor %}
+
+

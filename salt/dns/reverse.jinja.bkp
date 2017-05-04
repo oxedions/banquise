@@ -9,20 +9,12 @@ $TTL 86400
 @       IN  NS          {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
 @       IN  PTR         {{salt['pillar.get']('engine:network:domaine_name')}}.
 
-{% if net == "net0" %}
-{% set nett = "" %}
-{% else %}
-{% set nett = "."~net %}
-{% endif %}
-
-{% if net == "net0" %}
 {% if salt['pillar.get']('engine:network:reverse') == 1 %}
 {% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
 {% elif salt['pillar.get']('engine:network:reverse') == 2 %}
 {% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
 {% elif salt['pillar.get']('engine:network:reverse') == 3 %}
 {% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}.{{ list1[2] }}.{{ list1[1] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
-{% endif %}
 {% endif %}
 
 {% for type in salt['pillar.get']('core:types') %}
@@ -35,12 +27,11 @@ $TTL 86400
 
 {%- for host, argo in argu.items() %}
 {%- for network, args in argo.network.items() %}
-{% if network == net %}
+
 {%- if network == "net0" %}
 {% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
 {%- else %}
 {% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{network}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
-{%- endif %}
 {%- endif %}
 {%- endfor %}
 {%- if argo.bmc is defined %}

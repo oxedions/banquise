@@ -5,3 +5,7 @@ core:
   salt_master_ip: 10.1.0.77    # ip of the saltmaster server
   pillar_path: /srv/pillar
   states_path: /srv/salt  
+  types:
+    - computes
+    - logins
+    - ios

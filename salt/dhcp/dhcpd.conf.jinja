@@ -19,61 +19,32 @@
  next-server {{salt['pillar.get']('engine:servers:pxe_server_ip')}};
  filename "pxelinux.0";
 
- #############################################
- ########## COMPUTES
- ###
- {% for group, argu in salt['pillar.get']('computes', {}).items() %}
- ##########
- # {{group}}
- {% for host, args in argu.items() %}
+{% for type in salt['pillar.get']('core:types') %}
+#############################################
+########## {{type}}
+###
+{% for group, argu in salt['pillar.get'](type, {}).items() %}
+##########
+# {{group}}
+
+   {%- for host, argo in argu.items() %}
+      {%- for network, args in argo.network.items() %}
+         {%- if network == "net0" %}
  host {{ host }} {
  hardware ethernet {{ args.hwaddr }};
  fixed-address {{ args.ip }};
  }
- {% if args.bmc is defined %}
-   host {{ args.bmc.name }} {
-   hardware ethernet {{ args.bmc.hwaddr }};
-   fixed-address {{ args.bmc.ip }};
+         {%- endif %}
+      {%- endfor %}
+    {%- if argo.bmc is defined %}
+   host {{ argo.bmc.name }} {
+   hardware ethernet {{ argo.bmc.hwaddr }};
+   fixed-address {{ argo.bmc.ip }};
    }
- {% endif %}{% endfor %}{% endfor %}
-
- #############################################
- ########## LOGIN
- ###
- {% for group, argu in salt['pillar.get']('logins', {}).items() %}
- ##########
- # {{group}}
- {% for host, args in argu.items() %}
- host {{ host }} {
- hardware ethernet {{ args.hwaddr }};
- fixed-address {{ args.ip }};
- }
- {% if args.bmc is defined %}
- host {{ args.bmc.name }} {
- hardware ethernet {{ args.bmc.hwaddr }};
- fixed-address {{ args.bmc.ip }};
- }
- {% endif %}{% endfor %}{% endfor %}
-
- #############################################
- ########## IO
- ###
- {% for group, argu in salt['pillar.get']('ios', {}).items() %}
- ##########
- # {{group}}
- {% for host, args in argu.items() %}
- host {{ host }} {
- hardware ethernet {{ args.hwaddr }};
- fixed-address {{ args.ip }};
- }
- {% if args.bmc is defined %}
- host {{ args.bmc.name }} {
- hardware ethernet {{ args.bmc.hwaddr }};
- fixed-address {{ args.bmc.ip }};
- }
- {% endif %}{% endfor %}{% endfor %}
-
-
+    {%- endif %}
+  {%- endfor %}
+{% endfor %}
+{% endfor %}
 
 
  }

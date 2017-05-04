@@ -20,13 +20,19 @@ dns:
     - require:
       - pkg: {{ pillar['pkgs']['dns'] }}
 
-/var/named/reverse:
+{% for network, args in salt['pillar.get']('network').items() %}
+
+/var/named/reverse.{{network}}:
   file:
     - managed
     - source: salt://dns/reverse.jinja
     - template: jinja
     - require:
       - pkg: {{ pillar['pkgs']['dns'] }}
+    - defaults:
+        net: {{network}}
+
+{% endfor %}
 
 named:
   service:
@@ -36,10 +42,8 @@ named:
     - watch:
       - file: /etc/named.conf
       - file: /var/named/forward
-      - file: /var/named/reverse
     - require:
       - pkg: {{ pillar['pkgs']['dns'] }}
       - file: /etc/named.conf
       - file: /var/named/forward
-      - file: /var/named/reverse
 

@@ -29,7 +29,7 @@ base:
     - monitoring
 # Allowed to masters only, secure passwords and ssh private key
 {% for master in mas.masters %}
-  '{{master}}.{{net.network.domaine_name}}':
+  '{{master}}.{{net.network.net0.domaine_name}}':
     - authentication/ssh_private
     - authentication/ldap_private
 {% endfor %}

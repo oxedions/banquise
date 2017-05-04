@@ -1,40 +1,26 @@
-{% import_yaml 'nodes/computes.sls' as com %}
-{% import_yaml 'nodes/logins.sls' as log %}
-{% import_yaml 'nodes/ios.sls' as ios %}
+{% import_yaml 'core.sls' as cor %}
 {% import_yaml 'masters.sls' as mas %}
-
+{% import_yaml 'engine/engine.sls' as eng %}
 
 engine_reverse:
 
-{% for group_comp, args in com.computes.items() %}
-{% for node in args %}
-  {{node}}:
-    group: {{group_comp}}
-    type: computes
-{% endfor %}
-{% endfor %}
-
-{% for group_login, args in log.logins.items() %}
-{% for node in args %}
-  {{node}}:
-    group: {{group_login}}
-    type: logins
-{% endfor %}
-{% endfor %}
-
-{% for group_io, args in ios.ios.items() %}
-{% for node in args %}
-  {{node}}:
-    group: {{group_io}}
-    type: ios
-{% endfor %}
-{% endfor %}
-
 {% for master in mas.masters %}
-  {{master}}:
+  {{master}}.{{eng.engine.network.domaine_name}}:
     group: masters
     type: masters
 {% endfor %}
 
+{% for types in cor.core.types %}
+{% import_yaml 'nodes/'~types~'.sls' as type %}
+{% for ttype, argy in type.items() %}
+{% for group, args in argy.items() %}
+{% for node in args %}
+  {{node}}.{{eng.engine.network.domaine_name}}:
+    group: {{group}}
+    type: {{types}}
+{% endfor %}
+{% endfor %}
+{% endfor %}
 
 
+{% endfor %}

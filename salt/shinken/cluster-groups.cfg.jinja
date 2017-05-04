@@ -8,25 +8,12 @@ define hostgroup{
    alias           bmc
 }
 
-{% for group, argu in salt['pillar.get']('computes', {}).items() %}
+{% for type in salt['pillar.get']('core:types') %}
+{% for group, argu in salt['pillar.get'](type, {}).items() %}
 define hostgroup{
-   hostgroup_name  login_{{group}}
-   alias           login_{{group}}
+   hostgroup_name  {{type}}_{{group}}
+   alias           {{type}}_{{group}}
 }
 {% endfor %}
-
-
-{% for group, argu in salt['pillar.get']('computes', {}).items() %}
-define hostgroup{
-   hostgroup_name  io_{{group}}
-   alias           io_{{group}}
-}
-{% endfor %}
-
-{% for group, argu in salt['pillar.get']('computes', {}).items() %}
-define hostgroup{
-   hostgroup_name  compute_{{group}}
-   alias           compute_{{group}}
-}
 {% endfor %}
 

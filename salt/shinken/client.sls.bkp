@@ -6,7 +6,10 @@ monitoring_proc_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['monitoring_proc'] }}
 
-{% if salt['pillar.get']('monitoring:default_probs:'~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type')~':disk') %}
+{% for node, argu in salt['pillar.get']('engine_reverse', {}).items() %}{# Node check which type and which group it belongs #}
+{% if node~"."~salt['pillar.get']('engine:network:domaine_name') == salt['grains.get']('id') %}{# Node found herself #}
+
+{%if salt['pillar.get']('monitoring:default_probs:'~argu.type~':disk') %}
 
 monitoring_disk_pkg:
   pkg.installed:
@@ -26,8 +29,7 @@ disk_2:
     - match: ".*check_disk_root.*"
 {% endif %}
 
-{% if salt['pillar.get']('monitoring:default_probs:'~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type')~':zombie') %}
-
+{%if salt['pillar.get']('monitoring:default_probs:'~argu.type~':zombie') %}
 zombie_1:
   file.append:
     - name: /etc/nrpe.d/commands.cfg
@@ -43,10 +45,7 @@ zombie_2:
 {% endif %}
 
 {% if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
-
-{% for state, args in salt['pillar.get']('engine_monitoring:'~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type')~":"~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':group'), {}).items() %}
-{% if args is not none %}
-{% for element, argo in args.items() %}    {# Node now check for each state in its type:group if there something to do. All of this is listed in engine_monitoring virtual pillar #}
+{% for state, args in salt['pillar.get']('engine_monitoring:'~argu.type~":"~argu.group, {}).items() %}{% if args is not none %}{% for element, argo in args.items() %}{# Node now check for each state in its type:group if there something to do. All of this is listed in engine_monitoring virtual pillar #}
 
 {% if element == "command" %}
 {% for command, argy in argo.items() %}
@@ -71,6 +70,9 @@ zombie_2:
 {% endif %}{% endfor %}
 {% endif %}
 
+
+{% endif %}
+{% endfor %}
  
 nrpeservice:
   service:

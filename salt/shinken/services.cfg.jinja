@@ -9,9 +9,9 @@
 define service{
    use generic-service
    hostgroup_name master
-   service_description check_disk
-   check_command check_nrpe!check_disk
-   display_name check_disk
+   service_description check_disk_root
+   check_command check_nrpe!check_disk_root
+   display_name check_disk_root
 }
 {% endif %}
 
@@ -29,149 +29,67 @@ define service{
 {% for state, args in salt['pillar.get']('engine_monitoring:masters:masters', {}).items() %}{% if args is not none %}{% for element, argo in args.items() %}
 
 {% if element == "service" %}
+{% for service, argy in argo.items() %}
 define service{
    use generic-service
    hostgroup_name master
-   service_description {{argo.service_description}}
-   check_command {{argo.check_command}}
-   display_name {{argo.display_name}}
+   service_description {{argy.service_description}}
+   check_command {{argy.check_command}}
+   display_name {{service}}
 }
-{% endif %}
-
-{% endfor %}{% endif %}{% endfor %}
-{% endif %}
-
-
-#############################################
-########## COMPUTES
-###
-{% for group, argu in salt['pillar.get']('engine_monitoring:computes', {}).items() %}
-##########
-# {{group}}
-
-{%if salt['pillar.get']('monitoring:default_probs:computes:disk') %}
-define service{
-   use generic-service
-   hostgroup_name compute_{{group}}
-   service_description check_disk_{{group}}
-   check_command check_nrpe!check_disk
-   display_name check_disk
-}
-{% endif %}
-
-{%if salt['pillar.get']('monitoring:default_probs:computes:zombie') %}
-define service{
-   use generic-service
-   hostgroup_name compute_{{group}}
-   service_description check_proc_zombie_{{group}}
-   check_command check_nrpe!check_proc_zombie
-   display_name check_proc_zombie
-}
-{% endif %}
-
-{% if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
-{% for state, args in argu.items() %}{% if args is not none %}{% for element, argo in args.items() %}
-
-{% if element == "service" %}
-define service{
-   use generic-service
-   hostgroup_name compute_{{group}}
-   service_description {{argo.service_description}}_{{group}}
-   check_command {{argo.check_command}}
-   display_name {{argo.display_name}}
-}
-{% endif %}
-
-{% endfor %}{% endif %}{% endfor %}
-{% endif %}
 {% endfor %}
-
-#############################################
-########## LOGINS
-###
-{% for group, argu in salt['pillar.get']('engine_monitoring:logins', {}).items() %}
-##########
-# {{group}}
-
-{%if salt['pillar.get']('monitoring:default_probs:logins:disk') %}
-define service{
-   use generic-service
-   hostgroup_name login_{{group}}
-   service_description check_disk_{{group}}
-   check_command check_nrpe!check_disk
-   display_name check_disk
-}
-{% endif %}
-
-{%if salt['pillar.get']('monitoring:default_probs:loginss:zombie') %}
-define service{ 
-   use generic-service
-   hostgroup_name login_{{group}}
-   service_description check_proc_zombie_{{group}}
-   check_command check_nrpe!check_proc_zombie
-   display_name check_proc_zombie
-}
-{% endif %}
-
-{% if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
-{% for state, args in argu.items() %}{% if args is not none %}{% for element, argo in args.items() %}
-
-{% if element == "service" %}
-define service{
-   use generic-service
-   hostgroup_name login_{{group}}
-   service_description {{argo.service_description}}_{{group}}
-   check_command {{argo.check_command}}
-   display_name {{argo.display_name}}
-}
 {% endif %}
 
 {% endfor %}{% endif %}{% endfor %}
 {% endif %}
+
+
+{% for type in salt['pillar.get']('core:types') %}
+#############################################
+########## {{type}}
+###
+{% for group, argu in salt['pillar.get']('engine_monitoring:'~type, {}).items() %}
+##########
+# {{group}}
+
+{%- if salt['pillar.get']('monitoring:default_probs:'~type~':disk') %}
+define service{
+   use generic-service
+   hostgroup_name {{type}}_{{group}}
+   service_description check_disk_{{group}}
+   check_command check_nrpe!check_disk_root
+   display_name check_disk_root
+}
+{%- endif %}
+{%- if salt['pillar.get']('monitoring:default_probs:'~type~':zombie') %}
+define service{
+   use generic-service
+   hostgroup_name {{type}}_{{group}}
+   service_description check_proc_zombie_{{group}}
+   check_command check_nrpe!check_proc_zombie
+   display_name check_proc_zombie
+}
+{%- endif %}
+
+{%- if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
+{%- for state, args in argu.items() %}{% if args is not none %}{% for element, argo in args.items() %}
+{%- if element == "service" %}
+{%- for service, argy in argo.items() %}
+define service{
+   use generic-service
+   hostgroup_name {{type}}_{{group}}
+   service_description {{argy.service_description}}_{{group}}
+   check_command {{argy.check_command}}
+   display_name {{service}}
+}
+{%- endfor %}
+{%- endif %}
+{%- endfor %}
+{%- endif %}
+{%- endfor %}
+{%- endif %}
+
 {% endfor %}
-
-#############################################
-########## IOS
-###
-{% for group, argu in salt['pillar.get']('engine_monitoring:ios', {}).items() %}
-##########
-# {{group}}
-
-{%if salt['pillar.get']('monitoring:default_probs:ios:disk') %}
-define service{
-   use generic-service
-   hostgroup_name io_{{group}}
-   service_description check_disk_{{group}}
-   check_command check_nrpe!check_disk
-   display_name check_disk
-}
-{% endif %}
-
-{%if salt['pillar.get']('monitoring:default_probs:ios:zombie') %}
-define service{ 
-   use generic-service
-   hostgroup_name io_{{group}}
-   service_description check_proc_zombie_{{group}}
-   check_command check_nrpe!check_proc_zombie
-   display_name check_proc_zombie
-}
-{% endif %}
-
-{% if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
-{% for state, args in argu.items() %}{% if args is not none %}{% for element, argo in args.items() %}
-
-{% if element == "service" %}
-define service{
-   use generic-service
-   hostgroup_name io_{{group}}
-   service_description {{argo.service_description}}_{{group}}
-   check_command {{argo.check_command}}
-   display_name {{argo.display_name}}
-}
-{% endif %}
-
-{% endfor %}{% endif %}{% endfor %}
-{% endif %}
 {% endfor %}
 
 

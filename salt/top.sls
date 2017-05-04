@@ -2,7 +2,7 @@ base:
 
 # masters
 {% for master, sta in salt['pillar.get']('masters_states').items() %}
-  '{{master}}.{{salt['pillar.get']('network:domaine_name')}}':
+  '{{master}}.{{salt['pillar.get']('engine:network:domaine_name')}}':
   {% for st in sta %}
     - {{ st }}
   {% endfor %}
@@ -10,7 +10,7 @@ base:
 
 # compute nodes
 {% for compute, sta in salt['pillar.get']('computes_gather').items() %}
-  '{{compute}}.{{salt['pillar.get']('network:domaine_name')}}':
+  '{{compute}}.{{salt['pillar.get']('engine:network:domaine_name')}}':
   {% for st in sta %}
     - {{ st }}
   {% endfor %}
@@ -18,7 +18,7 @@ base:
 
 # login nodes
 {% for login, sta in salt['pillar.get']('logins_gather').items() %}
-  '{{login}}.{{salt['pillar.get']('network:domaine_name')}}':
+  '{{login}}.{{salt['pillar.get']('engine:network:domaine_name')}}':
   {% for st in sta %}
     - {{ st }}
   {% endfor %}
@@ -26,7 +26,7 @@ base:
 
 # ios nodes
 {% for io, sta in salt['pillar.get']('ios_gather').items() %}
-  '{{io}}.{{salt['pillar.get']('network:domaine_name')}}':
+  '{{io}}.{{salt['pillar.get']('engine:network:domaine_name')}}':
   {% for st in sta %}
     - {{ st }}
   {% endfor %}

@@ -6,10 +6,18 @@ $TTL 86400
         604800      ;Expire
         86400       ;Minimum TTL
 )
+{% if net == "net0" %}
 @       IN  NS          {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
 @       IN  A           {{salt['pillar.get']('engine:master:masterip')}}
 
 {{salt['pillar.get']('engine:master:masterid')}}          IN  A   {{salt['pillar.get']('engine:master:masterip')}}
+{% endif %}
+
+{% if net == "net0" %}
+{% set nett = "" %}
+{% else %}
+{% set nett = "."~net %}
+{% endif %}
 
 {% for type in salt['pillar.get']('core:types') %}
 ;#############################################
@@ -21,14 +29,12 @@ $TTL 86400
 
 {%- for host, argo in argu.items() %}
 {%- for network, args in argo.network.items() %}
-{%- if network == "net0" %}
-{{host}}          IN  A   {{ args.ip }}
-{%- else %}
-{{host}}.{{network}}          IN  A   {{ args.ip }}
-{%- endif %}
+{{host}}{{nett}}          IN  A   {{ args.ip }}
 {%- endfor %}
+{% if net == "net0" %}
 {%- if argo.bmc is defined %}
 {{argo.bmc.name}}          IN  A   {{argo.bmc.ip}}
+{%- endif %}
 {%- endif %}
 {%- endfor %}
 {% endfor %}

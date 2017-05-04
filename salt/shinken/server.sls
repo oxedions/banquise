@@ -74,10 +74,52 @@ plugin_nrpe_pkg:
        - pkg: shinken_receiver_pkg
        - pkg: shinken_scheduler_pkg
 
-/etc/shinken/hosts/computes.cfg:
-  file:                                    
-    - managed                               
-    - source: salt://shinken/computes.cfg.jinja 
+#/etc/shinken/hosts/computes.cfg:
+#  file:                                    
+#    - managed                               
+#    - source: salt://shinken/computes.cfg.jinja 
+#    - template: jinja
+#    - requires:
+#       - pkg: shinken_pkg
+#       - pkg: shinken_arbiter_pkg
+#       - pkg: shinken_broker_pkg
+#       - pkg: shinken_poller_pkg
+#       - pkg: shinken_reactionner_pkg
+#       - pkg: shinken_receiver_pkg
+#       - pkg: shinken_scheduler_pkg
+
+#/etc/shinken/hosts/logins.cfg:
+#  file:
+#    - managed
+#    - source: salt://shinken/logins.cfg.jinja
+#    - template: jinja
+#    - requires:
+#       - pkg: shinken_pkg
+#       - pkg: shinken_arbiter_pkg
+#       - pkg: shinken_broker_pkg
+#       - pkg: shinken_poller_pkg
+#       - pkg: shinken_reactionner_pkg
+#       - pkg: shinken_receiver_pkg
+#       - pkg: shinken_scheduler_pkg
+
+#/etc/shinken/hosts/ios.cfg:
+#  file:
+#    - managed
+#    - source: salt://shinken/ios.cfg.jinja
+#    - template: jinja
+#    - requires:
+#       - pkg: shinken_pkg
+#       - pkg: shinken_arbiter_pkg
+#       - pkg: shinken_broker_pkg
+#       - pkg: shinken_poller_pkg
+#       - pkg: shinken_reactionner_pkg
+#       - pkg: shinken_receiver_pkg
+#       - pkg: shinken_scheduler_pkg
+
+/etc/shinken/hosts/nodes.cfg:
+  file:
+    - managed
+    - source: salt://shinken/nodes.cfg.jinja
     - template: jinja
     - requires:
        - pkg: shinken_pkg
@@ -88,33 +130,6 @@ plugin_nrpe_pkg:
        - pkg: shinken_receiver_pkg
        - pkg: shinken_scheduler_pkg
 
-/etc/shinken/hosts/logins.cfg:
-  file:
-    - managed
-    - source: salt://shinken/logins.cfg.jinja
-    - template: jinja
-    - requires:
-       - pkg: shinken_pkg
-       - pkg: shinken_arbiter_pkg
-       - pkg: shinken_broker_pkg
-       - pkg: shinken_poller_pkg
-       - pkg: shinken_reactionner_pkg
-       - pkg: shinken_receiver_pkg
-       - pkg: shinken_scheduler_pkg
-
-/etc/shinken/hosts/ios.cfg:
-  file:
-    - managed
-    - source: salt://shinken/ios.cfg.jinja
-    - template: jinja
-    - requires:
-       - pkg: shinken_pkg
-       - pkg: shinken_arbiter_pkg
-       - pkg: shinken_broker_pkg
-       - pkg: shinken_poller_pkg
-       - pkg: shinken_reactionner_pkg
-       - pkg: shinken_receiver_pkg
-       - pkg: shinken_scheduler_pkg
 
 #/etc/shinken/servicegroups/servicegroup.cfg:
 #  file:                                    
@@ -172,6 +187,21 @@ plugin_nrpe_pkg:
        - pkg: shinken_receiver_pkg
        - pkg: shinken_scheduler_pkg
 
+/etc/shinken/contacts/nagiosadmin.cfg:
+  file.line:
+    - mode: insert
+    - after: ".*contact_name.*nagiosadmin.*"
+    - content: '        is_admin                                1'
+    - require:
+       - pkg: shinken_pkg
+       - pkg: shinken_arbiter_pkg
+       - pkg: shinken_broker_pkg
+       - pkg: shinken_poller_pkg
+       - pkg: shinken_reactionner_pkg
+       - pkg: shinken_receiver_pkg
+       - pkg: shinken_scheduler_pkg
+
+
 shinken_scheduler_serv:
   service:
     - name: {{ pillar['services']['shinken_scheduler'] }}
@@ -218,10 +248,10 @@ shinken_arbiter_serv:
 #      - file: /etc/shinken/services/services.cfg
       - file: /etc/shinken/hostgroups/cluster-groups.cfg
 #      - file: /etc/shinken/servicegroups/servicegroup.cfg
-      - file: /etc/shinken/hosts/computes.cfg
-      - file: /etc/shinken/hosts/ios.cfg
-      - file: /etc/shinken/hosts/logins.cfg
-
+#      - file: /etc/shinken/hosts/computes.cfg
+#      - file: /etc/shinken/hosts/ios.cfg
+#      - file: /etc/shinken/hosts/logins.cfg
+      - file: /etc/shinken/hosts/nodes.cfg
 
 shinkeninit:
   cmd.run:
