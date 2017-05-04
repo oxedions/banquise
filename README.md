@@ -136,19 +136,19 @@ First step is to setup a local repository for Salt and CentOS rpm. This reposito
 Mount Centos everything DVD (server dvd for RHEL) and copy all content locally (will be also used later to be uploaded on master for repository and pxe process):
 
     mount CentOS-7-x86_64-Everything-1511.iso /mnt
-    mkdir -p /var/www/html/os_dvd.local.repo/
-    cp -ar /mnt/* /var/www/html/os_dvd.local.repo/
+    mkdir -p /var/www/html/centos_dvd.local.repo/
+    cp -ar /mnt/* /var/www/html/centos_dvd.local.repo/
     umount /mnt
 
 Then create the local repository so OS can install some very basic packages. Remove all files in /etc/yum.repos.d/:
 
     rm -f /etc/yum.repos.d/*
 
-And create the file `/etc/yum.repos.d/os_dvd.local.repo` with the following content:
+And create the file `/etc/yum.repos.d/centos_dvd.local.repo` with the following content:
 
     [os_dvd]
     name=os_dvd
-    baseurl=file:///var/www/html/os_dvd.local.repo/
+    baseurl=file:///var/www/html/centos_dvd.local.repo/
     gpgcheck=0
     enabled=1
 
@@ -374,7 +374,7 @@ From saltmaster:
 
     ssh 10.1.0.1 mkdir -p /var/www/html/
     scp -r /root/banquise 10.1.0.1:/var/www/html/banquise.local.repo
-    scp -r /var/www/html/os_dvd.local.repo 10.1.0.1:/var/www/html/os_dvd.local.repo
+    scp -r /var/www/html/centos_dvd.local.repo 10.1.0.1:/var/www/html/centos_dvd.local.repo
     ssh 10.1.0.1 restorecon -r /var/www/html/
 
 Depending on your hardware, it could take a while...
