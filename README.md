@@ -276,11 +276,11 @@ Specify here the master ip (we used 10.1.0.1 here).
 
 **ssh_private.sls**:
 
-Put here the private key of the master created before (this is the content of file /root/masterkey), to replace the one provided as an example. __You need to indent the key__, like the one already in the file.
+Put here the private key of the master created before (this is the content of file `/root/masterkey`), to replace the one provided as an example. __You need to indent the key__, like the one already in the file.
 
 **ssh_public.sls**:
 
-Put here public key of master and saltmaster (this is the content of files /root/masterkey.pub for ssh\_master\_public\_key and `/root/.ssh/id_rsa.pub` for ssh\_salt\_public\_key), to replace the ones provided as examples.
+Put here public key of master and saltmaster (this is the content of files `/root/masterkey.pub` for ssh\_master\_public\_key and `/root/.ssh/id_rsa.pub` for ssh\_salt\_public\_key), to replace the ones provided as examples.
 
 **passwords_public.sls**:
 
@@ -290,7 +290,7 @@ Put here the hash of the root password that will be set during installation on c
 
 **ldap_private.sls**:
 
-Put here the initial ldap password (in clear text, don't worry, access to this file is limited to the master node). Onde cluster is deployed, you can edit this file and set somehting else if you wish.
+Put here the initial ldap password (in clear text; don't worry, access to this file is limited to the master node). Once cluster is deployed, you can edit this file and set something else if you wish.
 
 **ldap_private.sls**:
 
