@@ -7,7 +7,7 @@
  authoritative;
 
  subnet {{salt['pillar.get']('engine:network:subnet')}} netmask {{salt['pillar.get']('engine:network:netmask')}} {
- range {{salt['pillar.get']('engine:network:dhcp_unknown_range')}};
+ range {{salt['pillar.get']('engine:network:dhcp_cluster_range')}};
  option domain-name "{{salt['pillar.get']('engine:network:domaine_name')}}";
  option domain-name-servers {{salt['pillar.get']('engine:servers:dns_server_ip')}};
  option routers {{salt['pillar.get']('engine:master:masterip')}}; # to be corrected
