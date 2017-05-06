@@ -48,7 +48,9 @@ define service{
 #############################################
 ########## {{type}}
 ###
+
 {% for group, argu in salt['pillar.get']('engine_monitoring:'~type, {}).items() %}
+
 ##########
 # {{group}}
 
@@ -72,6 +74,7 @@ define service{
 {%- endif %}
 
 {%- if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
+{%- if argu is not none %}
 {%- for state, args in argu.items() %}{% if args is not none %}{% for element, argo in args.items() %}
 {%- if element == "service" %}
 {%- for service, argy in argo.items() %}
@@ -87,7 +90,9 @@ define service{
 {%- endfor %}
 {%- endif %}
 {%- endfor %}
+{% endif %}
 {%- endif %}
+
 
 {% endfor %}
 {% endfor %}

@@ -43,8 +43,11 @@ $TTL 86400
 {%- endif %}
 {%- endif %}
 {%- endfor %}
+
+{%- if net == "net0" %}
 {%- if argo.bmc is defined %}
 {% set list1 = argo.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{argo.bmc.name}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{%- endif %}
 {%- endif %}
 {%- endfor %}
 {% endfor %}

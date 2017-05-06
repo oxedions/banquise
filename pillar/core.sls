@@ -9,3 +9,4 @@ core:
     - computes
     - logins
     - ios
+    - switchs

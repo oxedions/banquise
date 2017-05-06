@@ -58,6 +58,7 @@ engine:
     ntp_server_ip: {{args.ip}}
     ldap_server_ip: {{args.ip}}
     slurm_server_ip: {{args.ip}}
+    shinken_server_ip: {{args.ip}}
     {% endif %}
     {% endfor %}
     {% set count = 2 %}{% endif %}

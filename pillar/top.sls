@@ -6,15 +6,17 @@ base:
   '*':
     - pkgs
     - services
+    - nodes/switchs
+    - nodes/switchs_states
     - nodes/computes
     - nodes/computes_states
-    - engine/computes_gather
+#    - engine/computes_gather
     - nodes/logins
     - nodes/logins_states
-    - engine/logins_gather
+#    - engine/logins_gather
     - nodes/ios
     - nodes/ios_states
-    - engine/ios_gather
+#    - engine/ios_gather
     - io/nfs
     - network/network
     - masters

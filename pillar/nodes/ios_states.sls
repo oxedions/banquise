@@ -10,6 +10,7 @@ ios_states:
     - nfs.server
     - ldap.client
     - ssh.client
+    - shinken.client
 
   lustre:
     - repository.client

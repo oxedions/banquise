@@ -1,2 +1,100 @@
 
-{{custom_var}}
+
+
+#############################################
+########## MASTERS
+###
+
+{%if salt['pillar.get']('monitoring:default_probs:masters:disk') %}
+define service{
+   use generic-service
+   hostgroup_name master
+   service_description check_disk_root
+   check_command check_nrpe!check_disk_root
+   display_name check_disk_root
+}
+{% endif %}
+
+{%if salt['pillar.get']('monitoring:default_probs:masters:zombie') %}
+define service{
+   use generic-service
+   hostgroup_name master
+   service_description check_proc_zombie
+   check_command check_nrpe!check_proc_zombie
+   display_name check_proc_zombie
+}
+{% endif %}
+
+{% if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
+{% for state, args in salt['pillar.get']('engine_monitoring:masters:masters', {}).items() %}{% if args is not none %}{% for element, argo in args.items() %}
+
+{% if element == "service" %}
+{% for service, argy in argo.items() %}
+define service{
+   use generic-service
+   hostgroup_name master
+   service_description {{argy.service_description}}
+   check_command {{argy.check_command}}
+   display_name {{service}}
+}
+{% endfor %}
+{% endif %}
+
+{% endfor %}{% endif %}{% endfor %}
+{% endif %}
+
+
+{% for type in salt['pillar.get']('core:types') %}
+#############################################
+########## {{type}}
+###
+
+{% for group, argu in salt['pillar.get']('engine_monitoring:'~type, {}).items() %}
+
+##########
+# {{group}}
+
+{%- if salt['pillar.get']('monitoring:default_probs:'~type~':disk') %}
+define service{
+   use generic-service
+   hostgroup_name {{type}}_{{group}}
+   service_description check_disk_{{group}}
+   check_command check_nrpe!check_disk_root
+   display_name check_disk_root
+}
+{%- endif %}
+{%- if salt['pillar.get']('monitoring:default_probs:'~type~':zombie') %}
+define service{
+   use generic-service
+   hostgroup_name {{type}}_{{group}}
+   service_description check_proc_zombie_{{group}}
+   check_command check_nrpe!check_proc_zombie
+   display_name check_proc_zombie
+}
+{%- endif %}
+
+{%- if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
+{%- if argu is not none %}
+{%- for state, args in argu.items() %}{% if args is not none %}{% for element, argo in args.items() %}
+{%- if element == "service" %}
+{%- for service, argy in argo.items() %}
+define service{
+   use generic-service
+   hostgroup_name {{type}}_{{group}}
+   service_description {{argy.service_description}}_{{group}}
+   check_command {{argy.check_command}}
+   display_name {{service}}
+}
+{%- endfor %}
+{%- endif %}
+{%- endfor %}
+{%- endif %}
+{%- endfor %}
+{% endif %}
+{%- endif %}
+
+
+{% endfor %}
+{% endfor %}
+
+

@@ -34,6 +34,22 @@ computes:
         ib0:
           ip: 10.2.3.2
 
+    
+    compute5:
+      procs: 2
+      bmc:
+        name: bmccompute5
+        ip: 10.1.103.5
+        hwaddr: 08:00:28:18:67:88
+      network:
+        net0:
+          ip: 10.1.3.5
+          hwaddr: 08:00:27:9E:2A:55
+        ib0:
+          ip: 10.2.3.5
+          interface: none
+
+
 
   gpu:
 

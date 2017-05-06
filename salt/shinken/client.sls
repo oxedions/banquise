@@ -6,6 +6,15 @@ monitoring_proc_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['monitoring_proc'] }}
 
+
+/etc/nagios/nrpe.cfg:
+  file.line:
+    - mode: replace
+    - match: '.*allowed_hosts=127.0.0.1.*'
+    - content: allowed_hosts=127.0.0.1,{{salt['pillar.get']('engine:servers:dns_server_ip')}}
+    - require:
+      - pkg: nrpe_pkg
+
 {% if salt['pillar.get']('monitoring:default_probs:'~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type')~':disk') %}
 
 monitoring_disk_pkg:

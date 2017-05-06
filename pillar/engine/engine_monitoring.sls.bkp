@@ -5,6 +5,9 @@
 
 {% import_yaml 'core.sls' as cor %}
 {% import_yaml 'masters_states.sls' as mas %}
+{% import_yaml 'nodes/computes_states.sls' as com %}
+{% import_yaml 'nodes/logins_states.sls' as log %}
+{% import_yaml 'nodes/ios_states.sls' as ios %}
 
 
 engine_monitoring:
@@ -18,19 +21,29 @@ engine_monitoring:
 {% endfor %}
 {% endfor %}
 
-{% for types in cor.core.types %}
-{% import_yaml 'nodes/'~types~'_states.sls' as typestates %}
- {{types}}:
-{% for ttypestates, stb in typestates.items() %}
-{% for group, sta in stb.items() %}
-  {{group}}:
-{% if sta is not none %}
+ computes:
+{% for compute, sta in com.computes_states.items() %}
+  {{compute}}:
 {% for st in sta %}
    {{st}}:
 {% include cor.core.states_path~"/"~(st|replace(".","/"))~"_monitoring.sls" ignore missing %}
 {% endfor %}
-{% endif %}
 {% endfor %}
+
+ logins:
+{% for login, sta in log.logins_states.items() %}
+  {{login}}:
+{% for st in sta %}
+   {{st}}:
+{% include cor.core.states_path~"/"~(st|replace(".","/"))~"_monitoring.sls" ignore missing %}
 {% endfor %}
 {% endfor %}
 
+ ios:
+{% for io, sta in ios.ios_states.items() %}
+  {{io}}:
+{% for st in sta %}
+   {{st}}:
+{% include cor.core.states_path~"/"~(st|replace(".","/"))~"_monitoring.sls" ignore missing %}
+{% endfor %}
+{% endfor %}

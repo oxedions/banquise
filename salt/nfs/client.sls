@@ -8,7 +8,11 @@ nfs_utils:
 {% for mountpoint, argus in args.items() %}
 {{mountpoint}}:
   mount.mounted:
+{%- if argus.network == "net0" %}
     - device: {{nfsservid}}:{{argus.servermountpoint}}
+{%- else %}
+    - device: {{nfsservid}}.{{argus.network}}:{{argus.servermountpoint}}
+{%- endif %}
     - fstype: nfs
     - persist: True
     - mkmnt: True
