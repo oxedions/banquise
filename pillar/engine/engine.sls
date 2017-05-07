@@ -3,9 +3,9 @@
 # by generating most of the possibly deduced data, or by rearanging data in an order easier to use in states.
 # Network data are gathered in engine.
 
-{% import_yaml 'network/network.sls' as net %}
-{% import_yaml 'masters.sls' as mas %}
-{% import_yaml 'core.sls' as cor %}
+{% import_yaml 'cluster/network.sls' as net %}
+{% import_yaml 'cluster/masters.sls' as mas %}
+{% import_yaml 'cluster/core.sls' as cor %}
 
 engine:
 

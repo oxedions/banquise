@@ -3,8 +3,8 @@
 # This pillar will try to read all monitoring files related tot states used, and provide them to the monitoring tool (default shinken)
 # This pillar break the Salt Stack standard organisation, be carefull.
 
-{% import_yaml 'core.sls' as cor %}
-{% import_yaml 'masters_states.sls' as mas %}
+{% import_yaml 'cluster/core.sls' as cor %}
+{% import_yaml 'cluster/masters_states.sls' as mas %}
 
 
 engine_monitoring:
@@ -19,7 +19,7 @@ engine_monitoring:
 {% endfor %}
 
 {% for types in cor.core.types %}
-{% import_yaml 'nodes/'~types~'_states.sls' as typestates %}
+{% import_yaml 'cluster/nodes/'~types~'_states.sls' as typestates %}
  {{types}}:
 {% for ttypestates, stb in typestates.items() %}
 {% for group, sta in stb.items() %}

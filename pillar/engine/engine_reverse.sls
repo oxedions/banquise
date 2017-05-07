@@ -1,5 +1,5 @@
-{% import_yaml 'core.sls' as cor %}
-{% import_yaml 'masters.sls' as mas %}
+{% import_yaml 'cluster/core.sls' as cor %}
+{% import_yaml 'cluster/masters.sls' as mas %}
 {% import_yaml 'engine/engine.sls' as eng %}
 
 engine_reverse:
@@ -11,7 +11,7 @@ engine_reverse:
 {% endfor %}
 
 {% for types in cor.core.types %}
-{% import_yaml 'nodes/'~types~'.sls' as type %}
+{% import_yaml 'cluster/nodes/'~types~'.sls' as type %}
 {% for ttype, argy in type.items() %}
 {% for group, args in argy.items() %}
 {% for node in args %}

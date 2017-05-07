@@ -47,7 +47,6 @@ salt-minion
 mkdir /root/.ssh
 cat  << xxEOFxx >> /root/.ssh/authorized_keys
 {{salt['pillar.get']('ssh_public:ssh_master_public_key')}}
-{{salt['pillar.get']('ssh_public:ssh_salt_public_key')}}
 xxEOFxx
 restorecon -r /root/.ssh
 echo "{{salt['pillar.get']('core:salt_master_ip')}}	salt	salt-master" >> /etc/hosts

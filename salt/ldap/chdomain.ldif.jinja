@@ -17,7 +17,7 @@ olcRootDN: cn=Manager{% for dc in pillar['ldap_public']['dc'] %},dc={{dc}}{% end
 dn: olcDatabase={2}hdb,cn=config
 changetype: modify
 add: olcRootPW
-olcRootPW: {SSHA}{{pillar['ldap_public']['ldap_admin_pass_ssha']}}
+olcRootPW: {{pillar['ldap_public']['ldap_admin_pass_ssha']}}
 
 dn: olcDatabase={2}hdb,cn=config
 changetype: modify
