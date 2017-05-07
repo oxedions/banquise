@@ -2,7 +2,7 @@
 
 echo "Please enter ldap Manager password:"
 read ldap_pass
-ldap_pass_hash=$(slappasswd -s $ldap_pass)
+ldap_pass_hash=$(slappasswd -s $ldap_pass | sed 's/{SSHA}//')
 
 echo 'ldap_private:' > ../pillar/cluster/authentication/ldap_private.sls
 echo "  ldap_admin_pass: $ldap_pass           # this administration password will only be used during ldap server installation, and is protected by pillar/top.sls" >> ../pillar/cluster/authentication/ldap_private.sls

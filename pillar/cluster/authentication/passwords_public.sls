@@ -1,2 +1,2 @@
 passwords_public:
-  root_password_hash: $6$EO8b0UkiyyKrTM3O$0SgVZs.dye7m2P/zK1/GplRk7cylToMbq/lAbcVK7KBmrXuq8cToFDNpGoM8AExSsZcjzWaCN2rAyXO78z9A90   # This password hash will be the root password of all nodes installed
+  root_password_hash: $6$hLJ1jviJRLsWmnmp$K5iE4H0qHUFM3cVbD7n4vTZKfYeYYubuv0Vdm7ykPI4KC4eejl15KtdrR5G85sJi2rNSEq1k8K57DjPZrhe/n/   # This password hash will be the root password of all nodes installed
