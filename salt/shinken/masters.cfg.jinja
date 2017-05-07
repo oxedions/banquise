@@ -3,7 +3,7 @@ define host{
         use                     generic-host
         contact_groups          admins
         host_name               {{ host }}
-        address                 {{ args.ip }}
+        address                 {{ args.network.net0.ip }}
         hostgroups              master
         }
 {% endfor %}

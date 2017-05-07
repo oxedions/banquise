@@ -1,5 +1,4 @@
 ssh_private:
-  # Put here your ssh private key. It will be installed on the master and used to login on nodes installed thanks to PXE. Note: beware, you need to indent like wiht this example.
   ssh_master_private_key: |
     -----BEGIN RSA PRIVATE KEY-----
     MIIEpgIBAAKCAQEA1j++tltSt5aQq0JVFJ0ZcDjhEop/QMpFfGX/REhGpYP6KaZN

@@ -41,7 +41,7 @@ engine:
     {% set count = 1 %}{% if cor.core.master_mode == "standalone" %}
     {% for ma, args in mas.masters.items() %}
     {% if count == 1%}
-    masterip: {{args.ip}}
+    masterip: {{args.network.net0.ip}}
     masterid: {{ma}}
     {% endif %}
     {% endfor %}
@@ -51,16 +51,17 @@ engine:
     {% set count = 1 %}{% if cor.core.master_mode == "standalone" %}
     {% for ma, args in mas.masters.items() %}
     {% if count == 1%}
-    dhcp_server_ip: {{args.ip}}
-    dns_server_ip: {{args.ip}}
-    pxe_server_ip: {{args.ip}}
-    repository_server_ip: {{args.ip}}
-    ntp_server_ip: {{args.ip}}
-    ldap_server_ip: {{args.ip}}
-    slurm_server_ip: {{args.ip}}
-    shinken_server_ip: {{args.ip}}
+    dhcp_server_ip: {{args.network.net0.ip}}
+    dns_server_ip: {{args.network.net0.ip}}
+    pxe_server_ip: {{args.network.net0.ip}}
+    repository_server_ip: {{args.network.net0.ip}}
+    ntp_server_ip: {{args.network.net0.ip}}
+    ldap_server_ip: {{args.network.net0.ip}}
+    slurm_server_ip: {{args.network.net0.ip}}
+    shinken_server_ip: {{args.network.net0.ip}}
+    {% set count = 2 %}
     {% endif %}
     {% endfor %}
-    {% set count = 2 %}{% endif %}
+    {% endif %}
       
 

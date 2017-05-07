@@ -15,6 +15,7 @@ masters_states:
     - dns.client
     - network.firewall
     - network.nmanager
+    - network.static
     - ntp.server
     - slurm.server
     - ldap.server

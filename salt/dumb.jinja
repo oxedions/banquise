@@ -1,100 +1,46 @@
-
-
-
-#############################################
-########## MASTERS
-###
-
-{%if salt['pillar.get']('monitoring:default_probs:masters:disk') %}
-define service{
-   use generic-service
-   hostgroup_name master
-   service_description check_disk_root
-   check_command check_nrpe!check_disk_root
-   display_name check_disk_root
-}
+{% if salt['grains.get']('localhost') != salt['grains.get']('id') %}
+sethostname:
+  cmd.run:
+    - name: hostnamectl set-hostname {{salt['grains.get']('id')}}
 {% endif %}
 
-{%if salt['pillar.get']('monitoring:default_probs:masters:zombie') %}
-define service{
-   use generic-service
-   hostgroup_name master
-   service_description check_proc_zombie
-   check_command check_nrpe!check_proc_zombie
-   display_name check_proc_zombie
-}
+{% set group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':group') %}
+{% set type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
+
+{% if type == "masters" %}
+{% set netpath = type~":"~salt['grains.get']('host')~":network" %}
+{% else %}
+{% set netpath = type~":"~group~":"~salt['grains.get']('host')~":network" %}
 {% endif %}
+{% for network, argo in salt['pillar.get'](netpath).items() %}
 
-{% if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
-{% for state, args in salt['pillar.get']('engine_monitoring:masters:masters', {}).items() %}{% if args is not none %}{% for element, argo in args.items() %}
+{% if network == "net0" and argo.interface == "auto" %}
+# auto interface enabled
+{% for interf, args in salt['grains.get']('ip_interfaces').items() %}
+{% for ips in args %}
+{% if salt['pillar.get']('engine:network:matchpatern') in ips %}
+{{interf}}:
+  network.managed:
+    - enabled: True
+    - type: eth
+    - proto: none
+    - ipaddr: {{ips}}
+    - netmask: {{salt['pillar.get']('engine:network:netmask')}}
 
-{% if element == "service" %}
-{% for service, argy in argo.items() %}
-define service{
-   use generic-service
-   hostgroup_name master
-   service_description {{argy.service_description}}
-   check_command {{argy.check_command}}
-   display_name {{service}}
-}
-{% endfor %}
 {% endif %}
-
-{% endfor %}{% endif %}{% endfor %}
-{% endif %}
-
-
-{% for type in salt['pillar.get']('core:types') %}
-#############################################
-########## {{type}}
-###
-
-{% for group, argu in salt['pillar.get']('engine_monitoring:'~type, {}).items() %}
-
-##########
-# {{group}}
-
-{%- if salt['pillar.get']('monitoring:default_probs:'~type~':disk') %}
-define service{
-   use generic-service
-   hostgroup_name {{type}}_{{group}}
-   service_description check_disk_{{group}}
-   check_command check_nrpe!check_disk_root
-   display_name check_disk_root
-}
-{%- endif %}
-{%- if salt['pillar.get']('monitoring:default_probs:'~type~':zombie') %}
-define service{
-   use generic-service
-   hostgroup_name {{type}}_{{group}}
-   service_description check_proc_zombie_{{group}}
-   check_command check_nrpe!check_proc_zombie
-   display_name check_proc_zombie
-}
-{%- endif %}
-
-{%- if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
-{%- if argu is not none %}
-{%- for state, args in argu.items() %}{% if args is not none %}{% for element, argo in args.items() %}
-{%- if element == "service" %}
-{%- for service, argy in argo.items() %}
-define service{
-   use generic-service
-   hostgroup_name {{type}}_{{group}}
-   service_description {{argy.service_description}}_{{group}}
-   check_command {{argy.check_command}}
-   display_name {{service}}
-}
-{%- endfor %}
-{%- endif %}
-{%- endfor %}
-{%- endif %}
-{%- endfor %}
-{% endif %}
-{%- endif %}
-
-
 {% endfor %}
 {% endfor %}
+{% endif %}
 
+{% if argo.interface != "auto" and argo.interface != "none" %}
+{{argo.interface}}:
+  network.managed:
+    - enabled: True
+    - type: eth
+    - proto: none
+    - ipaddr: {{argo.ip}}
+    - netmask: {{salt['pillar.get']("network:"~network~":netmask")}}
+{% endif %}
+
+{% endfor %}
 

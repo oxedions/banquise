@@ -1,3 +1,2 @@
 ssh_public:
-  # This is the ssh public key related to private key given in private part of ssh.
   ssh_master_public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWP762W1K3lpCrQlUUnRlwOOESin9AykV8Zf9ESEalg/oppk1GPm+f3gPNe+J9k8mJvFCLlcAIKaQP75IgsGrS067VnOp0QQIZw65yfZkGUIei1vzlxcYS4jKgzEDLr5Qh4thwcitCjhefPYVj1WkrKwNnE0PfPcpHRwhbup3MZo1lyoBFrhBFilVUKmslHzOasAW+c/NvFdvChZYjqfOuHr+RLo/UUvKkehv7L80kA422ULXr2apYVtcrJ8Cafoysbyrgu6FiFK9vWX6RESbicvBEAdvTYaRN+5Qec5CbQICCGwQ/1Z7Yla1aoDV0x88aMBIJqF6AC6IklrfcLTER root@saltmaster.sphen.local

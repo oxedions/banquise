@@ -7,7 +7,12 @@ sethostname:
 {% set group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':group') %}
 {% set type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
 
-{% for network, argo in salt['pillar.get'](type~":"~group~":"~salt['grains.get']('host')~":network").items() %}
+{% if type == "masters" %}
+{% set netpath = type~":"~salt['grains.get']('host')~":network" %}
+{% else %}
+{% set netpath = type~":"~group~":"~salt['grains.get']('host')~":network" %}
+{% endif %}
+{% for network, argo in salt['pillar.get'](netpath).items() %}
 
 {% if network == "net0" and argo.interface == "auto" %}
 # auto interface enabled
