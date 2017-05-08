@@ -15,6 +15,11 @@ monitoring_proc_pkg:
     - require:
       - pkg: nrpe_pkg
 
+restorecon_nrpe.cfg:
+   cmd.run:
+    - name: restorecon /etc/nagios/nrpe.cfg
+    - unless: test "$(restorecon -r -n /etc/nagios/nrpe.cfg -v)" = ""
+
 {% if salt['pillar.get']('monitoring:default_probs:'~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type')~':disk') %}
 
 monitoring_disk_pkg:
@@ -79,7 +84,6 @@ zombie_2:
 
 {% endif %}{% endfor %}
 {% endif %}
-
  
 nrpeservice:
   service:
@@ -88,6 +92,8 @@ nrpeservice:
     - enable: True
     - watch:
       - file: /etc/nrpe.d/commands.cfg
+      - file: /etc/nagios/nrpe.cfg
     - require:
-      - pkg: {{ pillar['pkgs']['nrpe'] }}
-
+      - pkg: nrpe_pkg
+      - file: /etc/nagios/nrpe.cfg
+      - cmd: restorecon_nrpe.cfg
