@@ -13,7 +13,7 @@ engine:
     domaine_name: {{ net.network.domaine_name }}
     subnet: {{ net.network.subnet }}
     netmask: {{ net.network.netmask }}
-    dhcp_unknown_range: {{ net.network.dhcp_unknown_range }}
+    dhcp_cluster_range: {{ net.network.dhcp_cluster_range }}
     {% set list1 = net.network.subnet.split('.') %}
     {% if net.network.netmask == '255.255.255.0' %}
     reverse: 1
