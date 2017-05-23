@@ -19,3 +19,8 @@ network:
 
     subnet: 172.16.0.0
     netmask: 255.0.0.0
+
+  net2:
+
+    subnet: 192.168.1.0
+    netmask: 255.255.255.0

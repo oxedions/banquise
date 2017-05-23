@@ -22,6 +22,7 @@ base:
     - cluster/authentication/ldap_public
     - engine/engine_monitoring
     - engine/engine_reverse
+    - engine/engine_ip
     - cluster/monitoring
 # Allowed to masters only, secure passwords and ssh private key
 {% for master in mas.masters %}

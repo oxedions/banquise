@@ -18,20 +18,28 @@ gnome_shell_gdm:
   file.symlink:
     - target: /lib/systemd/system/graphical.target
 
-reboot_minion:
-  salt.function:
-    - name: system.reboot
-    - require:
-      - pkg: x_window_system_group
-      - pkg: gnome_shell_gdm
-      - file: /etc/systemd/system/default.target
-    - tgt: "{{salt['grains.get']('id')}}"
+#reboot_minion:
+#  salt.function:
+#    - name: system.reboot
+#    - require:
+#      - pkg: x_window_system_group
+#      - pkg: gnome_shell_gdm
+#      - file: /etc/systemd/system/default.target
+#    - tgt: 'compute1'
 
-wait_for_reboots:
-  salt.wait_for_event:
-    - name: salt/minion/{{salt['grains.get']('id')}}/start
-    - require:
-      - salt: reboot_minion
+#system.reboot:
+#  module.run:
+#    - require:
+#      - pkg: x_window_system_group
+#      - pkg: gnome_shell_gdm
+#      - file: /etc/systemd/system/default.target
+
+
+#wait_for_reboots:
+#  salt.wait_for_event:
+#    - name: salt/minion/{{salt['grains.get']('id')}}/start
+#    - require:
+#      - module: system.reboot
 
 #system.reboot:
 #  module.run:

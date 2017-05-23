@@ -56,9 +56,9 @@ engine:
     pxe_server_ip: {{args.network.net0.ip}}
     repository_server_ip: {{args.network.net0.ip}}
     ntp_server_ip: {{args.network.net0.ip}}
-    ldap_server_ip: {{args.network.net0.ip}}
-    slurm_server_ip: {{args.network.net0.ip}}
-    shinken_server_ip: {{args.network.net0.ip}}
+    ldap_server_ip: {{args.network.net0.ip}}     # change this to authentication server
+    slurm_server_ip: {{args.network.net0.ip}}    # change this to jobscheduler server
+    shinken_server_ip: {{args.network.net0.ip}}  # change this to monitoring server
     {% set count = 2 %}
     {% endif %}
     {% endfor %}

@@ -34,7 +34,7 @@ sethostname:
 {% endfor %}
 {% endif %}
 
-{% if argo.interface != "auto" and argo.interface != "none" %}
+{% if argo.interface != "auto" and argo.interface != "na" %}
 {{argo.interface}}:
   network.managed:
     - enabled: True

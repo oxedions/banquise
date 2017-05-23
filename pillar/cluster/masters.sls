@@ -5,7 +5,7 @@ masters:
     network:
       net0:
         ip: 10.1.0.1
-        interface: none
+        interface: na
       ib0:
         ip: 10.2.0.1
         interface: enp0s8

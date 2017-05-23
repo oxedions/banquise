@@ -25,4 +25,5 @@ masters_states:
     - ssh.master
     - shinken.server
     - shinken.client
+#    - nyancat
   {% endif %}

@@ -1,0 +1,44 @@
+{% import_yaml 'cluster/network.sls' as net %}
+{% import_yaml 'cluster/masters.sls' as mas %}
+{% import_yaml 'cluster/core.sls' as cor %}
+{% import_yaml 'cluster/ip.sls' as ip %}
+
+engine_ip:
+# Forced ip are put directly, this is used in case of bug, or if you wish to use and external server
+# Automatic ip are deduced depending of the values set into the cluster configuration (core, etc.)
+
+{% if cor.core.master_mode == "standalone" %}
+{% set standaloneip = null %}
+{% set count = 1 %}
+{% for ma, args in mas.masters.items() %}
+{% standaloneip = args.network.net0.ip %}
+{% set count = 2 %}
+{% endfor %}
+{% endif %}
+
+
+
+{% for ips, args in ip.ip.items() %}
+{% if {{args}} == "auto" %}
+
+
+
+  - {{ips}}: {{args}}
+{% endfor %}
+
+# Automatic ip
+# These ip are deduced depending of the values set into the cluster configuration (core, etc.)
+{% set count = 1 %}
+{% if cor.core.master_mode == "standalone" %}
+{% for ma, args in mas.masters.items() %}
+{% if count == 1%}
+
+{% for ips in ip.ip.auto %}
+  - {{ips}}: {{args.network.net0.ip}}  # change this to monitoring server
+{% endfor %}
+
+{% set count = 2 %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
