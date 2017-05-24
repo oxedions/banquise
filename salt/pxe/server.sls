@@ -64,13 +64,13 @@ webserver:
 
 /var/lib/tftpboot/netboot/vmlinuz:
   file.copy:
-    - source: /var/www/html/centos_dvd.local.repo/images/pxeboot/vmlinuz
+    - source: /var/www/html/os_dvd.local.repo/images/pxeboot/vmlinuz
     - unless: test -e /var/lib/tftpboot/netboot/vmlinuz
     - makedirs: True
 
 /var/lib/tftpboot/netboot/initrd.img:
   file.managed:
-    - source: /var/www/html/centos_dvd.local.repo/images/pxeboot/initrd.img
+    - source: /var/www/html/os_dvd.local.repo/images/pxeboot/initrd.img
     - unless: test -e /var/lib/tftpboot/netboot/initrd.img
     - makedirs: True
 

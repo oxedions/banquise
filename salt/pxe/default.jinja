@@ -9,7 +9,7 @@ MENU TITLE Banquise PXE Menu
  LABEL centos7_x64
  MENU LABEL CentOS 7 X64
  KERNEL /netboot/vmlinuz
- APPEND  initrd=/netboot/initrd.img  inst.repo=http://{{salt['pillar.get']('engine:servers:pxe_server_ip')}}/centos_dvd.local.repo  ks=http://{{salt['pillar.get']('engine:servers:pxe_server_ip')}}/ks.cfg
+ APPEND  initrd=/netboot/initrd.img  inst.repo=http://{{salt['pillar.get']('engine:servers:pxe_server_ip')}}/os_dvd.local.repo  ks=http://{{salt['pillar.get']('engine:servers:pxe_server_ip')}}/ks.cfg
 
  LABEL localdisk
  KERNEL chain.c32 

@@ -33,10 +33,10 @@ sethostname:
     - source: salt://bootstrap/salt.local.repo.jinja 
     - template: jinja
 
-/etc/yum.repos.d/centos_dvd.local.repo:
+/etc/yum.repos.d/os_dvd.local.repo:
   file:
     - managed
-    - source: salt://bootstrap/centos_dvd.local.repo.jinja
+    - source: salt://bootstrap/os_dvd.local.repo.jinja
     - template: jinja
 
 salt-master:
@@ -51,7 +51,7 @@ salt-minion:
     - name: {{ pillar['pkgs']['salt_minion'] }}
     - require:
       - file: /etc/yum.repos.d/salt.local.repo
-      - file: /etc/yum.repos.d/centos_dvd.local.repo
+      - file: /etc/yum.repos.d/os_dvd.local.repo
       - file: /etc/yum.repos.d/CentOS-Base.repo
       - file: /etc/yum.repos.d/CentOS-CR.repo
       - file: /etc/yum.repos.d/CentOS-Debuginfo.repo

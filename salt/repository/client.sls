@@ -1,7 +1,7 @@
-/etc/yum.repos.d/centos_dvd.local.repo:
+/etc/yum.repos.d/os_dvd.local.repo:
   file:                                    
     - managed                               
-    - source: salt://repository/centos_dvd.local.repo.jinja 
+    - source: salt://repository/os_dvd.local.repo.jinja 
     - template: jinja
 
 /etc/yum.repos.d/banquise.local.repo:
@@ -40,7 +40,7 @@
   file:
     - absent
 
-/etc/yum.repos.d/centos_dvd.local.reposerver.repo:
+/etc/yum.repos.d/os_dvd.local.reposerver.repo:
   file:
     - absent
 
