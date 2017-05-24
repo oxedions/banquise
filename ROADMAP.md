@@ -3,7 +3,7 @@ Next version: Alpha 3
 
 # Still to be done in Alpha 3
   - PXE and basic configuration files generator scrip (auth done)
-  - engine_connect system (ip/host id dispatching)
+  - engine\_connect system (ip/host id dispatching)
 
 # To be done
   - Remove the CentOS dependency for the salt-master (yum can be installed through `apt`)
