@@ -1,5 +1,5 @@
 {% import_yaml 'cluster/core.sls' as cor %}
-{% import_yaml 'cluster/masters.sls' as mas %}
+{% import_yaml 'cluster/masters/masters.sls' as mas %}
 {% import_yaml 'engine/engine.sls' as eng %}
 
 engine_reverse:

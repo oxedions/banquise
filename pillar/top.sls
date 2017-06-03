@@ -1,4 +1,4 @@
-{% import_yaml 'cluster/masters.sls' as mas %}
+{% import_yaml 'cluster/masters/masters.sls' as mas %}
 {% import_yaml 'cluster/network.sls' as net %}
 {% import_yaml 'cluster/core.sls' as cor %}
 
@@ -13,13 +13,14 @@ base:
 {%- endfor %}
     - cluster/io/nfs
     - cluster/network
-    - cluster/masters
-    - cluster/masters_states
+    - cluster/masters/masters
+    - cluster/masters/masters_states
     - engine/engine
     - cluster/core
     - cluster/authentication/ssh_public
     - cluster/authentication/passwords_public
     - cluster/authentication/ldap_public
+    - engine/engine_connect
     - engine/engine_monitoring
     - engine/engine_reverse
     - engine/engine_ip

@@ -4,7 +4,7 @@
 # This pillar break the Salt Stack standard organisation, be carefull.
 
 {% import_yaml 'cluster/core.sls' as cor %}
-{% import_yaml 'cluster/masters_states.sls' as mas %}
+{% import_yaml 'cluster/masters/masters_states.sls' as mas %}
 
 
 engine_monitoring:

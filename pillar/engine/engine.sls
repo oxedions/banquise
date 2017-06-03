@@ -4,7 +4,7 @@
 # Network data are gathered in engine.
 
 {% import_yaml 'cluster/network.sls' as net %}
-{% import_yaml 'cluster/masters.sls' as mas %}
+{% import_yaml 'cluster/masters/masters.sls' as mas %}
 {% import_yaml 'cluster/core.sls' as cor %}
 
 engine:

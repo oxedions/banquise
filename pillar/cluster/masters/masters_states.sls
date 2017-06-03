@@ -6,8 +6,9 @@
 
 masters_states:
 
-  {% if cor.core.master_mode == "standalone" %}
-  {{ eng.engine.master.masterid}}:
+{#  {% if cor.core.master_mode == "standalone" %} #}
+{#  {{ eng.engine.master.masterid}}: #}
+  master:
     - repository.client
     - repository.server
     - dhcp.server 
@@ -26,4 +27,5 @@ masters_states:
     - shinken.server
     - shinken.client
 #    - nyancat
-  {% endif %}
+{#  {% endif %} #}
+
