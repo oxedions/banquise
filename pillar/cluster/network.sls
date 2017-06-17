@@ -3,8 +3,7 @@
 
 network:
 
-  net0:                    # THIS NAME CANNOT BE CHANGED! net0 is the name for the admin network
-
+  net0:
     domaine_name: sphen.local
     subnet: 10.1.0.0
     netmask: 255.255.0.0                               # See warning above
@@ -18,7 +17,7 @@ network:
   net1:
 
     subnet: 172.16.0.0
-    netmask: 255.0.0.0
+    netmask: 255.255.0.0
 
   net2:
 

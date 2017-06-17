@@ -24,10 +24,11 @@ base:
     - engine/engine_monitoring
     - engine/engine_reverse
     - engine/engine_ip
+    - engine/engine_network
     - cluster/monitoring
 # Allowed to masters only, secure passwords and ssh private key
 {% for master in mas.masters %}
-  '{{master}}.{{net.network.net0.domaine_name}}':
+  '{{master}}.{{cor.core.domain_name}}':
     - cluster/authentication/ssh_private
     - cluster/authentication/ldap_private
 {% endfor %}

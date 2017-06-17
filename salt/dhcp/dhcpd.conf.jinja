@@ -1,3 +1,4 @@
+{% set netadmin = 'engine_network:'~salt['pillar.get']('core:admin_network') %}
 #
 # DHCP Server Configuration file.
 #   see /usr/share/doc/dhcp*/dhcpd.conf.example
@@ -6,40 +7,40 @@
 
  authoritative;
 
- subnet {{salt['pillar.get']('engine:network:subnet')}} netmask {{salt['pillar.get']('engine:network:netmask')}} {
- range {{salt['pillar.get']('engine:network:dhcp_unknown_range')}};
- option domain-name "{{salt['pillar.get']('engine:network:domaine_name')}}";
- option domain-name-servers {{salt['pillar.get']('engine:servers:dns_server_ip')}};
- option routers {{salt['pillar.get']('engine:master:masterip')}}; # to be corrected
- option broadcast-address {{salt['pillar.get']('engine:network:broadcast_address')}};
+ subnet {{ salt['pillar.get'](netadmin~':subnet') }} netmask {{ salt['pillar.get'](netadmin~':netmask') }} {
+ range {{ salt['pillar.get'](netadmin~':dhcp_unknown_range') }};
+ option domain-name "{{ salt['pillar.get']('core:domain_name') }}";
+ option domain-name-servers {% for server_ip in salt['pillar.get']('engine_connect:dns_server_ip') %}{% if loop.first %}{{ server_ip }}{% else %},{{ server_ip }}{% endif %}{% endfor %};
+# option routers {{ salt['pillar.get']('engine:master:masterip') }}; # to be corrected
+# option broadcast-address {{ salt['pillar.get']('engine:network:broadcast_address') }};
 
  default-lease-time 600;
  max-lease-time 7200;
 
- next-server {{salt['pillar.get']('engine:servers:pxe_server_ip')}};
+ next-server {% for server_ip in salt['pillar.get']('engine_connect:pxe_server_ip') %}{% if loop.first %}{{ server_ip }}{% else %},{{ server_ip }}{% endif %}{% endfor %};
  filename "pxelinux.0";
 
 {% for type in salt['pillar.get']('core:types') %}
 #############################################
 ########## {{type}}
 ###
-{% for group, argu in salt['pillar.get'](type, {}).items() %}
+{% for group, group_args in salt['pillar.get'](type, {}).items() %}
 ##########
 # {{group}}
 
-   {%- for host, argo in argu.items() %}
-      {%- for network, args in argo.network.items() %}
-         {%- if network == "net0" %}
+   {%- for host, host_args in group_args.items() %}
+      {%- for network, network_args in host_args.network.items() %}
+         {%- if network == salt['pillar.get']('core:admin_network') %}
  host {{ host }} {
- hardware ethernet {{ args.hwaddr }};
- fixed-address {{ args.ip }};
+ hardware ethernet {{ network_args.hwaddr }};
+ fixed-address {{ network_args.ip }};
  }
          {%- endif %}
       {%- endfor %}
-    {%- if argo.bmc is defined %}
-   host {{ argo.bmc.name }} {
-   hardware ethernet {{ argo.bmc.hwaddr }};
-   fixed-address {{ argo.bmc.ip }};
+    {%- if host_args.bmc is defined %}
+   host {{ host_args.bmc.name }} {
+   hardware ethernet {{ host_args.bmc.hwaddr }};
+   fixed-address {{ host_args.bmc.ip }};
    }
     {%- endif %}
   {%- endfor %}
