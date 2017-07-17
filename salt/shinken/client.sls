@@ -11,7 +11,7 @@ monitoring_proc_pkg:
   file.line:
     - mode: replace
     - match: '.*allowed_hosts=127.0.0.1.*'
-    - content: allowed_hosts=127.0.0.1,{{salt['pillar.get']('engine:servers:dns_server_ip')}}
+    - content: allowed_hosts=127.0.0.1,{{salt['pillar.get']('engine_connect:monitoring_server_ip')}}
     - require:
       - pkg: nrpe_pkg
 

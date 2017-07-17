@@ -21,6 +21,7 @@ masters_states:
     - slurm.server
     - ldap.server
     - ldap.phpldapadmin
+    - ldap.client
     - pxe.server
     - nfs.server
     - ssh.master

@@ -21,7 +21,6 @@ dns:
       - pkg: {{ pillar['pkgs']['dns'] }}
 
 {% for network, args in salt['pillar.get']('network').items() %}
-
 /var/named/reverse.{{network}}:
   file:
     - managed
@@ -31,7 +30,6 @@ dns:
       - pkg: {{ pillar['pkgs']['dns'] }}
     - defaults:
         net: {{network}}
-
 {% endfor %}
 
 named:

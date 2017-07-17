@@ -23,7 +23,7 @@ base:
     - engine/engine_connect
     - engine/engine_monitoring
     - engine/engine_reverse
-    - engine/engine_ip
+#    - engine/engine_ip
     - engine/engine_network
     - cluster/monitoring
 # Allowed to masters only, secure passwords and ssh private key

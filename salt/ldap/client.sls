@@ -6,7 +6,7 @@ sssd_package:
 
 enable_sssd:
   cmd.run:
-    - name: authconfig --enablesssd --enablesssdauth --enablelocauthorize --update
+    - name: authconfig --enablesssd --enablesssdauth --enablelocauthorize --enablemkhomedir --update
     - unless: grep "USESSSDAUTH=yes" /etc/sysconfig/authconfig
     - require:
       - pkg: sssd_package

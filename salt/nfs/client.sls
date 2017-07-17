@@ -1,11 +1,14 @@
+{% set host_type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
+{% set host_group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':group') %}
 nfs_utils:
   pkg.installed:
     - name: {{ pillar['pkgs']['nfs_utils'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 {% for nfsservid, args in salt['pillar.get']('nfs', {}).items() %}
 {% for mountpoint, argus in args.items() %}
+{% if (host_type~':'~host_group) in argus.mountpool %}
 {{mountpoint}}:
   mount.mounted:
 {%- if argus.network == "net0" %}
@@ -19,4 +22,5 @@ nfs_utils:
     - require:
       - pkg: nfs_utils
       - sls: dns.client
+{% endif %}
 {% endfor %}{% endfor %}

@@ -1,4 +1,4 @@
-{% set netadmin = 'engine_network:'~salt['pillar.get']('core:admin_network') %}
+{% set admin_network = salt['pillar.get']('core:admin_network') %}
 #
 # DHCP Server Configuration file.
 #   see /usr/share/doc/dhcp*/dhcpd.conf.example
@@ -7,12 +7,10 @@
 
  authoritative;
 
- subnet {{ salt['pillar.get'](netadmin~':subnet') }} netmask {{ salt['pillar.get'](netadmin~':netmask') }} {
- range {{ salt['pillar.get'](netadmin~':dhcp_unknown_range') }};
+ subnet {{ salt['pillar.get']('engine_network:'~admin_network~':subnet') }} netmask {{ salt['pillar.get']('engine_network:'~admin_network~':netmask') }} {
+ range {{ salt['pillar.get']('engine_network:'~admin_network~':dhcp_unknown_range') }};
  option domain-name "{{ salt['pillar.get']('core:domain_name') }}";
  option domain-name-servers {% for server_ip in salt['pillar.get']('engine_connect:dns_server_ip') %}{% if loop.first %}{{ server_ip }}{% else %},{{ server_ip }}{% endif %}{% endfor %};
-# option routers {{ salt['pillar.get']('engine:master:masterip') }}; # to be corrected
-# option broadcast-address {{ salt['pillar.get']('engine:network:broadcast_address') }};
 
  default-lease-time 600;
  max-lease-time 7200;
@@ -30,7 +28,7 @@
 
    {%- for host, host_args in group_args.items() %}
       {%- for network, network_args in host_args.network.items() %}
-         {%- if network == salt['pillar.get']('core:admin_network') %}
+         {%- if network == admin_network %}
  host {{ host }} {
  hardware ethernet {{ network_args.hwaddr }};
  fixed-address {{ network_args.ip }};

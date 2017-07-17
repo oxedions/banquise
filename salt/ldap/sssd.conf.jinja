@@ -3,9 +3,10 @@ enumerate = False
 cache_credentials = true
 id_provider = ldap
 auth_provider = ldap
-access_provider = ldap
+#access_provider = ldap
+access_provider = permit
 chpass_provider = ldap
-ldap_uri = ldap://{{salt['pillar.get']('engine:servers:ldap_server_ip')}}/
+ldap_uri = ldap://{{salt['pillar.get']('engine_connect:authentication_server_ip')}}/
 ldap_search_base = {% set count = 1 %}{% for dc in pillar['ldap_public']['dc'] %}{% if count == 1%}dc={{dc}}{% set count = 2 %}{% else %},dc={{dc}}{% endif %}{% endfor %}
 ldap_tls_reqcert = never
 ldap_auth_disable_tls_never_use_in_production = true

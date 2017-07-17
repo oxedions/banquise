@@ -7,14 +7,19 @@ nfs:
       servermountpoint: /home     # Put here the export from the server
       network: net0                     # Put here the network used (only eth for current release)
       rights: rw                       # Put here the rights (read = ro, read/write = rw)
+      mountpool:
+        - computes:standard
     /opt:
       servermountpoint: /opt
       network: net0
       rights: ro
+      mountpool:
+        - 'computes:standard'
 
   nfs1:
     /scratch:
       servermountpoint: /scratch_mount
       network: ib0
       rights: rw
-
+      mountpool:
+        - 'computes:standard'

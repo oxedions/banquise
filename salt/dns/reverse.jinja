@@ -1,28 +1,25 @@
+{% set admin_ip = salt['pillar.get']('masters:'~(salt['grains.get']('id')|replace("."~salt['pillar.get']('core:domain_name'),''))~':network:'~salt['pillar.get']('core:admin_network')~':ip') %}
+{% set admin_hostname = (salt['grains.get']('id')|replace("."~salt['pillar.get']('core:domain_name'),'')) %}
+{% set admin_network = salt['pillar.get']('core:admin_network') %}
 $TTL 86400
-@   IN  SOA     {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}. root.{{salt['pillar.get']('engine:network:domaine_name')}}. (
+@   IN  SOA     {{admin_hostname}}.{{salt['pillar.get']('core:domain_name')}}. root.{{salt['pillar.get']('core:domain_name')}}. (
         2011071001  ;Serial
         3600        ;Refresh
         1800        ;Retry
         604800      ;Expire
         86400       ;Minimum TTL
 )
-@       IN  NS          {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
-@       IN  PTR         {{salt['pillar.get']('engine:network:domaine_name')}}.
+@       IN  NS          {{admin_hostname}}.{{salt['pillar.get']('core:domain_name')}}.
+@       IN  PTR         {{salt['pillar.get']('core:domain_name')}}.
 
-{% if net == "net0" %}
+{% if net == admin_network %}
 {% set nett = "" %}
 {% else %}
 {% set nett = "."~net %}
 {% endif %}
 
-{% if net == "net0" %}
-{% if salt['pillar.get']('engine:network:reverse') == 1 %}
-{% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
-{% elif salt['pillar.get']('engine:network:reverse') == 2 %}
-{% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
-{% elif salt['pillar.get']('engine:network:reverse') == 3 %}
-{% set list1 = salt['pillar.get']('engine:master:masterip').split('.') %}{{ list1[3] }}.{{ list1[2] }}.{{ list1[1] }}        IN  PTR         {{salt['pillar.get']('engine:master:masterid')}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
-{% endif %}
+{% if net == admin_network %}
+{% set list1 = admin_ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{admin_hostname}}.{{salt['pillar.get']('core:domain_name')}}.
 {% endif %}
 
 {% for type in salt['pillar.get']('core:types') %}
@@ -36,17 +33,17 @@ $TTL 86400
 {%- for host, argo in argu.items() %}
 {%- for network, args in argo.network.items() %}
 {% if network == net %}
-{%- if network == "net0" %}
-{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{%- if network == admin_network %}
+{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('core:domain_name')}}.
 {%- else %}
-{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{network}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{network}}.{{salt['pillar.get']('core:domain_name')}}.
 {%- endif %}
 {%- endif %}
 {%- endfor %}
 
-{%- if net == "net0" %}
+{%- if net == admin_network %}
 {%- if argo.bmc is defined %}
-{% set list1 = argo.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{argo.bmc.name}}.{{salt['pillar.get']('engine:network:domaine_name')}}.
+{% set list1 = argo.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{argo.bmc.name}}.{{salt['pillar.get']('core:domain_name')}}.
 {%- endif %}
 {%- endif %}
 {%- endfor %}

@@ -21,7 +21,7 @@ restrict ::1
 #server 1.centos.pool.ntp.org iburst
 #server 2.centos.pool.ntp.org iburst
 #server 3.centos.pool.ntp.org iburst
-server {{salt['pillar.get']('engine:servers:ntp_server_ip')}} iburst
+server {{salt['pillar.get']('engine_connect:ntp_server_ip')}} iburst
 
 #broadcast 192.168.1.255 autokey        # broadcast server
 #broadcastclient                        # broadcast client

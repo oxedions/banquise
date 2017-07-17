@@ -1,11 +1,14 @@
+{% set admin_interface_ip = salt['pillar.get']('masters:'~(salt['grains.get']('id')|replace("."~salt['pillar.get']('core:domain_name'),''))~':network:'~salt['pillar.get']('core:admin_network')~':ip') %}
+{% set admin_network = salt['pillar.get']('core:admin_network') %}
+
 options {
-	listen-on port 53 { 127.0.0.1; {{salt['pillar.get']('engine:servers:dns_server_ip')}};};
+	listen-on port 53 { 127.0.0.1; {{ admin_interface_ip }};};
 	listen-on-v6 port 53 { ::1; };
 	directory 	"/var/named";
 	dump-file 	"/var/named/data/cache_dump.db";
 	statistics-file "/var/named/data/named_stats.txt";
 	memstatistics-file "/var/named/data/named_mem_stats.txt";
-	allow-query     { localhost; {{salt['pillar.get']('engine:network:subnet')}}/{{salt['pillar.get']('engine:network:shortnetmask')}};};
+	allow-query     { localhost; {{ salt['pillar.get']('engine_network:'~admin_network~':subnet') }}/{{ salt['pillar.get']('engine_network:'~admin_network~':shortnetmask') }};};
 
 	recursion no;
 
@@ -34,7 +37,7 @@ zone "." IN {
 	file "named.ca";
 };
 
-zone"{{salt['pillar.get']('engine:network:domaine_name')}}" IN {
+zone"{{salt['pillar.get']('core:domain_name')}}" IN {
 type master;
 file "forward";
 allow-update { none; };

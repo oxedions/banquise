@@ -1,50 +1,50 @@
 shinken_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['shinken'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 shinken_arbiter_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['shinken_arbiter'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 shinken_broker_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['shinken_broker'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 shinken_poller_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['shinken_poller'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 shinken_reactionner_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['shinken_reactionner'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 shinken_receiver_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['shinken_receiver'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 shinken_scheduler_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['shinken_scheduler'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 plugin_nrpe_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['plugin_nrpe'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 /etc/shinken/hostgroups/cluster-groups.cfg:
   file:                                    
@@ -263,8 +263,8 @@ shinkeninit:
 shinken_webui2_apache_pkg:
   pkg.installed:
     - name: {{ pillar['pkgs']['apache'] }}
-    - require:
-      - sls: repository.client
+#    - require:
+#      - sls: repository.client
 
 shinken_webui2_pkg:
   pkg.installed:
@@ -273,7 +273,7 @@ shinken_webui2_pkg:
       - service: shinken_arbiter_serv
       - cmd: shinkeninit
       - pkg: shinken_webui2_apache_pkg
-      - sls: repository.client
+#      - sls: repository.client
 
 /etc/shinken/brokers/broker-master.cfg:
   file.line:
