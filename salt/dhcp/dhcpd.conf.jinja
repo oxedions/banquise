@@ -7,19 +7,10 @@
 
  authoritative;
 
-<<<<<<< HEAD
  subnet {{ salt['pillar.get']('engine_network:'~admin_network~':subnet') }} netmask {{ salt['pillar.get']('engine_network:'~admin_network~':netmask') }} {
  range {{ salt['pillar.get']('engine_network:'~admin_network~':dhcp_unknown_range') }};
  option domain-name "{{ salt['pillar.get']('core:domain_name') }}";
  option domain-name-servers {% for server_ip in salt['pillar.get']('engine_connect:dns_server_ip') %}{% if loop.first %}{{ server_ip }}{% else %},{{ server_ip }}{% endif %}{% endfor %};
-=======
- subnet {{salt['pillar.get']('engine:network:subnet')}} netmask {{salt['pillar.get']('engine:network:netmask')}} {
- range {{salt['pillar.get']('engine:network:dhcp_cluster_range')}};
- option domain-name "{{salt['pillar.get']('engine:network:domaine_name')}}";
- option domain-name-servers {{salt['pillar.get']('engine:servers:dns_server_ip')}};
- option routers {{salt['pillar.get']('engine:master:masterip')}}; # to be corrected
- option broadcast-address {{salt['pillar.get']('engine:network:broadcast_address')}};
->>>>>>> fd940a25f1140ac17f02364496b45f25fb24a45f
 
  default-lease-time 600;
  max-lease-time 7200;

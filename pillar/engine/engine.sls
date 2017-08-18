@@ -10,21 +10,12 @@
 engine:
 
   network:
-<<<<<<< HEAD:pillar/engine/engine.sls
     domaine_name: {{ net.network.net0.domaine_name }}
     subnet: {{ net.network.net0.subnet }}
     netmask: {{ net.network.net0.netmask }}
     dhcp_unknown_range: {{ net.network.net0.dhcp_unknown_range }}
     {% set list1 = net.network.net0.subnet.split('.') %}
     {% if net.network.net0.netmask == '255.255.255.0' %}
-=======
-    domaine_name: {{ net.network.domaine_name }}
-    subnet: {{ net.network.subnet }}
-    netmask: {{ net.network.netmask }}
-    dhcp_cluster_range: {{ net.network.dhcp_cluster_range }}
-    {% set list1 = net.network.subnet.split('.') %}
-    {% if net.network.netmask == '255.255.255.0' %}
->>>>>>> fd940a25f1140ac17f02364496b45f25fb24a45f:pillar/engine.sls
     reverse: 1
     shortnetmask: 24
     matchpatern: "{{list1[0]}}.{{list1[1]}}.{{list1[2]}}"
