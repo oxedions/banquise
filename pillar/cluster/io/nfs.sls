@@ -2,7 +2,7 @@
 
 nfs:
 
-  master:                              # Put here the id of the node hosting these exports. You can define multiple nodes with multiple exports.
+  management1:                              # Put here the id of the node hosting these exports. You can define multiple nodes with multiple exports.
     /home:                             # Put here the mount point seen by the client
       servermountpoint: /home     # Put here the export from the server
       network: net0                     # Put here the network used (only eth for current release)
@@ -19,7 +19,7 @@ nfs:
   nfs1:
     /scratch:
       servermountpoint: /scratch_mount
-      network: ib0
+      network: net0
       rights: rw
       mountpool:
         - 'computes:standard'

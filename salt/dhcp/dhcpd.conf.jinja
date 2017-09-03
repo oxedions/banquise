@@ -10,12 +10,12 @@
  subnet {{ salt['pillar.get']('engine_network:'~admin_network~':subnet') }} netmask {{ salt['pillar.get']('engine_network:'~admin_network~':netmask') }} {
  range {{ salt['pillar.get']('engine_network:'~admin_network~':dhcp_unknown_range') }};
  option domain-name "{{ salt['pillar.get']('core:domain_name') }}";
- option domain-name-servers {% for server_ip in salt['pillar.get']('engine_connect:dns_server_ip') %}{% if loop.first %}{{ server_ip }}{% else %},{{ server_ip }}{% endif %}{% endfor %};
+ option domain-name-servers {{salt['pillar.get']('engine_connect:dns_server_ip')}};
 
  default-lease-time 600;
  max-lease-time 7200;
 
- next-server {% for server_ip in salt['pillar.get']('engine_connect:pxe_server_ip') %}{% if loop.first %}{{ server_ip }}{% else %},{{ server_ip }}{% endif %}{% endfor %};
+ next-server {{salt['pillar.get']('engine_connect:pxe_server_ip')}};
  filename "pxelinux.0";
 
 {% for type in salt['pillar.get']('core:types') %}

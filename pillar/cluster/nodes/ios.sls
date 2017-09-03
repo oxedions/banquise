@@ -6,7 +6,7 @@ ios:
       network:
         net0:
           ip: 10.1.1.1
-          hwaddr: 08:00:27:88:B7:08
+          hwaddr: 08:00:27:26:EC:68
           interface: auto
         ib0:
           ip: 10.2.1.1

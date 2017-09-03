@@ -1,7 +1,7 @@
 # This file contains masters description
 masters:
 
-  master:
+  management1:
     network:
       net0:
         ip: 10.1.0.1

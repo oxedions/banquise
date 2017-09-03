@@ -1,5 +1,5 @@
 ClusterName={{salt['pillar.get']('core:cluster_name')}}
-ControlMachine={% set count = 1 %}{% for controlmachine in salt['pillar.get']('engine_connect:jobscheduler_server_host') %}{% if count == 1%}{{controlmachine}}{% set count = 2 %}{% else %},{{controlmachine}}{% endif %}{% endfor %}
+ControlMachine={{salt['pillar.get']('engine_connect:jobscheduler_server_host')}}
 
 SlurmUser=slurm
 SlurmctldPort=6817

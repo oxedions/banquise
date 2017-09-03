@@ -8,7 +8,7 @@ masters_states:
 
 {#  {% if cor.core.master_mode == "standalone" %} #}
 {#  {{ eng.engine.master.masterid}}: #}
-  master:
+  management1:
     - repository.client
     - repository.server
     - dhcp.server 

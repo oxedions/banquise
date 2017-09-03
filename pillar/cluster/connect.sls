@@ -8,10 +8,6 @@ connect:
 #    "auto" let Banquise choose (will use state_to_watch to figure ip and hostname)
 #    "external" set an external ip, to be used by clients. Banquise will not manage the server and ignore it.
 #    "none" do not use this service, ignored by Banquise and if client installed ip will be empty
-# ip_value can accept multiple ip, juste use the following format:
-# ip_value:
-#   - 10.1.0.1
-#   - 10.1.0.2
 # Banquise will create two values each time: ipname_ip and ipname_hostname
 # for example, for dhcp_server, it will create dhcp_server_ip and dhcp_server_host
 
@@ -24,10 +20,8 @@ connect:
 # dns_server:
 #   state_to_watch: dns.server
 #   management: external
-#   ip_value:
-#     - 10.0.0.2
-#   host_value:
-#     - hostnametest
+#   ip_value: 10.0.0.2
+#   host_value: hostnametest
 
  dns_server:
    state_to_watch: dns.server

@@ -10,35 +10,37 @@ engine_connect:
 
 # External ip, use provided values for ip(s) and host(s)
 {% if server_args.management == "external" %}
-  {{server~"_ip"}}:
-  {% for ip in server_args.ip_value %}
-    - {{ip}}
-  {% endfor %}
-  {{server~"_host"}}:
-  {% for host in server_args.host_value %}
-    - {{host}}
-  {% endfor %}
+  {{server~"_ip"}}: {{server_args.ip_value}} 
+#  {% for ip in server_args.ip_value %}
+#    - {{ip}}
+#  {% endfor %}
+  {{server~"_host"}}: {{server_args.host_value}}
+#  {% for host in server_args.host_value %}
+#    - {{host}}
+#  {% endfor %}
 {% endif %}
 
 # Auto ip, get who install the to check state
 {% if server_args.management == "auto" %}
-  {{server~"_ip"}}:
+#  {{server~"_ip"}}:
   {% for masst, masst_args in mas_states.masters_states.items() %}
     {% for states in masst_args %}
       {% if states == server_args.state_to_watch %}
         {% for masters, masters_args in mas.masters.items() %}
           {% if masters == masst %}
-    - {{masters_args.network.net0.ip}}
+  {{server~"_ip"}}: {{masters_args.network.net0.ip}}
+#    - {{masters_args.network.net0.ip}}
           {% endif %}
         {% endfor %}
       {% endif %}
     {% endfor %}
   {% endfor %}
-  {{server~"_host"}}:
+#  {{server~"_host"}}:
   {% for masst, masst_args in mas_states.masters_states.items() %}
     {% for states in masst_args %}
       {% if states == server_args.state_to_watch %}
-    - {{masst}}
+#    - {{masst}}
+  {{server~"_host"}}: {{masst}}
       {% endif %}
     {% endfor %}
   {% endfor %}
