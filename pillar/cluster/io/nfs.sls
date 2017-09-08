@@ -9,17 +9,20 @@ nfs:
       rights: rw                       # Put here the rights (read = ro, read/write = rw)
       mountpool:
         - computes:standard
+        - 'logins:standard'
     /opt:
       servermountpoint: /opt
       network: net0
       rights: ro
       mountpool:
         - 'computes:standard'
+        - 'logins:standard'
 
   nfs1:
     /scratch:
       servermountpoint: /scratch_mount
-      network: net0
+      network: net1
       rights: rw
       mountpool:
         - 'computes:standard'
+        - 'logins:standard'
