@@ -8,7 +8,7 @@ ios:
           ip: 10.1.1.1
           hwaddr: 08:00:27:26:EC:68
           interface: auto
-        ib0:
+        ic0:
           ip: 10.2.1.1
           interface: enp0s8
 
@@ -19,6 +19,8 @@ ios:
         net0:
           ip: 10.1.1.2
           hwaddr: 08:00:27:0D:37:D7
-        ib0:
+          interface: auto
+        ic0:
           ip: 10.2.1.2
+          interface: enp0s8
 

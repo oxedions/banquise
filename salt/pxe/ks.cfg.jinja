@@ -50,6 +50,7 @@ cat  << xxEOFxx >> /root/.ssh/authorized_keys
 xxEOFxx
 restorecon -r /root/.ssh
 echo "{{salt['pillar.get']('core:salt_master_ip')}}	salt	salt-master" >> /etc/hosts
-systemctl enable salt-minion
+systemctl disable NetworkManager
+#systemctl enable salt-minion
 %end
 

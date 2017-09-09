@@ -8,7 +8,7 @@ logins:
           ip: 10.1.2.1
           hwaddr: 08:00:27:4C:86:3F
           interface: auto
-        ib0:
+        ic0:
           ip: 10.2.2.1
           interface: enp0s8
         net2:

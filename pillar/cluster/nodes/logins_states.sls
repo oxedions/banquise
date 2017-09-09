@@ -12,3 +12,5 @@ logins_states:
     - ldap.client
     - ssh.client
     - shinken.client
+    - nyancat
+

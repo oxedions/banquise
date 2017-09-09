@@ -12,12 +12,12 @@ computes:
       position:                      # Additional informations not used by Banquise
         rack: rack1
         z: A
-      network:
+      network:                       # Network information, specify here configuration for each network and associeted interface
         net0:
           ip: 10.1.3.1
           hwaddr: 08:00:27:84:F5:FA
-          interface: auto
-        ib0:
+          interface: auto            # On net0, you can use auto
+        ic0:
           ip: 10.2.3.1
           interface: enp0s8 
   
@@ -31,13 +31,14 @@ computes:
         net0:
           ip: 10.1.3.2
           hwaddr: 08:00:27:9E:2A:97
-        ib0:
+          interface: auto
+        ic0:
           ip: 10.2.3.2
           interface: enp0s8
    
 
 
-  gpu:
+  gpu:   # another group in type computes, here gpu
 
     compute3:
       procs: 4                       # BMC is optional
@@ -45,8 +46,10 @@ computes:
         net0:
           ip: 10.1.3.3
           hwaddr: 08:00:27:8A:EA:57
-        ib0:
+          interface: auto
+        ic0:
           ip: 10.2.3.3
+          interface: enp0s8
 
   smp:
 
@@ -60,7 +63,9 @@ computes:
         net0:
           ip: 10.1.3.4
           hwaddr: 08:00:27:8A:EA:58
-        ib0:
+          interface: auto
+        ic0:
           ip: 10.2.3.4
+          interface: enp0s8
 
 

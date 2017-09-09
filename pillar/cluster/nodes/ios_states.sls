@@ -11,7 +11,6 @@ ios_states:
     - ldap.client
     - shinken.client
     - ssh.client
-    - nyancat
 
   lustre:
     - repository.client

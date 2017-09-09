@@ -21,7 +21,7 @@ nfs:
   nfs1:
     /scratch:
       servermountpoint: /scratch_mount
-      network: net1
+      network: ic0
       rights: rw
       mountpool:
         - 'computes:standard'

@@ -6,7 +6,7 @@ masters:
       net0:
         ip: 10.1.0.1
         interface: na
-      ib0:
+      ic0:
         ip: 10.2.0.1
         interface: enp0s8
       net1:
