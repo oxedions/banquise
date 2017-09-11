@@ -1,6 +1,7 @@
-Current stable version: Alpha 3
-Next version: Alpha 3.1
+Current version: Beta 1
 
-# Focus on:
-  - PXE and basic configuration files generator script (auth done)
+# Current focus on:
+  - PXE and basic configuration files generator scripts (auth already done)
+  - Workstation state
+  - Types:groups hardware related things files
 
