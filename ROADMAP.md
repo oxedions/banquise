@@ -1,7 +1,18 @@
 Current version: Beta 1
 
-# Current focus on:
-  - PXE and basic configuration files generator scripts (auth already done)
-  - Workstation state
-  - Types:groups hardware related things files
+# Beta 1 curant roadmap:
 
+  - Banquise Center: ◕ in progress
+     Provide a management center for Banquise
+  - Nfs improvement
+     Provide more options for NFS
+  - Multiple system compatibility
+     Ability to use multiple systems (different partition schema, kernel options, ipmi consoles, etc)
+  - Updates
+     Update repositories, update parameters
+  - Basic stack RPM
+     Provide basic rpm such as GCC, OpenMPI/MVapich2, etc.
+  - Improve Monitoring
+     Improve code, provide other tools
+  - Workstation state
+     Provide an improved workstation state
