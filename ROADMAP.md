@@ -1,6 +1,6 @@
 Current version: Beta 1
 
-# Beta 1 curant roadmap:
+# Beta 1 current roadmap:
 
   - Banquise Center: ◕ in progress
      Provide a management center for Banquise
