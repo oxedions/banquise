@@ -1,41 +1,26 @@
-x_window_system_group:
-  pkg.group_installed:
-    - name: "X Window System"
-#    - require:
-#      - sls: repository.client
+{% if salt['grains.get']('localhost') != salt['grains.get']('id') %}
+sethostname:
+  cmd.run:
+    - name: hostnamectl set-hostname {{salt['grains.get']('id')}}
+{% endif %}
 
-gnome_shell_gdm:
-  pkg.installed:
-    - pkgs:
-      - gnome-classic-session
-      - gnome-terminal
-      - control-center
-      - liberation-mono-fonts
-#    - require:
-#      - sls: repository.client
+{% set group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':subtype') %}
+{% set type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
 
-/etc/systemd/system/default.target:
-  file.symlink:
-    - target: /lib/systemd/system/graphical.target
 
-reboot_minion:
-  salt.function:
-    - name: system.reboot
-    - require:
-      - pkg: x_window_system_group
-      - pkg: gnome_shell_gdm
-      - file: /etc/systemd/system/default.target
-    - tgt: "{{salt['grains.get']('id')}}"
+{% if type == "masters" %}
+{% set netpath = type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),''))~":network" %}
+{% else %}
+{% set netpath = type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),''))~":network" %}
+{% endif %}
 
-wait_for_reboots:
-  salt.wait_for_event:
-    - name: salt/minion/{{salt['grains.get']('id')}}/start
-    - require:
-      - salt: reboot_minion
+{{type}}
+{{group}}
 
-#system.reboot:
-#  module.run:
-#    - require:
-#      - pkg: x_window_system_group
-#      - pkg: gnome_shell_gdm
-#      - file: /etc/systemd/system/default.target 
+{{type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),''))~":network"}}
+
+{{salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),'')}}
+
+{{netpath}}
+
+

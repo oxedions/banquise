@@ -4,7 +4,7 @@ sethostname:
     - name: hostnamectl set-hostname {{salt['grains.get']('id')}}
 {% endif %}
 
-{% set group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':group') %}
+{% set group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':subtype') %}
 {% set type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
 
 

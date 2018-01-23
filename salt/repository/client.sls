@@ -1,8 +1,16 @@
-/etc/yum.repos.d/os_dvd.local.repo:
-  file:                                    
-    - managed                               
-    - source: salt://repository/os_dvd.local.repo.jinja 
+{% set type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
+{% set subtype = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':subtype') %}
+{% set os = salt['pillar.get'](type~'_system:'~subtype~':os') %}
+{% set os_release = salt['pillar.get'](type~'_system:'~subtype~':os_release') %}
+
+/etc/yum.repos.d/{{os}}_{{os_release}}.local.repo:
+  file:
+    - managed
+    - source: salt://repository/os_dvd.local.repo.jinja
     - template: jinja
+    - defaults:
+        os: {{os}}
+        os_release: {{os_release}}
 
 /etc/yum.repos.d/banquise.local.repo:
   file:

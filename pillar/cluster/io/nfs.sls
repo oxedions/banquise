@@ -10,6 +10,7 @@ nfs:
       mountpool:
         - computes:standard
         - 'logins:standard'
+        - computes:gpu
     /opt:
       servermountpoint: /opt
       network: net0

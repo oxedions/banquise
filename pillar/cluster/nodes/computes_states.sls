@@ -20,7 +20,9 @@ computes_states:
     - network.static
     - network.firewall
     - network.nmanager
-    - slurm.client
+    - shinken.client
+    - ldap.client
+#    - slurm.client
     - nfs.client
     - ssh.client
 

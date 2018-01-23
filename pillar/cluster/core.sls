@@ -12,3 +12,5 @@ core:
     - ios
     - switchs
   admin_network: net0
+  external_dns: 8.8.8.8
+  time_zone: America/New_York
