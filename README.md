@@ -6,7 +6,7 @@
                    ██████  ██   ██ ██   ████  ██████   ██████  ██ ███████ ███████ 
                                                  ▀▀
 
-Current release: Beta 1
+Current release: v 1.0
 
 Mail: oxedions@gmail.com
 
