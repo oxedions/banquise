@@ -1,7 +1,7 @@
 connect:
 
 # The services listed here are the Banquise default ones
-# However, you can add a new one if you desire to use Banquise to handle one of your iop
+# However, you can add a new one if you desire to use Banquise to handle one of your ip
 
 # state_to_watch: state to watch, the ip will be the one of the host installing this state
 # management:

@@ -1,26 +1,3 @@
-{% if salt['grains.get']('localhost') != salt['grains.get']('id') %}
-sethostname:
-  cmd.run:
-    - name: hostnamectl set-hostname {{salt['grains.get']('id')}}
-{% endif %}
-
-{% set group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':subtype') %}
-{% set type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
-
-
-{% if type == "masters" %}
-{% set netpath = type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),''))~":network" %}
-{% else %}
-{% set netpath = type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),''))~":network" %}
-{% endif %}
-
-{{type}}
-{{group}}
-
-{{type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),''))~":network"}}
-
-{{salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),'')}}
-
-{{netpath}}
-
+Hello World !
+{{salt['pillar.get']('helloworld')}}
 
