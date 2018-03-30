@@ -7,6 +7,7 @@ connect:
 # management:
 #    "auto" let Banquise choose (will use state_to_watch to figure ip and hostname)
 #    "external" set an external ip, to be used by clients. Banquise will not manage the server and ignore it.
+#    "link" mix between auto and external. Banquise will choose depending of state_to_watch, but will also configure the service (if compatible) to be connected to an external same service (recursive dns for example)
 #    "none" do not use this service, ignored by Banquise and if client installed ip will be empty
 # Banquise will create two values each time: ipname_ip and ipname_hostname
 # for example, for dhcp_server, it will create dhcp_server_ip and dhcp_server_host
@@ -25,8 +26,8 @@ connect:
 
  dns_server:
    state_to_watch: dns.server
-   management: auto
-   ip_value:
+   management: link
+   ip_value: 8.8.8.8
    host_value:
 
  repository_server:

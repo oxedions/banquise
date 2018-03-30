@@ -17,12 +17,19 @@
     - managed
     - source: salt://repository/banquise.local.repo.jinja
     - template: jinja
+    - defaults:
+        os: {{os}}
+        os_release: {{os_release}}
 
-/etc/yum.repos.d/salt.local.repo:
+/etc/yum.repos.d/salt.{{os}}_{{os_release}}.local.repo:
   file:
     - managed
     - source: salt://repository/salt.local.repo.jinja
     - template: jinja
+    - defaults:
+        os: {{os}}
+        os_release: {{os_release}}
+
     
 /etc/yum.repos.d/CentOS-Base.repo:
   file:

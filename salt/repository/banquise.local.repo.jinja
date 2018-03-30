@@ -1,5 +1,5 @@
-[banquise.local]
+[banquise_{{os}}_{{os_release}}.local]
 name=banquise repository
-baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/banquise.local.repo
+baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/banquise_{{os}}_{{os_release}}.local.repo
 gpgcheck=0
 enabled=1

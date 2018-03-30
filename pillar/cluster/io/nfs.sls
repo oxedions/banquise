@@ -19,11 +19,11 @@ nfs:
         - 'computes:standard'
         - 'logins:standard'
 
-  nfs1:
-    /scratch:
-      servermountpoint: /scratch_mount
-      network: ic0
-      rights: rw
-      mountpool:
-        - 'computes:standard'
-        - 'logins:standard'
+#  nfs1:
+#    /scratch:
+#      servermountpoint: /scratch_mount
+#      network: ic0
+#      rights: rw
+#      mountpool:
+#        - 'computes:standard'
+#        - 'logins:standard'

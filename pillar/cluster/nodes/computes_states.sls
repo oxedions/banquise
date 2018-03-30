@@ -17,7 +17,7 @@ computes_states:
     - repository.client
     - dns.client
     - ntp.client
-    - network.static
+#    - network.static
     - network.firewall
     - network.nmanager
     - shinken.client

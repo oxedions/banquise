@@ -16,19 +16,21 @@ sethostname:
 
 {% for network, argo in salt['pillar.get'](netpath).items() %}
 
-{% if network == "net0" and argo.interface == "auto" %}
+{% if network ==  salt['pillar.get']('core:admin_network') and argo.interface == "auto" %}
 # auto interface enabled
-{% for interf, args in salt['grains.get']('ip_interfaces').items() %}
+{% for interf, args in salt['grains.get']('ip4_interfaces').items() %}
 {% for ips in args %}
-{% if salt['pillar.get']('engine:network:matchpatern') in ips %}
+{% if salt['pillar.get']("engine_network:"~network~":matchpatern") in ips %}
 {{interf}}:
   network.managed:
     - enabled: True
     - type: eth
     - proto: none
     - ipaddr: {{ips}}
-    - netmask: {{salt['pillar.get']('engine:network:netmask')}}
-
+    - netmask: {{salt['pillar.get']("engine_network:"~network~":netmask")}}
+{% if salt['pillar.get']("engine_network:"~network~":gateway") is defined %}
+    - gateway: {{salt['pillar.get']("engine_network:"~network~":gateway")}}
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endfor %}
@@ -41,7 +43,11 @@ sethostname:
     - type: eth
     - proto: none
     - ipaddr: {{argo.ip}}
-    - netmask: {{salt['pillar.get']("network:"~network~":netmask")}}
+    - netmask: {{salt['pillar.get']("engine_network:"~network~":netmask")}}  {#"network:"~network~":netmask")}}#}
+{% if salt['pillar.get']("engine_network:"~network~":gateway") is defined and  salt['pillar.get']("engine_network:"~network~":gateway") is not none %}
+    - gateway: {{salt['pillar.get']("engine_network:"~network~":gateway")}}
+{% endif %}
+
 {% endif %}
 
 {% endfor %}
