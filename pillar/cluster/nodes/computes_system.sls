@@ -1,6 +1,18 @@
 computes_system:
 
   standard:
+    operating_system:
+      os: Centos
+      os_release: 7.4.1708
+    hardware:
+      sockets:
+      cores_per_socket:
+      threads_per_core:
+      memory:
+    bmc:
+      user:
+      password:
+      console:
     os: Centos
     os_release: 7.4.1708
     partitioning: |
