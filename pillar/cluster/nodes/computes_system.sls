@@ -4,6 +4,13 @@ computes_system:
     operating_system:
       os: Centos
       os_release: 7.4.1708
+      kernel_parameters:
+      boot_mode: bios            # bios, uefi
+      partitioning: |            # Multiple lines variables, start with a | and indented. This is plain kickstart syntax here.
+        clearpart --all --initlabel
+        part /boot --fstype=ext4 --size=2048
+        part / --fstype=ext4 --size=1 --grow
+      updates: kickstart, none   # when to update, separate by comma
     hardware:
       sockets:
       cores_per_socket:
@@ -13,6 +20,7 @@ computes_system:
       user:
       password:
       console:
+
     os: Centos
     os_release: 7.4.1708
     partitioning: |
