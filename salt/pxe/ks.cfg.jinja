@@ -12,7 +12,18 @@ text
 firstboot --enable
 
 # Salt Stack repository (to get salt-minion)
-repo --name=salt.local.repo --baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt_{{os}}_{{os_release}}.local.repo
+{% if os == 'Centos' %}
+  {% if os_release == '7.4.1708' %}
+  {% set salt_reponame = 'RH_7' %}
+  {% endif %}
+{% endif %}
+{% if os == 'Fedora' %}
+  {% if os_release == '27' %}
+  {% set salt_reponame = 'Fedora_27' %}
+  {% endif %}
+{% endif %}
+
+repo --name=salt.local.repo --baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt_{{salt_reponame}}.local.repo
 
 # Keyboard layouts
 keyboard --vckeymap=us --xlayouts='us'
@@ -34,7 +45,7 @@ timezone {{salt['pillar.get']('core:time_zone')}} --isUtc
 bootloader --append=" crashkernel=auto" --location=mbr
 
 # Partition clearing information
-{{salt['pillar.get'](type~'_system:'~subtype~':partitioning')}}
+{{salt['pillar.get'](type~'_system:'~subtype~':operating_system:partitioning')}}
 #clearpart --all --initlabel
 #part /boot --fstype=ext4 --size=2048
 #part / --fstype=ext4 --size=1 --grow

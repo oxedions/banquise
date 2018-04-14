@@ -9,3 +9,6 @@
 {% set netpath = type~":"~subtype~":"~hostname~":network" %}
 {% endif %}
 
+{% set os = salt['pillar.get'](type~'_system:'~subtype~':operating_system:os') %}
+{% set os_release = salt['pillar.get'](type~'_system:'~subtype~':operating_system:os_release') %}
+

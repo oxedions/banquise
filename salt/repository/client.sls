@@ -1,16 +1,22 @@
-{% set type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
-{% set subtype = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':subtype') %}
-{% set os = salt['pillar.get'](type~'_system:'~subtype~':os') %}
-{% set os_release = salt['pillar.get'](type~'_system:'~subtype~':os_release') %}
+{% import 'include/myself.sls' as ms with context %}
 
-/etc/yum.repos.d/{{os}}_{{os_release}}.local.repo:
+
+/etc/yum.repos.d/os_base.local.repo:
   file:
     - managed
-    - source: salt://repository/os_dvd.local.repo.jinja
+    - source: salt://repository/genericwithupdate.local.repo.jinja
     - template: jinja
     - defaults:
-        os: {{os}}
-        os_release: {{os_release}}
+        reponame: {{ms.os}}_{{ms.os_release}}
+
+#/etc/yum.repos.d/{{ms.os}}_{{ms.os_release}}.local.repo:
+#  file:
+#    - managed
+#    - source: salt://repository/os_dvd.local.repo.jinja
+#    - template: jinja
+#    - defaults:
+#        os: {{ms.os}}
+#        os_release: {{ms.os_release}}
 
 /etc/yum.repos.d/banquise.local.repo:
   file:
@@ -18,17 +24,17 @@
     - source: salt://repository/banquise.local.repo.jinja
     - template: jinja
     - defaults:
-        os: {{os}}
-        os_release: {{os_release}}
+        os: {{ms.os}}
+        os_release: {{ms.os_release}}
 
-/etc/yum.repos.d/salt.{{os}}_{{os_release}}.local.repo:
+/etc/yum.repos.d/salt.local.repo:
   file:
     - managed
     - source: salt://repository/salt.local.repo.jinja
     - template: jinja
     - defaults:
-        os: {{os}}
-        os_release: {{os_release}}
+        os: {{ms.os}}
+        os_release: {{ms.os_release}}
 
     
 /etc/yum.repos.d/CentOS-Base.repo:

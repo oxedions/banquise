@@ -12,47 +12,75 @@ computes_system:
         part / --fstype=ext4 --size=1 --grow
       updates: kickstart, none   # when to update, separate by comma
     hardware:
-      sockets:
-      cores_per_socket:
-      threads_per_core:
-      memory:
+      sockets: 1
+      cores_per_socket: 1
+      threads_per_core: 1
+      memory: 1024
     bmc:
       user:
       password:
       console:
 
-    os: Centos
-    os_release: 7.4.1708
-    partitioning: |
-      clearpart --all --initlabel
-      part /boot --fstype=ext4 --size=2048
-      part / --fstype=ext4 --size=1 --grow
-    boot_mode: bios # bios, uefi
-    kernel_parameters:
-    bmc_console:
-    update: none # when to update
+#    os: Centos
+#    os_release: 7.4.1708
+#    partitioning: |
+#      clearpart --all --initlabel
+#      part /boot --fstype=ext4 --size=2048
+#      part / --fstype=ext4 --size=1 --grow
+#    boot_mode: bios # bios, uefi
+#    kernel_parameters:
+#    bmc_console:
+#    update: none # when to update
     
   gpu:
-    os: Fedora
-    os_release: 27
-    partitioning: |
-      clearpart --all --initlabel
-      part /boot --fstype=ext4 --size=2048
-      part / --fstype=ext4 --size=1 --grow
-    boot_mode: bios # bios, uefi
-    kernel_parameters:
-    bmc_console:
-    update: none # when to update
+    operating_system:
+      os: Fedora
+      os_release: 27
+      kernel_parameters:
+      boot_mode: bios
+      partitioning: |
+        clearpart --all --initlabel
+        part /boot --fstype=ext4 --size=2048
+        part / --fstype=ext4 --size=1 --grow
+      updates: kickstart, none
+    hardware:
+      sockets: 1
+      cores_per_socket: 1
+      threads_per_core: 1
+      memory: 1024
+    bmc:
+      user:
+      password:
+      console:
+
+#    os: Fedora
+#    os_release: 27
+#    partitioning: |
+#      clearpart --all --initlabel
+#      part /boot --fstype=ext4 --size=2048
+#      part / --fstype=ext4 --size=1 --grow
+#    boot_mode: bios # bios, uefi
+#    kernel_parameters:
+#    bmc_console:
+#    update: none # when to update
 
   smp:
-    os: Centos
-    os_release: 7.4.1708
-    partitioning:
-      clearpart --all --initlabel
-      part /boot --fstype=ext4 --size=2048
-      part / --fstype=ext4 --size=1 --grow
-    boot_mode: bios # bios, uefi
-    kernel_parameters:
-    bmc_console:
-    update: none # when to update
-
+    operating_system:
+      os: Fedora
+      os_release: 27
+      kernel_parameters:
+      boot_mode: bios
+      partitioning: |
+        clearpart --all --initlabel
+        part /boot --fstype=ext4 --size=2048
+        part / --fstype=ext4 --size=1 --grow
+      updates: kickstart, none
+    hardware:
+      sockets: 1
+      cores_per_socket: 1
+      threads_per_core: 1
+      memory: 1024
+    bmc:
+      user:
+      password:
+      console:
