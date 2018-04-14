@@ -6,7 +6,7 @@ engine_reverse:
 
 {% for master in mas.masters %}
   {{master}}.{{eng.engine.network.domaine_name}}:
-    group: masters
+    subtype: {{master}}
     type: masters
 {% endfor %}
 
@@ -16,7 +16,7 @@ engine_reverse:
 {% for group, args in argy.items() %}
 {% for node in args %}
   {{node}}.{{eng.engine.network.domaine_name}}:
-    group: {{group}}
+    subtype: {{group}}
     type: {{types}}
 {% endfor %}
 {% endfor %}

@@ -7,3 +7,5 @@ gnome_shell_gdm:
       - firefox
       - gnome-calculator
       - gnome-screenshot
+    - require:
+      - sls: workstation.Centos_7_gnome_desktop

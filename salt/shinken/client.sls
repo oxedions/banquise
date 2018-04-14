@@ -58,7 +58,7 @@ zombie_2:
 
 {% if salt['pillar.get']('monitoring:parameters:enable_states_probs') %}
 
-{% for state, args in salt['pillar.get']('engine_monitoring:'~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type')~":"~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':group'), {}).items() %}
+{% for state, args in salt['pillar.get']('engine_monitoring:'~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type')~":"~salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':subtype'), {}).items() %}
 {% if args is not none %}
 {% for element, argo in args.items() %}    {# Node now check for each state in its type:group if there something to do. All of this is listed in engine_monitoring virtual pillar #}
 

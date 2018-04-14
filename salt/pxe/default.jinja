@@ -1,15 +1,15 @@
 default menu.c32
-prompt 0
+prompt 5
 timeout 30
-MENU TITLE Banquise PXE Menu
+MENU TITLE Banquise PXE Menu for {{type}}:{{subtype}}
 
- default centos7_x64
-# default localdisk
+ default {{os}}_{{os_release}}_INSTALL
+ # default localdisk
 
- LABEL centos7_x64
- MENU LABEL CentOS 7 X64
- KERNEL /netboot/vmlinuz
- APPEND  initrd=/netboot/initrd.img  inst.repo=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/os_dvd.local.repo  ks=http://{{salt['pillar.get']('engine_connect:pxe_server_ip')}}/ks.cfg
+ LABEL {{os}}_{{os_release}}_INSTALL
+ MENU LABEL {{type}} {{subtype}}
+ KERNEL /netboot/{{os}}/{{os_release}}/vmlinuz
+ APPEND  initrd=/netboot/{{os}}/{{os_release}}/initrd.img  inst.repo=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/{{os}}_{{os_release}}.local.repo  ks=http://{{salt['pillar.get']('engine_connect:pxe_server_ip')}}/ks_{{type}}_{{subtype}}.cfg {% if salt['pillar.get'](type~'_system:'~subtype~':operating_system:kernel_parameters') is not none %}{{salt['pillar.get'](type~'_system:'~subtype~':operating_system:kernel_parameters')}}{% endif %} {% if salt['pillar.get'](type~'_system:'~subtype~':bmc:console') is not none %}{{salt['pillar.get'](type~'_system:'~subtype~':bmc:console')}}{% endif %}
 
  LABEL localdisk
  KERNEL chain.c32 

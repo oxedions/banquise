@@ -1,11 +1,11 @@
-[os_dvd.local]
+[{{os}}_{{os_release}}.local]
 name=OS base repository
-baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/os_dvd.local.repo
+baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/{{os}}_{{os_release}}.local.repo
 gpgcheck=0
 enabled=1
 
-[os_update.local]
+[{{os}}_{{os_release}}_update.local]
 name=OS base repository update
-baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/os_update.local.repo
+baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/{{os}}_{{os_release}}_update.local.repo
 gpgcheck=0
 enabled=0

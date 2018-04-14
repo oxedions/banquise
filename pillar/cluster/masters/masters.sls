@@ -11,4 +11,5 @@ masters:
         interface: enp0s8
       net1:
         ip: 172.16.0.1
-        interface: enp0s9
+        interface: na
+    external_interface: enp0s9
