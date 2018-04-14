@@ -10,6 +10,9 @@ engine_network:
 {% if network_args.dhcp_unknown_range is defined %} 
     dhcp_unknown_range: {{ network_args.dhcp_unknown_range }}
 {% endif %}
+{% if network_args.gateway is defined %}
+    gateway: {{ network_args.gateway }}
+{% endif %}
   {% set list1 = network_args.subnet.split('.') %}   # very basic intelligence, need to enhance this
   {% if network_args.netmask == '255.255.255.0' %}
     reverse: 1

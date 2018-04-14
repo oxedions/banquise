@@ -17,6 +17,7 @@ masters_states:
     - network.firewall
     - network.nmanager
     - network.static
+    - network.masquerading
     - ntp.server
     - slurm.server
     - ldap.server

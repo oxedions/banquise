@@ -17,10 +17,12 @@ computes_states:
     - repository.client
     - dns.client
     - ntp.client
-    - network.static
+#    - network.static
     - network.firewall
     - network.nmanager
-    - slurm.client
+    - shinken.client
+    - ldap.client
+#    - slurm.client
     - nfs.client
     - ssh.client
 

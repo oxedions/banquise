@@ -10,7 +10,15 @@ options {
 	memstatistics-file "/var/named/data/named_mem_stats.txt";
 	allow-query     { localhost; {{ salt['pillar.get']('engine_network:'~admin_network~':subnet') }}/{{ salt['pillar.get']('engine_network:'~admin_network~':shortnetmask') }};};
 
+{% if salt['pillar.get']('engine_connect:dns_server_link') == true %}
+        recursion yes;
+
+        forwarders {
+                {{salt['pillar.get']('engine_connect:dns_server_link_ip')}};
+        };
+{% else %}
 	recursion no;
+{% endif %}
 
 	dnssec-enable yes;
 	dnssec-validation yes;

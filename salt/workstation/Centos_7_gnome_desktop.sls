@@ -1,8 +1,8 @@
 x_window_system_group:
   pkg.group_installed:
     - name: "X Window System"
-#    - require:
-#      - sls: repository.client
+    - require:
+      - sls: repository.client
 
 gnome_shell_gdm:
   pkg.installed:
@@ -11,8 +11,8 @@ gnome_shell_gdm:
       - gnome-terminal
       - control-center
       - liberation-mono-fonts
-#    - require:
-#      - sls: repository.client
+    - require:
+      - sls: repository.client
 
 /etc/systemd/system/default.target:
   file.symlink:

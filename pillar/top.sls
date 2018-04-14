@@ -10,11 +10,13 @@ base:
 {%- for types in cor.core.types %}
     - cluster/nodes/{{types}}
     - cluster/nodes/{{types}}_states
+    - cluster/nodes/{{types}}_system
 {%- endfor %}
     - cluster/io/nfs
     - cluster/network
     - cluster/masters/masters
     - cluster/masters/masters_states
+    - cluster/masters/masters_system
     - engine/engine
     - cluster/core
     - cluster/authentication/ssh_public

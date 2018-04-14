@@ -1,5 +1,20 @@
-[salt.local.repo]
+{% if os == 'Centos' %}
+{% if os_release == '7.4.1708' %}
+[salt_RH_7.local.repo]
 name=salt local repository
-baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt.local.repo
+baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt_RH_7.local.repo
 gpgcheck=0
 enabled=1
+{% endif %}
+{% endif %}
+
+{% if os == 'Fedora' %}
+{% if os_release == '27' %}
+[salt_Fedora_27.local.repo]
+name=salt local repository
+baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt_Fedora_27.local.repo
+gpgcheck=0
+enabled=1
+{% endif %}
+{% endif %}
+

@@ -4,7 +4,6 @@ computes:
   standard:
 
     compute1:                        # Name of the compute
-      procs: 2                       # Number of cores of the server
       bmc:
         name: bmccompute1            # Name of the BMC
         ip: 10.1.103.1               # Ip of the bmc
@@ -22,7 +21,6 @@ computes:
           interface: enp0s8 
   
     compute2:
-      procs: 2
       bmc:
         name: bmccompute2
         ip: 10.1.103.2
@@ -41,7 +39,6 @@ computes:
   gpu:   # another group in type computes, here gpu
 
     compute3:
-      procs: 4                       # BMC is optional
       network:
         net0:
           ip: 10.1.3.3
@@ -54,7 +51,6 @@ computes:
   smp:
 
     compute4:
-      procs: 24
       bmc:
         name: bmccompute4
         ip: 10.1.103.4
