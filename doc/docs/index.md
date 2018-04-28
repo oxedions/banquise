@@ -2,8 +2,6 @@
 
 ![Banquise_logo](img/banquise_logo.png)
 
-## Welcome
-
 This documentation provides:
 
 * Step by step Banquise installation procedure
@@ -13,6 +11,3 @@ This documentation provides:
 
 Please use menu on the left to navigate between topics.
 
-## Useful links
-
-* [Banquise github page](https://github.com/oxedions)

@@ -1,7 +1,10 @@
 site_name: Banquise Documentation
 theme: readthedocs
 pages:
-   - Home: index.md
+   - Home:
+      - Welcome: index.md
+      - What is Banquise: what_is_banquise.md
+      - Useful links: useful_links.md
    - Install:
       - Prepare installation: installation/prepare_installation.md
    - About: about.md
