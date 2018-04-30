@@ -1,28 +1,19 @@
 {% import 'include/myself.sls' as ms with context %}
 
-tftp:
+# Please note that this state is based on RHEL documentation:
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/installation_guide/chap-installation-server-setup
+
+pxe_packages:
   pkg.installed:
-    - name: {{ pillar['pkgs']['tftp'] }}
+    - pkgs:
+      - {{ pillar['pkgs']['tftp'] }}
+      - {{ pillar['pkgs']['tftpserver'] }}
+      - {{ pillar['pkgs']['syslinux'] }}
+      - {{ pillar['pkgs']['webserver'] }}
     - require:
       - sls: repository.client
 
-tftp-server:
-  pkg.installed:
-    - name: {{ pillar['pkgs']['tftpserver'] }}
-    - require:
-      - sls: repository.client
 
-syslinux:
-  pkg.installed:
-    - name: {{ pillar['pkgs']['syslinux'] }}
-    - require:
-      - sls: repository.client
-
-webserver:
-  pkg.installed:
-    - name: {{ pillar['pkgs']['webserver'] }}
-    - require:
-      - sls: repository.client
 
 /var/lib/tftpboot/pxelinux.0:
    file.copy:
