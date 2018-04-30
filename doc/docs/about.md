@@ -1,5 +1,9 @@
 # About
 
+## Author
+
+Oxedions
+
 ## Contributors
 
 * oxedions
@@ -13,7 +17,12 @@ Banquise and it's icebergs are distributed under [MIT license](https://github.co
 
 ### Version 1.1
 
-* Development in progress...
+Development in progress...
+
+* Add tools
+* Improve modulatory
+* Add multi OS support
+* Add system configuration per subtype
 
 ### Version 1.0
 

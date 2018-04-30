@@ -5,6 +5,11 @@ pages:
       - Welcome: index.md
       - What is Banquise: what_is_banquise.md
       - Useful links: useful_links.md
-   - Install:
-      - Prepare installation: installation/prepare_installation.md
+   - Standard install:
+      - Prepare installation: standard_installation/prepare_installation.md
+   - HPC cluster install:
+      - Prepare installation: hpc_cluster_installation/prepare_installation.md
+   - Debugging Banquise: debugging_banquise.md
+   - FAQ: FAQ.md
    - About: about.md
+
