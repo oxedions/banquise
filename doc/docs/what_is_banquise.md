@@ -1,21 +1,21 @@
 # What is Banquise ?
 
-![Banquise_logo](img/banquise_logo.png)
-
 ## The story...
 
 Once upon a time, in a very cold sea...
 
-Penguins were living on small icebergs, each colony separated from the others by dangerous and cold water... Each tentative to join the others was a disaster.
+Penguins were living on small icebergs, each colony separated from the others by dangerous and cold water... Each tentative to join to the others was a disaster.
+
+![Banquise_logo](img/splitted_icebergs.svg)
 
 One day, penguins discovered that sea Salt could be used to build strong structures.
 
 From this day, penguins started using Salt to gather icebergs and created a unified land: the Banquise. They started living in harmony and effectiveness, and story even say they started some secret business with whales...
 
-
 ## The tool
 
 Banquise is a tool made using [Salt Stack](https://saltstack.com/) to allow simple design and deployment of groups of computers (cluster). It is a full opensource tool, using other opensource resources.
+![Salt_logo](img/Saltstack_logo.png)
 
 Banquise is composed of two things:
 
