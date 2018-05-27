@@ -11,7 +11,7 @@ Oxedions
 
 ## License
 
-Banquise and it's icebergs are distributed under [MIT license](https://github.com/oxedions/banquise/blob/master/LICENSE).
+Banquise is distributed under [MIT license](https://github.com/oxedions/banquise/blob/master/LICENSE).
 
 ## Release notes
 
