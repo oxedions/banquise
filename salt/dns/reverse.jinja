@@ -1,52 +1,66 @@
-{% set admin_ip = salt['pillar.get']('masters:'~(salt['grains.get']('id')|replace("."~salt['pillar.get']('core:domain_name'),''))~':network:'~salt['pillar.get']('core:admin_network')~':ip') %}
-{% set admin_hostname = (salt['grains.get']('id')|replace("."~salt['pillar.get']('core:domain_name'),'')) %}
-{% set admin_network = salt['pillar.get']('core:admin_network') %}
+{% set admin_ip = salt['pillar.get']('masters:'~(salt['grains.get']('id')|replace("."~salt['pillar.get']('network:global_parameters:domain_name'),''))~':network:'~salt['pillar.get']('network:global_parameters:admin_network')~':ip') %}
+{% set admin_hostname = (salt['grains.get']('id')|replace("."~salt['pillar.get']('network:global_parameters:domain_name'),'')) %}
+{% set admin_network = salt['pillar.get']('network:global_parameters:admin_network') %}
 $TTL 86400
-@   IN  SOA     {{admin_hostname}}.{{salt['pillar.get']('core:domain_name')}}. root.{{salt['pillar.get']('core:domain_name')}}. (
+@   IN  SOA     {{admin_hostname}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}. root.{{salt['pillar.get']('network:global_parameters:domain_name')}}. (
         2011071001  ;Serial
         3600        ;Refresh
         1800        ;Retry
         604800      ;Expire
         86400       ;Minimum TTL
 )
-@       IN  NS          {{admin_hostname}}.{{salt['pillar.get']('core:domain_name')}}.
-@       IN  PTR         {{salt['pillar.get']('core:domain_name')}}.
+@       IN  NS          {{admin_hostname}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}.
+@       IN  PTR         {{salt['pillar.get']('network:global_parameters:domain_name')}}.
 
 {% if net == admin_network %}
-{% set nett = "" %}
-{% else %}
-{% set nett = "."~net %}
+{% set list1 = admin_ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{admin_hostname}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}.
 {% endif %}
 
-{% if net == admin_network %}
-{% set list1 = admin_ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{admin_hostname}}.{{salt['pillar.get']('core:domain_name')}}.
-{% endif %}
+
+{%- for host, host_args in salt['pillar.get']('masters').items() %}
+{%- for host_network, host_network_args in host_args.network.items() %}
+{% if host_network == net %}
+{%- if host_network == admin_network %}
+{% set list1 = host_network_args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}.
+{%- else %}
+{% set list1 = host_network_args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{host_network}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}.
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+
+{%- if host_args.bmc is defined %}
+{%- if host_args.bmc.network == net %}
+{% set list1 = host_args.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host_args.bmc.name}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}.
+{%- endif %}
+{%- endif %}
+
+{%- endfor %}
 
 {% for type in salt['pillar.get']('core:types') %}
 ;#############################################
 ;########## {{type}}
 ;###
-{% for group, argu in salt['pillar.get'](type, {}).items() %}
+{% for subtype, subtype_args in salt['pillar.get'](type, {}).items() %}
 ;##########
-;# {{group}}
+;# {{subtype}}
 
-{%- for host, argo in argu.items() %}
-{%- for network, args in argo.network.items() %}
-{% if network == net %}
-{%- if network == admin_network %}
-{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('core:domain_name')}}.
+{%- for host, host_args in subtype_args.items() %}
+{%- for host_network, host_network_args in host_args.network.items() %}
+{% if host_network == net %}
+{%- if host_network == admin_network %}
+{% set list1 = host_network_args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}.
 {%- else %}
-{% set list1 = args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{network}}.{{salt['pillar.get']('core:domain_name')}}.
+{% set list1 = host_network_args.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host}}.{{host_network}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}.
 {%- endif %}
 {%- endif %}
 {%- endfor %}
 
-{%- if net == admin_network %}
-{%- if argo.bmc is defined %}
-{% set list1 = argo.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{argo.bmc.name}}.{{salt['pillar.get']('core:domain_name')}}.
+{%- if host_args.bmc is defined %}
+{%- if host_args.bmc.network == net %}
+{% set list1 = host_args.bmc.ip.split('.') %}{{ list1[3] }}.{{ list1[2] }}        IN  PTR         {{host_args.bmc.name}}.{{salt['pillar.get']('network:global_parameters:domain_name')}}.
 {%- endif %}
 {%- endif %}
+
 {%- endfor %}
 {% endfor %}
 {% endfor %}
-

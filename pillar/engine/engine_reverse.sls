@@ -1,11 +1,11 @@
 {% import_yaml 'cluster/core.sls' as cor %}
 {% import_yaml 'cluster/masters/masters.sls' as mas %}
-{% import_yaml 'engine/engine.sls' as eng %}
+{% import_yaml 'cluster/network.sls' as net %}
 
 engine_reverse:
 
 {% for master in mas.masters %}
-  {{master}}.{{eng.engine.network.domaine_name}}:
+  {{master}}.{{net.network.global_parameters.domain_name}}:
     subtype: {{master}}
     type: masters
 {% endfor %}
@@ -15,7 +15,7 @@ engine_reverse:
 {% for ttype, argy in type.items() %}
 {% for group, args in argy.items() %}
 {% for node in args %}
-  {{node}}.{{eng.engine.network.domaine_name}}:
+  {{node}}.{{net.network.global_parameters.domain_name}}:
     subtype: {{group}}
     type: {{types}}
 {% endfor %}

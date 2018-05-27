@@ -1,5 +1,5 @@
-{% set admin_interface_ip = salt['pillar.get']('masters:'~(salt['grains.get']('id')|replace("."~salt['pillar.get']('core:domain_name'),''))~':network:'~salt['pillar.get']('core:admin_network')~':ip') %}
-{% set admin_network = salt['pillar.get']('core:admin_network') %}
+{% set admin_interface_ip = salt['pillar.get']('masters:'~(salt['grains.get']('id')|replace("."~salt['pillar.get']('network:global_parameters:domain_name'),''))~':network:'~salt['pillar.get']('network:global_parameters:admin_network')~':ip') %}
+{% set admin_network = salt['pillar.get']('network:global_parameters:admin_network') %}
 
 options {
 	listen-on port 53 { 127.0.0.1; {{ admin_interface_ip }};};
@@ -45,13 +45,13 @@ zone "." IN {
 	file "named.ca";
 };
 
-zone"{{salt['pillar.get']('core:domain_name')}}" IN {
+zone"{{salt['pillar.get']('network:global_parameters:domain_name')}}" IN {
 type master;
 file "forward";
 allow-update { none; };
 };
 
-{% for network, args in salt['pillar.get']('network').items() %} 
+{% for network, args in salt['pillar.get']('engine_network').items() %}
 {% set list1 = args.subnet.split('.') %}
 
 zone"{{list1[1]}}.{{list1[0]}}.in-addr.arpa" IN {

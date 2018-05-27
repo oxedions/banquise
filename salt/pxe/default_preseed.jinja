@@ -1,0 +1,16 @@
+default menu.c32
+prompt 5
+timeout 30
+MENU TITLE Banquise PXE Menu for {{type}}:{{subtype}}
+
+ default {{os}}_{{os_release}}_INSTALL
+ # default localdisk
+
+ LABEL {{os}}_{{os_release}}_INSTALL
+ MENU LABEL {{type}} {{subtype}}
+ KERNEL /netboot/{{os}}/{{os_release}}/linux
+ APPEND auto=true locale={{salt['pillar.get']('core:language')|lower}}_{{salt['pillar.get']('core:language')|upper}}.UTF-8 console-setup/charmap=UTF-8 console-keymaps-at/keymaps=pc105 console-setup/layoutcode={{salt['pillar.get']('core:keyboard')|lower}} console-setup/ask_detect=false pkgsel/language-pack-patterns=pkgsel/install-language-support=false  netcfg/choose_interface=auto hostname=unassigned-hostname domain=unassigned-domain vga=normal  url=http://10.1.0.1/preseed/{{type}}_{{subtype}}.preseed initrd=/netboot/{{os}}/{{os_release}}/initrd.gz {% if salt['pillar.get'](type~'_system:'~subtype~':operating_system:kernel_parameters') is not none %}{{salt['pillar.get'](type~'_system:'~subtype~':operating_system:kernel_parameters')}}{% endif %} {% if salt['pillar.get'](type~'_system:'~subtype~':bmc:console') is not none %}{{salt['pillar.get'](type~'_system:'~subtype~':bmc:console')}}{% endif %} --
+
+ LABEL localdisk
+ KERNEL chain.c32
+ APPEND hd0

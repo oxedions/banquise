@@ -1,2 +1,2 @@
-search {{salt['pillar.get']('engine:network:domaine_name')}}
-nameserver {{salt['pillar.get']('engine:servers:dns_server_ip')}}
+search {{salt['pillar.get']('network:global_parameters:domain_name')}}
+nameserver {{salt['pillar.get']('engine_connect:dns_server_ip')}}

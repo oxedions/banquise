@@ -1,13 +1,13 @@
 dhcp:
   pkg.installed:
     - name: {{ pillar['pkgs']['dhcp'] }}
-    - require:
-      - sls: repository.client
-        
+#    - require:
+#      - sls: repository.client
+
 /etc/dhcp/dhcpd.conf:
-  file:                                    
-    - managed                               
-    - source: salt://dhcp/dhcpd.conf.jinja 
+  file:
+    - managed
+    - source: salt://dhcp/dhcpd.conf.jinja
     - template: jinja
     - require:
       - pkg: {{ pillar['pkgs']['dhcp'] }}
@@ -22,4 +22,3 @@ dhcpd:
     - require:
       - pkg: {{ pillar['pkgs']['dhcp'] }}
       - file: /etc/dhcp/dhcpd.conf
-

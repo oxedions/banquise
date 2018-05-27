@@ -23,13 +23,13 @@ firstboot --enable
   {% endif %}
 {% endif %}
 
-repo --name=salt.local.repo --baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt_{{salt_reponame}}.local.repo
+repo --name=salt.local.repo --baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/salt_{{salt_reponame}}.local.repo
 
 # Keyboard layouts
-keyboard --vckeymap=us --xlayouts='us'
+keyboard --vckeymap={{salt['pillar.get']('core:keyboard')|lower}} --xlayouts='{{salt['pillar.get']('core:keyboard')|lower}}'
 
 # System language
-lang en_US.UTF-8
+lang {{salt['pillar.get']('core:language')|lower}}_{{salt['pillar.get']('core:language')|upper}}.UTF-8
 
 # Network information
 network --onboot yes --bootproto dhcp
@@ -71,4 +71,3 @@ echo "{{salt['pillar.get']('core:salt_master_ip')}}	salt	salt-master" >> /etc/ho
 systemctl disable NetworkManager
 systemctl enable salt-minion
 %end
-

@@ -9,7 +9,7 @@ munge:
     - source: salt://slurm/munge.key
     - mode: '0400'
     - user: munge
-    - group: munge    
+    - group: munge
     - require:
       - pkg: munge
 
@@ -51,6 +51,15 @@ slurm-munge:
     - require:
       - pkg: {{ pillar['pkgs']['slurm'] }}
 
+/etc/slurm/slurm.epilog.clean:
+  file.managed:
+    - source: salt://slurm/slurm.epilog.clean
+    - mode: '0700'
+    - user: slurm
+    - group: slurm
+    - require:
+      - pkg: {{ pillar['pkgs']['slurm'] }}
+
 slurm-group:
   group.present:
     - gid: 567
@@ -67,7 +76,7 @@ slurm-user:
     - require:
       - group: slurm-group
 
-/var/spool/slurmd:
+/var/spool/slurm:
   file.directory:
     - user: slurm
     - group: slurm
@@ -82,12 +91,13 @@ slurm-user:
     - require:
       - user: slurm-user
 
-/etc/slurm/savestate:
+/var/spool/slurm/savestate:
   file.directory:
     - user: slurm
     - group: slurm
     - require:
       - user: slurm-user
+      - file: /var/spool/slurm
 
 slurmservice:
   service:
@@ -98,9 +108,10 @@ slurmservice:
       - pkg: {{ pillar['pkgs']['slurm'] }}
       - pkg: {{ pillar['pkgs']['slurm_munge'] }}
       - service: mungeservice
-      - file: /etc/slurm/savestate
+      - file: /var/spool/slurm/savestate
       - file: /var/log/slurm
-      - file: /var/spool/slurmd
+      - file: /etc/slurm/slurm.epilog.clean
+      - file: /var/spool/slurm
       - file: /etc/slurm/slurm.conf
       - sls: dns.client
-      - sls: network.static 
+      - sls: network.static
