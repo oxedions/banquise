@@ -29,8 +29,8 @@ Here is the list of needed files per client OS:
     Tested isos are:
       * ubuntu-18.04-server-amd64.iso, sha256sum a7f5c7b0cdd0e9560d78f1e47660e066353bb8a79eb78d1fc3f4ea62a07e6cbc
 
-For Centos, see above to download. For Fedora, see at https://getfedora.org/ or https://spins.fedoraproject.org/ . Note that for very large network, you may need for Fedora an Everything iso also to lower web bandwith usage.
 
 Get also Banquise repositories:
-
+```bash
 wget --reject="index.html*" -nH -r --no-parent https://repo.saltstack.com/yum/redhat/7/x86_64/2016.11/
+```
