@@ -1,15 +1,18 @@
 site_name: Banquise Documentation
-theme: readthedocs
+site_description: 'Banquise stack main documentation'
+site_author: 'Oxedions'
+
+theme_dir: mkdocs_windmill
 pages:
    - Home:
       - Welcome: index.md
       - What is Banquise: what_is_banquise.md
       - Useful links: useful_links.md
    - Standard install:
+      - Before installation: standard_installation/before_installation.md
       - Prepare installation: standard_installation/prepare_installation.md
    - HPC cluster install:
       - Prepare installation: hpc_cluster_installation/prepare_installation.md
    - Debugging Banquise: debugging_banquise.md
    - FAQ: FAQ.md
    - About: about.md
-

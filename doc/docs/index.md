@@ -1,6 +1,8 @@
-# Banquise documentation
+# Welcome
 
-![Banquise_logo](img/banquise_logo.png)
+![Banquise_logo](img/banquise_logo_large.svg)
+
+Welcome on Banquise documentation.
 
 This documentation provides:
 
