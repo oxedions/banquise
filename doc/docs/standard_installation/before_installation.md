@@ -18,7 +18,7 @@ We will be using the reference infrastructure example provided:
 
 ![Reference infrastructure](img/1.svg)
 
-And by then modifying files step by step to move it to the following infrastructure:
+And modify files step by step to move it to the following infrastructure:
 
 - 1 x external saltmaster
 - 1 x management with an external access as gateway
