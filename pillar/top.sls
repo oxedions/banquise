@@ -5,8 +5,9 @@
 base:
 # Allowed to all hosts
   '*':
-    - cluster/pkgs
-    - cluster/services
+    - general/pkgs
+    - general/services
+    - general/templating
 {%- for types in cor.core.types %}
     - cluster/nodes/{{types}}
     - cluster/nodes/{{types}}_states
@@ -17,7 +18,7 @@ base:
     - cluster/masters/masters
     - cluster/masters/masters_states
     - cluster/masters/masters_system
-    - engine/engine
+#    - engine/engine # Should be removed soon
     - cluster/core
     - cluster/authentication/ssh_public
     - cluster/authentication/passwords_public
@@ -25,12 +26,11 @@ base:
     - engine/engine_connect
     - engine/engine_monitoring
     - engine/engine_reverse
-#    - engine/engine_ip
     - engine/engine_network
     - cluster/monitoring
 # Allowed to masters only, secure passwords and ssh private key
 {% for master in mas.masters %}
-  '{{master}}.{{cor.core.domain_name}}':
+  '{{master}}.{{net.network.global_parameters.domain_name}}':
     - cluster/authentication/ssh_private
     - cluster/authentication/ldap_private
 {% endfor %}

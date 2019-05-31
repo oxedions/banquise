@@ -1,43 +1,61 @@
 ClusterName={{salt['pillar.get']('core:cluster_name')}}
 ControlMachine={{salt['pillar.get']('engine_connect:jobscheduler_server_host')}}
 
-SlurmUser=slurm
-SlurmctldPort=6817
-SlurmdPort=6818
+# Authentication
 AuthType=auth/munge
 CryptoType=crypto/munge
-StateSaveLocation=/etc/slurm/savestate
-SlurmdSpoolDir=/var/log/slurm/spool_slurmd
-SlurmctldPidFile=/var/run/slurmctld.pid
-SlurmdPidFile=/var/run/slurmd.pid
-CacheGroups=0
-ReturnToService=0
-SlurmctldTimeout=400
-SlurmdTimeout=400
-InactiveLimit=0
-MinJobAge=400
-KillWait=30
-Waittime=0
-MpiDefault=pmi2
 
+# Cleaning
+Epilog=/etc/slurm/slurm.epilog.clean
+
+# Mpi
+MpiDefault=none
+
+# System
+ProctrackType=proctrack/cgroup
+ReturnToService=0
+
+# Slurm environment
+SlurmctldPidFile=/var/run/slurmctld.pid
+SlurmctldPort=6817
+SlurmdPidFile=/var/run/slurmd.pid
+SlurmdPort=6818
+SlurmdSpoolDir=/var/spool/slurm/slurmd
+SlurmUser=slurm
+StateSaveLocation=/var/spool/slurm/savestate
+SwitchType=switch/none
+
+# Task
+TaskPlugin=task/affinity
+TaskPluginParam=Sched
+
+# Timers
+InactiveLimit=0
+KillWait=30
+MinJobAge=300
+SlurmctldTimeout=120
+SlurmdTimeout=300
+Waittime=0
+
+# Scheduling
+FastSchedule=1
 SchedulerType=sched/backfill
 SelectType=select/cons_res
-SelectTypeParameters= CR_Core_Memory,CR_CORE_DEFAULT_DIST_BLOCK
-FastSchedule=1
- 
+SelectTypeParameters=CR_Core,CR_CORE_DEFAULT_DIST_BLOCK
+
+# Logging and accounting
+JobCompType=jobcomp/none
 SlurmctldDebug=5
 SlurmctldLogFile=/var/log/slurm/slurmctld.log
 SlurmdDebug=5
 SlurmdLogFile=/var/log/slurm/slurmd.log.%h
-JobCompType=jobcomp/none
 
-{% for group, argu in salt['pillar.get']('computes', {}).items() %}
-{% for host, args in argu.items() %}NodeName={{ host }} Sockets={{salt['pillar.get']('computes_system:'~group~':hardware:sockets')}} CoresPerSocket={{salt['pillar.get']('computes_system:'~group~':hardware:cores_per_socket')}} ThreadsPerCore={{salt['pillar.get']('computes_system:'~group~':hardware:threads_per_core')}} State=UNKNOWN
+{% for subtype, subtype_args in salt['pillar.get']('computes', {}).items() %}
+{% for host, host_args in subtype_args.items() %}NodeName={{ host }} Sockets={{salt['pillar.get']('computes_system:'~subtype~':hardware:sockets')}} CoresPerSocket={{salt['pillar.get']('computes_system:'~subtype~':hardware:cores_per_socket')}} ThreadsPerCore={{salt['pillar.get']('computes_system:'~subtype~':hardware:threads_per_core')}} State=UNKNOWN
 {% endfor %}{% endfor %}
 
-PartitionName=all Nodes={% for group, argu in salt['pillar.get']('computes', {}).items() %}{% for host, args in argu.items() %},{{ host }}{% endfor %}{% endfor %} Default=YES MaxTime=INFINITE State=UP
+PartitionName=all Nodes={% for subtype, subtype_args in salt['pillar.get']('computes', {}).items() %}{% for host, host_args in subtype_args.items() %},{{ host }}{% endfor %}{% endfor %} Default=YES MaxTime=INFINITE State=UP
 
-{% for group, argu in salt['pillar.get']('computes', {}).items() %}
-PartitionName={{group}} Nodes={% set count = 1 %}{% for host, args in argu.items() %}{% if count == 1%}{{ host }}{% set count = 2 %}{% else %},{{ host }}{% endif %}{% endfor %} MaxTime=INFINITE State=UP
-{% endfor %} 
-
+{% for subtype, subtype_args in salt['pillar.get']('computes', {}).items() %}
+PartitionName={{subtype}} Nodes={% set count = 1 %}{% for host, host_args in subtype_args.items() %}{% if count == 1%}{{ host }}{% set count = 2 %}{% else %},{{ host }}{% endif %}{% endfor %} MaxTime=INFINITE State=UP
+{% endfor %}

@@ -9,14 +9,14 @@ sethostname:
 
 
 {% if type == "masters" %}
-{% set netpath = type~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),''))~":network" %}
+{% set netpath = type~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('network:global_parameters:domain_name'),''))~":network" %}
 {% else %}
-{% set netpath = type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),''))~":network" %}
+{% set netpath = type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('network:global_parameters:domain_name'),''))~":network" %}
 {% endif %}
 
 {% for network, argo in salt['pillar.get'](netpath).items() %}
 
-{% if network ==  salt['pillar.get']('core:admin_network') and argo.interface == "auto" %}
+{% if network ==  salt['pillar.get']('network:global_parameters:admin_network') and argo.interface == "auto" %}
 # auto interface enabled
 {% for interf, args in salt['grains.get']('ip4_interfaces').items() %}
 {% for ips in args %}
@@ -51,4 +51,3 @@ sethostname:
 {% endif %}
 
 {% endfor %}
-

@@ -6,6 +6,7 @@ computes:
     compute1:                        # Name of the compute
       bmc:
         name: bmccompute1            # Name of the BMC
+        network: net0
         ip: 10.1.103.1               # Ip of the bmc
         hwaddr: 08:00:28:18:67:BC    # Mac of the Eth NIC of the BMC
       position:                      # Additional informations not used by Banquise
@@ -18,11 +19,12 @@ computes:
           interface: auto            # On net0, you can use auto
         ic0:
           ip: 10.2.3.1
-          interface: enp0s8 
-  
+          interface: enp0s8
+
     compute2:
       bmc:
         name: bmccompute2
+        network: net0
         ip: 10.1.103.2
         hwaddr: 08:00:28:18:67:EE
       network:
@@ -33,7 +35,7 @@ computes:
         ic0:
           ip: 10.2.3.2
           interface: enp0s8
-   
+
 
 
   gpu:   # another group in type computes, here gpu
@@ -53,6 +55,7 @@ computes:
     compute4:
       bmc:
         name: bmccompute4
+        network: net0
         ip: 10.1.103.4
         hwaddr: 08:00:28:18:67:EA
       network:
@@ -63,5 +66,3 @@ computes:
         ic0:
           ip: 10.2.3.4
           interface: enp0s8
-
-

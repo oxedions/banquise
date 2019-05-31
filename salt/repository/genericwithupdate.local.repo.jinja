@@ -1,0 +1,11 @@
+[{{reponame}}.local]
+name=OS base repository
+baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/{{reponame}}.local.repo
+gpgcheck=0
+enabled=1
+
+[{{reponame}}_update.local]
+name=OS base repository update
+baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/{{reponame}}_update.local.repo
+gpgcheck=0
+enabled=1

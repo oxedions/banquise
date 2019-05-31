@@ -1,13 +1,13 @@
 dns:
   pkg.installed:
     - name: {{ pillar['pkgs']['dns'] }}
-    - require:
-      - sls: repository.client
-        
+#    - require:
+#      - sls: repository.client
+
 /etc/named.conf:
-  file:                                    
-    - managed                               
-    - source: salt://dns/named.conf.jinja 
+  file:
+    - managed
+    - source: salt://dns/named.conf.jinja
     - template: jinja
     - require:
       - pkg: {{ pillar['pkgs']['dns'] }}
@@ -44,4 +44,3 @@ named:
       - pkg: {{ pillar['pkgs']['dns'] }}
       - file: /etc/named.conf
       - file: /var/named/forward
-

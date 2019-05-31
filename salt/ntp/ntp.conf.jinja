@@ -1,4 +1,4 @@
-{% set admin_network = salt['pillar.get']('core:admin_network') %}
+{% set admin_network = salt['pillar.get']('network:global_parameters:admin_network') %}
 # For more information about this file, see the man pages
 # ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).
 
@@ -59,4 +59,3 @@ keys /etc/ntp/keys
 # CVE-2013-5211 for more details.
 # Note: Monitoring will not be disabled with the limited restriction flag.
 disable monitor
-

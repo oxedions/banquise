@@ -1,7 +1,4 @@
-# Banquise main engine file. Edit with care.
-# The aim of this file is to allow user to provide as less data as possible in the pillar files
-# by generating most of the possibly deduced data, or by rearanging data in an order easier to use in states.
-# Network data are gathered in engine.
+# THIS FILE SHOULD BE REMOVED SOON
 
 {% import_yaml 'cluster/network.sls' as net %}
 {% import_yaml 'cluster/masters/masters.sls' as mas %}
@@ -65,5 +62,3 @@ engine:
     {% endif %}
     {% endfor %}
     {% endif %}
-      
-

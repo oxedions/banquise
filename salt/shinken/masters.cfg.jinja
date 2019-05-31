@@ -1,4 +1,4 @@
-{% set netadmin = salt['pillar.get']('core:admin_network') %}
+{% set netadmin = salt['pillar.get']('network:global_parameters:admin_network') %}
 {% for host, args in salt['pillar.get']('masters',{}).items() %}
 define host{
         use                     generic-host

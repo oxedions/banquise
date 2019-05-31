@@ -4,15 +4,18 @@
 
 engine_network:
 {% for network, network_args in net.network.items() %}
+{% if network != "global_parameters" %}
+
   {{network}}:
     subnet: {{ network_args.subnet }}
     netmask: {{ network_args.netmask }}
-{% if network_args.dhcp_unknown_range is defined %} 
-    dhcp_unknown_range: {{ network_args.dhcp_unknown_range }}
-{% endif %}
-{% if network_args.gateway is defined %}
-    gateway: {{ network_args.gateway }}
-{% endif %}
+    {% if network_args.dhcp is defined and network_args.dhcp is not none %}
+    dhcp_on: true
+    dhcp_unknown_range: {{ network_args.dhcp.dhcp_unknown_range }}
+    gateway: {{ network_args.dhcp.gateway }}
+    {% else %}
+    dhcp_on: false
+    {% endif %}
   {% set list1 = network_args.subnet.split('.') %}   # very basic intelligence, need to enhance this
   {% if network_args.netmask == '255.255.255.0' %}
     reverse: 1
@@ -30,5 +33,6 @@ engine_network:
     matchpatern: "{{list1[0]}}"
     broadcast_address: {{list1[0]}}.255.225.255
   {% endif %}
-{% endfor %}
 
+{% endif %}
+{% endfor %}

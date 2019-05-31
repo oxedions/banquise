@@ -2,8 +2,8 @@ computes_system:
 
   standard:
     operating_system:
-      os: Centos
-      os_release: 7.4.1708
+      os: Ubuntu #Centos
+      os_release: 16.04 #7.4.1708
       kernel_parameters:
       boot_mode: bios            # bios, uefi
       partitioning: |            # Multiple lines variables, start with a | and indented. This is plain kickstart syntax here.
@@ -31,7 +31,7 @@ computes_system:
 #    kernel_parameters:
 #    bmc_console:
 #    update: none # when to update
-    
+
   gpu:
     operating_system:
       os: Fedora

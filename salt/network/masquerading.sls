@@ -5,9 +5,9 @@
 
 
 {% if type == "masters" %}
-{% set netpath = type~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),'')) %}
+{% set netpath = type~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('network:global_parameters:domain_name'),'')) %}
 {% else %}
-{% set netpath = type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('engine:network:domaine_name'),'')) %}
+{% set netpath = type~":"~group~":"~(salt['grains.get']('id')|replace("."~salt['pillar.get']('network:global_parameters:domain_name'),'')) %}
 {% endif %}
 
 

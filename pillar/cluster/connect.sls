@@ -6,7 +6,7 @@ connect:
 # state_to_watch: state to watch, the ip will be the one of the host installing this state
 # management:
 #    "auto" let Banquise choose (will use state_to_watch to figure ip and hostname)
-#    "external" set an external ip, to be used by clients. Banquise will not manage the server and ignore it.
+#    "external" set an external ip, to be used by clients. Banquise will not manage the server but user whish to use client side.
 #    "link" mix between auto and external. Banquise will choose depending of state_to_watch, but will also configure the service (if compatible) to be connected to an external same service (recursive dns for example)
 #    "none" do not use this service, ignored by Banquise and if client installed ip will be empty
 # Banquise will create two values each time: ipname_ip and ipname_hostname
@@ -65,4 +65,3 @@ connect:
    management: auto
    ip_value:
    host_value:
-
