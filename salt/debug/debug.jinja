@@ -1,0 +1,25 @@
+
+all_system:
+
+{% for current_equipment in equipment.equipment_list %}
+
+salt['pillar.get']('engine_network:'~network~':dhcp_on')
+{% import_yaml ("cluster/equipment/"+current_equipment+"/system.sls") as current_system %}
+{% for lvl1, lvl1_args in current_system.items() %}
+{% if lvl1_args is defined and not none %}
+  {{lvl1}}:
+{% for lvl2, lvl2_args in lvl1_args.items() %}
+{% if lvl2_args is defined and not none %}
+    {{lvl2}}:
+{% for lvl3, lvl3_args in lvl2_args.items() %}
+{% if lvl3_args is defined and not none %}
+      {{lvl3}}: {{mapping(lvl3_args)}}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% endfor %}
+

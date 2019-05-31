@@ -5,7 +5,12 @@
 base:
 # Allowed to all hosts
   '*':
-    - general/*
+    - general/pkgs
+    - general/services
+    - general/templating
+#{% for path in salt['cp.list_master']() %}
+
+#{% endfor %}
 {%- for types in cor.core.types %}
     - cluster/nodes/{{types}}
     - cluster/nodes/{{types}}_states
@@ -25,8 +30,6 @@ base:
     - engine/engine_monitoring
     - engine/engine_reverse
     - engine/engine_network
-    - engine/equipment
-    - engine/system
     - cluster/monitoring
 # Allowed to masters only, secure passwords and ssh private key
 {% for master in mas.masters %}

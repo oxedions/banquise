@@ -1,0 +1,40 @@
+{% import_yaml 'engine/equipment.sls' as equipment %}
+
+all_system:
+
+{% for current_equipment in equipment.equipment_list %}
+
+{% import_yaml ("cluster/equipment/"+current_equipment+"/system.sls") as current_system %}
+
+{% for lvl1, lvl1_args in current_system.system.items() %}
+  {% if lvl1_args is defined and not none %}
+    {% if lvl1_args is not mapping %}
+  {{lvl1}}: {{lvl1_args}}
+    {% else %}
+  {{lvl1}}:
+      {% for lvl2, lvl2_args in lvl1_args.items() %}
+        {% if lvl2_args is defined and not none %}
+        {% if (lvl2|string) != ("partitioning"|string) %}
+          {% if lvl2_args is not mapping %}
+            {% if lvl2_args is not iterable %}
+    {{lvl2}}: {{lvl2_args}}
+            {% else %}
+              {% if lvl2_args is string %}
+    {{lvl2}}: {{lvl2_args}}
+              {% endif %}
+            {% endif %}
+          {% else %}
+    {{lvl2}}:
+          {% endif %}
+        {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}  
+  {% endif %}
+{% endfor %}
+
+
+
+{% endfor %}
+
+

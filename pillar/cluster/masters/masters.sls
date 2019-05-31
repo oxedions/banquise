@@ -4,12 +4,5 @@ masters:
   management1:
     network:
       net0:
-        ip: 10.1.0.1
-        interface: na
-      ic0:
-        ip: 10.2.0.1
-        interface: enp0s8
-      net1:
-        ip: 172.16.0.1
-        interface: na
-    external_interface: enp0s9
+        ip: 10.10.0.1
+        interface: enp3s0

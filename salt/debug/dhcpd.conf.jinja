@@ -1,0 +1,102 @@
+{{ salt['pillar.get']('templating:hash_header') }}
+
+#
+# DHCP Server Configuration file.
+#   see /usr/share/doc/dhcp*/dhcpd.conf.example
+#   see dhcpd.conf(5) man page
+#
+
+# EFI
+ option space pxelinux;
+ option pxelinux.magic code 208 = string;
+ option pxelinux.configfile code 209 = text;
+ option pxelinux.pathprefix code 210 = text;
+ option pxelinux.reboottime code 211 = unsigned integer 32;
+ option architecture-type code 93 = unsigned integer 16;
+# END EFI
+
+ authoritative;
+
+{%- for network in salt['pillar.get']('engine_network') %}
+{%- if salt['pillar.get']('engine_network:'~network~':dhcp_on') == true %}
+#############################################
+####### NETWORK {{network}}
+###
+ subnet {{ salt['pillar.get']('engine_network:'~network~':subnet') }} netmask {{ salt['pillar.get']('engine_network:'~network~':netmask') }} {
+ range {{ salt['pillar.get']('engine_network:'~network~':dhcp_unknown_range') }};
+ option domain-name "{{ salt['pillar.get']('network:global_parameters:domain_name') }}";
+ {%- if salt['pillar.get']('engine_network:'~network~':gateway') is defined %}
+ option routers {{salt['pillar.get']('engine_network:'~network~':gateway')}};
+ {%- endif %}
+
+ {%- if network == salt['pillar.get']('network:global_parameters:admin_network') %}
+ option domain-name-servers {{salt['pillar.get']('engine_connect:dns_server_ip')}};
+ next-server {{salt['pillar.get']('engine_connect:pxe_server_ip')}};
+
+ if option architecture-type = 00:07 {
+   filename "shim.efi";
+ } else {
+   filename "pxelinux.0";
+ }
+ {%- endif %}
+
+ default-lease-time 600;
+ max-lease-time 7200;
+
+{%- for host, host_args in salt['pillar.get']('masters').items() %}
+  {%- for host_network, host_network_args in host_args.network.items() %}
+    {%- if host_network == network and host_network_args.hwaddr is defined %}
+
+     host {{ host }} {
+     hardware ethernet {{ host_network_args.hwaddr }};
+     fixed-address {{ host_network_args.ip }};
+     option domain-name "{{ salt['pillar.get']('network:global_parameters:domain_name') }}";
+     option host-name "{{host}}";
+     }
+    {%- endif %}
+  {%- endfor %}
+  {%- if host_args.bmc is defined %}
+    {%- if host_args.bmc.network == network and host_args.bmc.hwaddr is defined %}
+
+       host {{ host_args.bmc.name }} {
+       hardware ethernet {{ host_args.bmc.hwaddr }};
+       fixed-address {{ host_args.bmc.ip }};
+       option domain-name "{{ salt['pillar.get']('network:global_parameters:domain_name') }}";
+       option host-name "{{host_args.bmc.name}}";
+       }
+    {%- endif %}
+  {%- endif %}
+{% endfor %}
+
+{%- for type in salt['pillar.get']('core:types') %}
+{%- for sub_type, sub_type_args in salt['pillar.get'](type, {}).items() %}
+   {%- for host, host_args in sub_type_args.items() %}
+      {%- for host_network, host_network_args in host_args.network.items() %}
+         {%- if host_network == network and host_network_args.hwaddr is defined %}
+
+ host {{ host }} {
+ hardware ethernet {{ host_network_args.hwaddr }};
+ fixed-address {{ host_network_args.ip }};
+ option domain-name "{{ salt['pillar.get']('network:global_parameters:domain_name') }}";
+ option host-name "{{host}}";
+ }
+         {%- endif %}
+      {%- endfor %}
+    {%- if host_args.bmc is defined %}
+      {%- if host_args.bmc.network == network and host_args.bmc.hwaddr is defined %}
+
+   host {{ host_args.bmc.name }} {
+   hardware ethernet {{ host_args.bmc.hwaddr }};
+   fixed-address {{ host_args.bmc.ip }};
+   option domain-name "{{ salt['pillar.get']('network:global_parameters:domain_name') }}";
+   option host-name "{{host_args.bmc.name}}";
+   }
+      {%- endif %}
+    {%- endif %}
+  {%- endfor %}
+{%- endfor %}
+{%- endfor %}
+
+ }
+{%- endif %}
+{%- endfor %}

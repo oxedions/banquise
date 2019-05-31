@@ -1,0 +1,15 @@
+{% import_yaml 'cluster/settings/general_settings.sls' as general_settings %}
+
+test:
+# Allowed to all hosts
+{% set equipments = [] %}
+
+{% for nodes_group in general_settings.general_settings.nodes_groups %}
+{% import_yaml "cluster/nodes/{{nodes_group}}.sls" as current_group %}
+{% for group, group_args in current_group.items() %}
+{% for equipment in group_args %}
+   - {{equipment}}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+
