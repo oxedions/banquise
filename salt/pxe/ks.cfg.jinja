@@ -1,4 +1,7 @@
-#version=RHEL7
+# Kickstart File
+# OS is {{os}} {{os_release}}
+# Target system are {{type}}:{{subtype}}
+
 # System authorization information
 auth --enableshadow --passalgo=sha512
 
@@ -8,30 +11,44 @@ text
 # Run the Setup Agent on first boot
 firstboot --enable
 
-repo --name=salt.local.repo --baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt.local.repo
+# Salt Stack repository (to get salt-minion)
+{% if os == 'Centos' %}
+  {% if os_release == '7.4.1708' %}
+  {% set salt_reponame = 'RH_7' %}
+  {% endif %}
+{% endif %}
+{% if os == 'Fedora' %}
+  {% if os_release == '27' %}
+  {% set salt_reponame = 'Fedora_27' %}
+  {% endif %}
+{% endif %}
+
+repo --name=salt.local.repo --baseurl=http://{{salt['pillar.get']('core:salt_master_ip')}}/salt_{{salt_reponame}}.local.repo
 
 # Keyboard layouts
 keyboard --vckeymap=us --xlayouts='us'
+
 # System language
 lang en_US.UTF-8
 
 # Network information
 network --onboot yes --bootproto dhcp
-network  --hostname=localhost.localdomain
+network --hostname=localhost.localdomain
 
 # Root password
 rootpw --iscrypted {{salt['pillar.get']('passwords_public:root_password_hash')}}
 
 # System timezone
-timezone America/New_York --isUtc
+timezone {{salt['pillar.get']('core:time_zone')}} --isUtc
 
 # System bootloader configuration
 bootloader --append=" crashkernel=auto" --location=mbr
 
 # Partition clearing information
-clearpart --all --initlabel
-part /boot --fstype=ext4 --size=2048
-part / --fstype=ext4 --size=1 --grow
+{{salt['pillar.get'](type~'_system:'~subtype~':operating_system:partitioning')}}
+#clearpart --all --initlabel
+#part /boot --fstype=ext4 --size=2048
+#part / --fstype=ext4 --size=1 --grow
 
 # Reboot after installation
 reboot
@@ -43,6 +60,7 @@ salt-minion
 %end
 
 # Add root public key in authorized_keys on minion, don't forget to restorecon
+# Add salt and salt-master hosts to hosts file
 %post --log=/root/ks-post.log
 mkdir /root/.ssh
 cat  << xxEOFxx >> /root/.ssh/authorized_keys
@@ -51,6 +69,6 @@ xxEOFxx
 restorecon -r /root/.ssh
 echo "{{salt['pillar.get']('core:salt_master_ip')}}	salt	salt-master" >> /etc/hosts
 systemctl disable NetworkManager
-#systemctl enable salt-minion
+systemctl enable salt-minion
 %end
 

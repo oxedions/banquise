@@ -18,10 +18,11 @@ engine_connect:
 #  {% for host in server_args.host_value %}
 #    - {{host}}
 #  {% endfor %}
+  {{server~"_link"}}: false
 {% endif %}
 
 # Auto ip, get who install the to check state
-{% if server_args.management == "auto" %}
+{% if server_args.management == "auto" or server_args.management == "link" %}
 #  {{server~"_ip"}}:
   {% for masst, masst_args in mas_states.masters_states.items() %}
     {% for states in masst_args %}
@@ -44,6 +45,13 @@ engine_connect:
       {% endif %}
     {% endfor %}
   {% endfor %}
+  {% if server_args.management == "link" %}
+  {{server~"_link"}}: true
+  {{server~"_link_ip"}}: {{server_args.ip_value}}
+  {{server~"_link_host"}}: {{server_args.host_value}}
+  {% else %}
+  {{server~"_link"}}: false
+  {% endif %}
 
 {% endif %}
 

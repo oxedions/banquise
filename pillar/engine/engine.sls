@@ -7,6 +7,8 @@
 {% import_yaml 'cluster/masters/masters.sls' as mas %}
 {% import_yaml 'cluster/core.sls' as cor %}
 
+helloworld: "Hey !!"
+
 engine:
 
   network:

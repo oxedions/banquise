@@ -1,5 +1,5 @@
 {% set host_type = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':type') %}
-{% set host_group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':group') %}
+{% set host_group = salt['pillar.get']('engine_reverse:'~salt['grains.get']('id')~':subtype') %}
 nfs_utils:
   pkg.installed:
     - name: {{ pillar['pkgs']['nfs_utils'] }}

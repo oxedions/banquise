@@ -32,6 +32,8 @@
  host {{ host }} {
  hardware ethernet {{ network_args.hwaddr }};
  fixed-address {{ network_args.ip }};
+ option domain-name "{{ salt['pillar.get']('core:domain_name') }}";
+ option host-name "{{host}}";
  }
          {%- endif %}
       {%- endfor %}
@@ -39,6 +41,8 @@
    host {{ host_args.bmc.name }} {
    hardware ethernet {{ host_args.bmc.hwaddr }};
    fixed-address {{ host_args.bmc.ip }};
+   option domain-name "{{ salt['pillar.get']('core:domain_name') }}";
+   option host-name "{{host_args.bmc.name}}";
    }
     {%- endif %}
   {%- endfor %}

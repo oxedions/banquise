@@ -1,5 +1,20 @@
-[banquise.local]
+{% if os == 'Centos' %}
+{% if os_release == '7.4.1708' %}
+[banquise_RH_7.local]
 name=banquise repository
-baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/banquise.local.repo
+baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/banquise_RH_7.local.repo
 gpgcheck=0
 enabled=1
+{% endif %}
+{% endif %}
+
+{% if os == 'Fedora' %}
+{% if os_release == '27' %}
+[banquise_Fedora_27.local]
+name=banquise repository
+baseurl=http://{{salt['pillar.get']('engine_connect:repository_server_ip')}}/banquise_Fedora_27.local.repo
+gpgcheck=0
+enabled=1
+{% endif %}
+{% endif %}
+

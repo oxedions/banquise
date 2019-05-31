@@ -32,7 +32,7 @@ SlurmdLogFile=/var/log/slurm/slurmd.log.%h
 JobCompType=jobcomp/none
 
 {% for group, argu in salt['pillar.get']('computes', {}).items() %}
-{% for host, args in argu.items() %}NodeName={{ host }} Procs={{ args.procs }} State=UNKNOWN
+{% for host, args in argu.items() %}NodeName={{ host }} Sockets={{salt['pillar.get']('computes_system:'~group~':hardware:sockets')}} CoresPerSocket={{salt['pillar.get']('computes_system:'~group~':hardware:cores_per_socket')}} ThreadsPerCore={{salt['pillar.get']('computes_system:'~group~':hardware:threads_per_core')}} State=UNKNOWN
 {% endfor %}{% endfor %}
 
 PartitionName=all Nodes={% for group, argu in salt['pillar.get']('computes', {}).items() %}{% for host, args in argu.items() %},{{ host }}{% endfor %}{% endfor %} Default=YES MaxTime=INFINITE State=UP
